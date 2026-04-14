@@ -18,21 +18,15 @@ function GraniteCube({ isHovered }: { isHovered: boolean }) {
   });
 
   return (
-    <RoundedBox
-      ref={ref}
-      args={[1.5, 1.7, 1.4]}
-      radius={0.03}
-      smoothness={4}
-      rotation={[0, -0.5, 0]}
-      castShadow
-      receiveShadow
-    >
+    <RoundedBox ref={ref} args={[1.5, 1.7, 1.4]} radius={0.03} smoothness={4}
+      rotation={[0, -0.5, 0]} castShadow receiveShadow>
       <meshPhysicalMaterial
-        color="#2a2a32"
-        metalness={0.6}
-        roughness={0.55}
-        envMapIntensity={0.6}
-        clearcoat={0}
+        color="#484850"
+        metalness={0.65}
+        roughness={0.45}
+        envMapIntensity={1.0}
+        clearcoat={0.1}
+        clearcoatRoughness={0.3}
       />
     </RoundedBox>
   );

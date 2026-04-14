@@ -1,7 +1,7 @@
 "use client";
 
-import { Suspense, ReactNode } from "react";
-import { Canvas } from "@react-three/fiber";
+import { Suspense, ReactNode, useRef } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
 import {
   Environment,
   Lightformer,
@@ -18,6 +18,7 @@ import {
   N8AO,
 } from "@react-three/postprocessing";
 import { ACESFilmicToneMapping } from "three";
+import * as THREE from "three";
 
 interface Scene3DProps {
   children: ReactNode;
@@ -31,13 +32,26 @@ interface Scene3DProps {
 }
 
 /**
- * Scene3D — The premium wrapper.
- *
- * Custom studio lighting via Lightformers (not presets),
- * AccumulativeShadows for physically-correct soft shadows,
- * N8AO + Bloom + Vignette post-processing pipeline,
- * PerformanceMonitor for auto GPU scaling.
+ * Sweeping light that glides across objects — slow-mo progressive glow.
+ * A point light that orbits slowly, creating moving reflections on metals.
  */
+function SweepingLight() {
+  const lightRef = useRef<THREE.PointLight>(null);
+
+  useFrame((state) => {
+    if (!lightRef.current) return;
+    const t = state.clock.elapsedTime;
+    // Slow orbit — 25 second cycle
+    lightRef.current.position.x = Math.sin(t * 0.25) * 5;
+    lightRef.current.position.z = Math.cos(t * 0.25) * 4;
+    lightRef.current.position.y = 3 + Math.sin(t * 0.15) * 1.5;
+    // Intensity breathes
+    lightRef.current.intensity = 0.6 + Math.sin(t * 0.3) * 0.25;
+  });
+
+  return <pointLight ref={lightRef} color="#f0e8e0" distance={12} decay={2} />;
+}
+
 export function Scene3D({
   children,
   className,
@@ -58,58 +72,64 @@ export function Scene3D({
           antialias: true,
           alpha: true,
           toneMapping: ACESFilmicToneMapping,
-          toneMappingExposure: 1.1,
+          toneMappingExposure: 1.4,
         }}
         style={{ background: "transparent" }}
       >
         <Suspense fallback={null}>
           <PerformanceMonitor>
-            {/* === CUSTOM STUDIO LIGHTING via Lightformers === */}
+            {/* Stronger ambient for visibility */}
+            <ambientLight intensity={0.4} color="#f0ece4" />
+
+            {/* Sweeping light — creates moving reflections */}
+            <SweepingLight />
+
+            {/* Custom studio Lightformers — brighter than before */}
             <Environment resolution={256}>
-              {/* Key light — grande softbox haut-gauche */}
+              {/* Key light — très large, très douce */}
               <Lightformer
-                intensity={2.2}
-                position={[-5, 5, -3]}
-                scale={[10, 4, 1]}
-                color="#ffffff"
+                intensity={3}
+                position={[-5, 5, -2]}
+                scale={[12, 5, 1]}
+                color="#fff8f0"
               />
-              {/* Fill light — douce, côté opposé */}
+              {/* Fill — warm tone */}
+              <Lightformer
+                intensity={1}
+                position={[5, -1, 3]}
+                scale={[8, 4, 1]}
+                color="#e8dcd0"
+              />
+              {/* Rim — contour brillant */}
+              <Lightformer
+                intensity={2}
+                position={[0, 4, 5]}
+                scale={[10, 3, 1]}
+                color="#e8f0ff"
+              />
+              {/* Bottom — bounce chaud */}
               <Lightformer
                 intensity={0.6}
-                position={[5, -2, 3]}
-                scale={[6, 3, 1]}
-                color="#b0c0e0"
+                position={[0, -3, 0]}
+                scale={[14, 2, 10]}
+                color="#e0d8cc"
               />
-              {/* Rim light — arrière, contour premium */}
-              <Lightformer
-                intensity={1.4}
-                position={[0, 4, 5]}
-                scale={[8, 2, 1]}
-                color="#e0e8ff"
-              />
-              {/* Bottom bounce — réflexion sol subtile */}
+              {/* Back — mid-tone pour reflets visibles (pas trop sombre) */}
               <Lightformer
                 intensity={0.3}
-                position={[0, -4, 0]}
-                scale={[12, 1, 8]}
-                color="#d0d0d8"
-              />
-              {/* Background — sombre pour reflets réalistes */}
-              <Lightformer
-                intensity={0.08}
-                position={[0, 0, -10]}
+                position={[0, 0, -8]}
                 scale={[20, 20, 1]}
-                color="#1a1a24"
+                color="#8888a0"
               />
             </Environment>
 
-            {/* === ACCUMULATIVE SHADOWS — ultra-soft === */}
+            {/* Accumulative shadows */}
             <AccumulativeShadows
               temporal
-              frames={80}
+              frames={60}
               scale={8}
               position={[0, shadowY, 0]}
-              opacity={0.45}
+              opacity={0.3}
               color="#000000"
             >
               <RandomizedLight
@@ -120,7 +140,7 @@ export function Scene3D({
               />
             </AccumulativeShadows>
 
-            {/* === 3D OBJECTS with Float === */}
+            {/* Float */}
             <Float
               speed={floatSpeed}
               rotationIntensity={isHovered ? 0.12 : 0.04}
@@ -130,22 +150,11 @@ export function Scene3D({
               {children}
             </Float>
 
-            {/* === POST-PROCESSING PIPELINE === */}
+            {/* Post-processing */}
             <EffectComposer multisampling={4}>
-              {/* N8AO — ambient occlusion contact shadows */}
-              <N8AO
-                intensity={0.5}
-                aoRadius={0.8}
-                distanceFalloff={0.5}
-              />
-              {/* Bloom — subtil sur spéculaires uniquement */}
-              <Bloom
-                luminanceThreshold={0.85}
-                luminanceSmoothing={0.3}
-                intensity={0.12}
-              />
-              {/* Vignette — bords cinéma */}
-              <Vignette offset={0.25} darkness={0.35} />
+              <N8AO intensity={0.35} aoRadius={0.6} distanceFalloff={0.5} />
+              <Bloom luminanceThreshold={0.7} luminanceSmoothing={0.4} intensity={0.2} />
+              <Vignette offset={0.3} darkness={0.25} />
             </EffectComposer>
           </PerformanceMonitor>
 

@@ -8,50 +8,6 @@ import { Scene3D } from "./Scene3D";
 
 interface Props { isHovered: boolean; isClicked: boolean; }
 
-/** Bottom ingot — dark matte cast iron */
-function BottomIngot() {
-  return (
-    <RoundedBox
-      args={[2.4, 0.5, 1.2]}
-      radius={0.04}
-      smoothness={4}
-      position={[0, -0.15, 0]}
-      castShadow
-      receiveShadow
-    >
-      <meshPhysicalMaterial
-        color="#4a4a52"
-        metalness={0.85}
-        roughness={0.6}
-        envMapIntensity={0.8}
-      />
-    </RoundedBox>
-  );
-}
-
-/** Top ingot — bright brushed aluminum with clearcoat */
-function TopIngot() {
-  return (
-    <RoundedBox
-      args={[2.2, 0.45, 1.1]}
-      radius={0.04}
-      smoothness={4}
-      position={[0.25, 0.32, 0.08]}
-      castShadow
-      receiveShadow
-    >
-      <meshPhysicalMaterial
-        color="#d0cec8"
-        metalness={0.95}
-        roughness={0.15}
-        clearcoat={0.8}
-        clearcoatRoughness={0.05}
-        envMapIntensity={1.5}
-      />
-    </RoundedBox>
-  );
-}
-
 function Ingots({ isHovered }: { isHovered: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
 
@@ -63,8 +19,29 @@ function Ingots({ isHovered }: { isHovered: boolean }) {
 
   return (
     <group ref={groupRef} rotation={[-0.25, -0.6, 0]}>
-      <BottomIngot />
-      <TopIngot />
+      {/* Bottom ingot — matte iron/fonte — LIGHTER than before */}
+      <RoundedBox args={[2.4, 0.5, 1.2]} radius={0.04} smoothness={4}
+        position={[0, -0.15, 0]} castShadow receiveShadow>
+        <meshPhysicalMaterial
+          color="#7a7880"
+          metalness={0.8}
+          roughness={0.5}
+          envMapIntensity={1.2}
+        />
+      </RoundedBox>
+
+      {/* Top ingot — bright brushed aluminum — VERY reflective */}
+      <RoundedBox args={[2.2, 0.45, 1.1]} radius={0.04} smoothness={4}
+        position={[0.25, 0.32, 0.08]} castShadow receiveShadow>
+        <meshPhysicalMaterial
+          color="#e0dcd6"
+          metalness={0.95}
+          roughness={0.12}
+          clearcoat={1}
+          clearcoatRoughness={0.03}
+          envMapIntensity={2}
+        />
+      </RoundedBox>
     </group>
   );
 }
