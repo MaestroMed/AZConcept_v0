@@ -1,0 +1,22 @@
+export const companyInfo = {
+  name: "AZ Concept",
+  legalName: "AZ Concept",
+  tagline: "FABRIQUER. PROTEGER. DURER.",
+  phone: "09 71 35 74 96",
+  phoneHref: "tel:+33971357496",
+  email: "contact@azconcept.fr",
+  emailHref: "mailto:contact@azconcept.fr",
+  address: "23 Chemin du Bac des Aubins",
+  city: "95820 Bruyeres-sur-Oise",
+  region: "Ile-de-France",
+  hours: "Lundi - Vendredi : 08:00 - 12:00 / 13:00 - 18:00",
+  workshopSize: "1 800",
+  foundedYear: 2018,
+  projectsCompleted: 3000,
+  ralColors: 200,
+  gammes: 10,
+  sisterSites: {
+    construction: "https://azconstruction.fr",
+    epoxy: "https://azepoxy.fr",
+  },
+} as const;

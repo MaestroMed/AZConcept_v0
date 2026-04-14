@@ -1,0 +1,175 @@
+@import "tailwindcss";
+
+:root {
+  /* === AZ CONCEPT — Dark Premium Palette === */
+
+  /* Triptych Colors */
+  --silver: #B8B8C8;
+  --silver-light: #D4D4E0;
+  --silver-dark: #8E8EA0;
+  --navy: #1E3A8A;
+  --navy-light: #2563EB;
+  --navy-dark: #1E2D5F;
+  --charcoal: #1a1a2e;
+  --charcoal-light: #2a2a3e;
+  --charcoal-dark: #0f0f1e;
+
+  /* Surfaces */
+  --surface: #0a0a14;
+  --surface-elevated: #12121e;
+  --surface-card: #16162a;
+  --surface-hover: #1e1e36;
+
+  /* Text */
+  --text-primary: #F1F1F1;
+  --text-secondary: #8888A0;
+  --text-muted: #555570;
+  --text-accent: #4169E1;
+
+  /* Accent */
+  --accent: #4169E1;
+  --accent-hover: #5A7FFF;
+  --accent-muted: rgba(65, 105, 225, 0.15);
+
+  /* Borders */
+  --border: #2a2a3e;
+  --border-light: #3a3a50;
+  --border-subtle: #1e1e30;
+
+  /* Gradients */
+  --gradient-silver: linear-gradient(135deg, #B8B8C8 0%, #8E8EA0 100%);
+  --gradient-navy: linear-gradient(135deg, #1E3A8A 0%, #2563EB 100%);
+  --gradient-charcoal: linear-gradient(135deg, #2a2a3e 0%, #1a1a2e 100%);
+  --gradient-surface: linear-gradient(180deg, #0a0a14 0%, #12121e 100%);
+
+  /* Spacing */
+  --section-padding: clamp(4rem, 8vw, 8rem);
+  --container-max: 1400px;
+  --container-padding: clamp(1rem, 4vw, 2rem);
+}
+
+@theme inline {
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-surface-card: var(--surface-card);
+  --color-surface-hover: var(--surface-hover);
+  --color-silver: var(--silver);
+  --color-silver-light: var(--silver-light);
+  --color-silver-dark: var(--silver-dark);
+  --color-navy: var(--navy);
+  --color-navy-light: var(--navy-light);
+  --color-navy-dark: var(--navy-dark);
+  --color-charcoal: var(--charcoal);
+  --color-charcoal-light: var(--charcoal-light);
+  --color-charcoal-dark: var(--charcoal-dark);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-text-accent: var(--text-accent);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-muted: var(--accent-muted);
+  --color-border: var(--border);
+  --color-border-light: var(--border-light);
+  --color-border-subtle: var(--border-subtle);
+  --font-sans: var(--font-inter);
+}
+
+/* === Global Styles === */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--surface);
+  color: var(--text-primary);
+  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--accent);
+  color: white;
+}
+
+/* === Animations === */
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-5%, -10%); }
+  20% { transform: translate(-15%, 5%); }
+  30% { transform: translate(7%, -25%); }
+  40% { transform: translate(-5%, 25%); }
+  50% { transform: translate(-15%, 10%); }
+  60% { transform: translate(15%, 0%); }
+  70% { transform: translate(0%, 15%); }
+  80% { transform: translate(3%, 35%); }
+  90% { transform: translate(-10%, 10%); }
+}
+
+/* Noise texture overlay */
+.noise-overlay::before {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+  animation: grain 8s steps(10) infinite;
+  z-index: 1;
+}
+
+/* Dot grid pattern */
+.dot-grid {
+  background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--charcoal-light);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--silver-dark);
+}
