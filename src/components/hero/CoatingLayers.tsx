@@ -36,7 +36,8 @@ function Plates({ isHovered }: { isHovered: boolean }) {
   });
 
   return (
-    <group ref={groupRef} rotation={[-0.45, 0, 0]}>
+    // rotateX increased from -0.45 to -0.55 for more top-down view
+    <group ref={groupRef} rotation={[-0.55, 0, 0]}>
       <Plate position={[0, -spread, 0]}
         color="#5a88c8" metalness={0.7} roughness={0.3}
         clearcoat={0.4} clearcoatRoughness={0.15} envMapIntensity={1.4} opacity={0.55} />
