@@ -6,101 +6,163 @@ import Link from "next/link";
 import { MeshGradient } from "@/components/hero/MeshGradient";
 
 /* ═══════════════════════════════════════════════
-   ANIMATED BLUEPRINT WIREFRAMES
-   Lines draw themselves in, then float and breathe.
-   Carried by air current — slow drift.
+   ANIMATED ASSEMBLY — Complex multi-keyframe
+   Each shape starts decomposed, floats in from
+   different directions, assembles piece by piece.
+   Then breathes forever.
    ═══════════════════════════════════════════════ */
 
-// Shared: slow drift animation like carried by wind
-const drift = (dur: number, dx: number, dy: number) => ({
-  animate: {
-    x: [0, dx, -dx * 0.5, dx * 0.3, 0],
-    y: [0, dy, -dy * 0.7, dy * 0.4, 0],
-    rotate: [0, 0.8, -0.4, 0.3, 0],
-    scale: [1, 1.02, 0.99, 1.01, 1],
-  },
-  transition: { duration: dur, repeat: Infinity, ease: "easeInOut" as const },
-});
+function AssemblyIngots() {
+  // Color adapted: dark strokes on light beige background
+  const s = "rgba(60,55,50,0.12)";
+  const sLight = "rgba(60,55,50,0.08)";
 
-function BlueprintIngot() {
-  const d = drift(18, 8, -5);
+  // Each edge is a separate element that flies in from a different direction
   return (
-    <motion.svg viewBox="0 0 200 140" fill="none" className="w-[140px] sm:w-[180px] lg:w-[220px]" {...d}>
-      {/* Bottom ingot — draws in */}
-      <motion.path d="M20 90 L20 115 L130 115 L130 90Z" stroke="white" strokeWidth="0.5"
-        initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 0.08 }}
-        transition={{ delay: 1.5, duration: 2.5, ease: "easeInOut" }} />
-      <motion.path d="M20 90 L55 68 L165 68 L130 90Z" stroke="white" strokeWidth="0.5"
-        initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 0.08 }}
-        transition={{ delay: 1.8, duration: 2.5, ease: "easeInOut" }} />
-      <motion.path d="M130 90 L165 68 L165 93 L130 115Z" stroke="white" strokeWidth="0.5"
-        initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 0.06 }}
-        transition={{ delay: 2.0, duration: 2.5, ease: "easeInOut" }} />
-      {/* Top ingot — offset, brighter */}
-      <motion.path d="M35 58 L35 80 L135 80 L135 58Z" stroke="white" strokeWidth="0.5"
-        initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 0.1 }}
-        transition={{ delay: 2.3, duration: 2.5, ease: "easeInOut" }} />
-      <motion.path d="M35 58 L65 38 L165 38 L135 58Z" stroke="white" strokeWidth="0.5"
-        initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 0.12 }}
-        transition={{ delay: 2.5, duration: 2.5, ease: "easeInOut" }} />
-      <motion.path d="M135 58 L165 38 L165 58 L135 80Z" stroke="white" strokeWidth="0.5"
-        initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 0.08 }}
-        transition={{ delay: 2.7, duration: 2.5, ease: "easeInOut" }} />
-      {/* Dimension lines */}
-      <motion.line x1="12" y1="55" x2="12" y2="118" stroke="white" strokeWidth="0.3" strokeDasharray="2 4"
-        initial={{ opacity: 0 }} animate={{ opacity: 0.05 }} transition={{ delay: 3.5, duration: 1.5 }} />
-    </motion.svg>
+    <svg viewBox="0 0 220 160" fill="none" className="w-[160px] sm:w-[200px] lg:w-[260px]">
+      {/* === BOTTOM INGOT — 3 visible faces === */}
+      {/* Front face — slides up from below */}
+      <motion.path d="M15 95 L15 125 L135 125 L135 95Z" stroke={s} strokeWidth="0.6"
+        initial={{ y: 60, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 1.5, duration: 3, ease: [0.22, 1, 0.36, 1] }} />
+      {/* Top face — drops from above */}
+      <motion.path d="M15 95 L55 72 L175 72 L135 95Z" stroke={s} strokeWidth="0.6"
+        initial={{ y: -40, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 2, duration: 3, ease: [0.22, 1, 0.36, 1] }} />
+      {/* Side face — slides from right */}
+      <motion.path d="M135 95 L175 72 L175 102 L135 125Z" stroke={sLight} strokeWidth="0.6"
+        initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }}
+        transition={{ delay: 2.4, duration: 3, ease: [0.22, 1, 0.36, 1] }} />
+
+      {/* === TOP INGOT — brighter, arrives later === */}
+      {/* Front */}
+      <motion.path d="M30 58 L30 84 L140 84 L140 58Z" stroke={s} strokeWidth="0.7"
+        initial={{ y: 50, x: -30, opacity: 0 }} animate={{ y: 0, x: 0, opacity: 1 }}
+        transition={{ delay: 3, duration: 3.5, ease: [0.22, 1, 0.36, 1] }} />
+      {/* Top — the showcase face */}
+      <motion.path d="M30 58 L65 38 L175 38 L140 58Z" stroke={s} strokeWidth="0.7"
+        initial={{ y: -50, opacity: 0, scale: 0.8 }} animate={{ y: 0, opacity: 1, scale: 1 }}
+        transition={{ delay: 3.5, duration: 3.5, ease: [0.22, 1, 0.36, 1] }} />
+      {/* Side */}
+      <motion.path d="M140 58 L175 38 L175 64 L140 84Z" stroke={sLight} strokeWidth="0.6"
+        initial={{ x: 60, opacity: 0 }} animate={{ x: 0, opacity: 1 }}
+        transition={{ delay: 3.8, duration: 3, ease: [0.22, 1, 0.36, 1] }} />
+
+      {/* === ACCENT LINES — appear last, very subtle === */}
+      <motion.line x1="8" y1="55" x2="8" y2="128" stroke={sLight} strokeWidth="0.3" strokeDasharray="1.5 4"
+        initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 1 }}
+        transition={{ delay: 5, duration: 3 }} />
+      <motion.line x1="180" y1="35" x2="180" y2="68" stroke={sLight} strokeWidth="0.3" strokeDasharray="1.5 4"
+        initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 1 }}
+        transition={{ delay: 5.3, duration: 3 }} />
+
+      {/* === BREATHING — whole group pulses after assembly === */}
+      <motion.rect x="0" y="0" width="220" height="160" fill="none"
+        animate={{ y: [0, -3, 0], x: [0, 2, 0], rotate: [0, 0.3, 0] }}
+        transition={{ delay: 7, duration: 16, repeat: Infinity, ease: "easeInOut" }} />
+    </svg>
   );
 }
 
-function BlueprintLayers() {
-  const d = drift(22, -6, -4);
+function AssemblyLayers() {
+  const s = "rgba(255,255,255,0.11)";
+  const sLight = "rgba(255,255,255,0.07)";
+
   return (
-    <motion.svg viewBox="0 0 180 160" fill="none" className="w-[130px] sm:w-[170px] lg:w-[210px]" {...d}>
-      {/* 3 diamond plates — staggered draw-in */}
-      <motion.path d="M25 115 L90 138 L155 115 L90 92Z" stroke="white" strokeWidth="0.5"
-        initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 0.06 }}
-        transition={{ delay: 1.8, duration: 2.5, ease: "easeInOut" }} />
-      <motion.path d="M30 88 L90 108 L150 88 L90 68Z" stroke="white" strokeWidth="0.5"
-        initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 0.08 }}
-        transition={{ delay: 2.2, duration: 2.5, ease: "easeInOut" }} />
-      <motion.path d="M35 60 L90 78 L145 60 L90 42Z" stroke="white" strokeWidth="0.5"
-        initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 0.11 }}
-        transition={{ delay: 2.6, duration: 2.5, ease: "easeInOut" }} />
-      {/* Spacing indicators */}
-      <motion.g initial={{ opacity: 0 }} animate={{ opacity: 0.04 }} transition={{ delay: 3.8, duration: 1.5 }}>
-        <line x1="160" y1="60" x2="160" y2="115" stroke="white" strokeWidth="0.3" strokeDasharray="2 4" />
-        <line x1="158" y1="60" x2="162" y2="60" stroke="white" strokeWidth="0.3" />
-        <line x1="158" y1="88" x2="162" y2="88" stroke="white" strokeWidth="0.3" />
-        <line x1="158" y1="115" x2="162" y2="115" stroke="white" strokeWidth="0.3" />
+    <svg viewBox="0 0 200 180" fill="none" className="w-[150px] sm:w-[190px] lg:w-[240px]">
+      {/* === BOTTOM PLATE — arrives from bottom-left === */}
+      <motion.g initial={{ x: -40, y: 50, opacity: 0 }} animate={{ x: 0, y: 0, opacity: 1 }}
+        transition={{ delay: 1.8, duration: 3.5, ease: [0.22, 1, 0.36, 1] }}>
+        <path d="M25 125 L100 152 L175 125 L100 98Z" stroke={sLight} strokeWidth="0.5" />
+        {/* Thickness */}
+        <path d="M25 125 L100 152 L100 157 L25 130Z" stroke={sLight} strokeWidth="0.3" />
+        <path d="M100 152 L175 125 L175 130 L100 157Z" stroke={sLight} strokeWidth="0.3" />
       </motion.g>
-    </motion.svg>
+
+      {/* === MIDDLE PLATE — arrives from right === */}
+      <motion.g initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }}
+        transition={{ delay: 2.5, duration: 3.5, ease: [0.22, 1, 0.36, 1] }}>
+        <path d="M30 95 L100 120 L170 95 L100 70Z" stroke={s} strokeWidth="0.5" />
+        <path d="M30 95 L100 120 L100 124 L30 99Z" stroke={sLight} strokeWidth="0.3" />
+        <path d="M100 120 L170 95 L170 99 L100 124Z" stroke={sLight} strokeWidth="0.3" />
+      </motion.g>
+
+      {/* === TOP PLATE — drops from above, arrives last === */}
+      <motion.g initial={{ y: -60, opacity: 0, scale: 0.85 }} animate={{ y: 0, opacity: 1, scale: 1 }}
+        transition={{ delay: 3.2, duration: 4, ease: [0.22, 1, 0.36, 1] }}>
+        <path d="M35 65 L100 88 L165 65 L100 42Z" stroke={s} strokeWidth="0.6" />
+        <path d="M35 65 L100 88 L100 92 L35 69Z" stroke={sLight} strokeWidth="0.3" />
+        <path d="M100 88 L165 65 L165 69 L100 92Z" stroke={sLight} strokeWidth="0.3" />
+        {/* Specular hint on top plate */}
+        <motion.path d="M60 60 L100 73 L140 60 L100 48Z" stroke="rgba(255,255,255,0.04)" strokeWidth="0.3"
+          initial={{ opacity: 0 }} animate={{ opacity: [0, 1, 0] }}
+          transition={{ delay: 6, duration: 8, repeat: Infinity, ease: "easeInOut" }} />
+      </motion.g>
+
+      {/* Spacing lines */}
+      <motion.g initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 5.5, duration: 2 }}>
+        <line x1="180" y1="65" x2="180" y2="125" stroke={sLight} strokeWidth="0.3" strokeDasharray="1.5 4" />
+        <line x1="178" y1="65" x2="182" y2="65" stroke={sLight} strokeWidth="0.3" />
+        <line x1="178" y1="95" x2="182" y2="95" stroke={sLight} strokeWidth="0.3" />
+        <line x1="178" y1="125" x2="182" y2="125" stroke={sLight} strokeWidth="0.3" />
+      </motion.g>
+
+      {/* Breathing */}
+      <motion.rect x="0" y="0" width="200" height="180" fill="none"
+        animate={{ y: [0, -3, 0], x: [0, -2, 0], rotate: [0, -0.2, 0] }}
+        transition={{ delay: 7, duration: 18, repeat: Infinity, ease: "easeInOut" }} />
+    </svg>
   );
 }
 
-function BlueprintMonolith() {
-  const d = drift(20, 5, -3);
+function AssemblyMonolith() {
+  const s = "rgba(200,200,210,0.08)";
+  const sLight = "rgba(200,200,210,0.05)";
+
   return (
-    <motion.svg viewBox="0 0 140 190" fill="none" className="w-[95px] sm:w-[125px] lg:w-[155px]" {...d}>
-      {/* Tall monolith */}
-      <motion.path d="M30 35 L30 165 L85 165 L85 35Z" stroke="white" strokeWidth="0.5"
-        initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 0.06 }}
-        transition={{ delay: 2.0, duration: 3, ease: "easeInOut" }} />
-      <motion.path d="M30 35 L58 15 L113 15 L85 35Z" stroke="white" strokeWidth="0.5"
-        initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 0.07 }}
-        transition={{ delay: 2.4, duration: 3, ease: "easeInOut" }} />
-      <motion.path d="M85 35 L113 15 L113 145 L85 165Z" stroke="white" strokeWidth="0.5"
-        initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 0.05 }}
-        transition={{ delay: 2.8, duration: 3, ease: "easeInOut" }} />
+    <svg viewBox="0 0 150 200" fill="none" className="w-[110px] sm:w-[140px] lg:w-[175px]">
+      {/* Front face — rises from ground */}
+      <motion.path d="M25 35 L25 170 L85 170 L85 35Z" stroke={s} strokeWidth="0.6"
+        initial={{ y: 80, scaleY: 0.3, opacity: 0 }} animate={{ y: 0, scaleY: 1, opacity: 1 }}
+        transition={{ delay: 2, duration: 4, ease: [0.22, 1, 0.36, 1] }} />
+      {/* Top face — slides in from above */}
+      <motion.path d="M25 35 L55 15 L115 15 L85 35Z" stroke={s} strokeWidth="0.6"
+        initial={{ y: -50, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 3, duration: 3.5, ease: [0.22, 1, 0.36, 1] }} />
+      {/* Right face — slides from right */}
+      <motion.path d="M85 35 L115 15 L115 150 L85 170Z" stroke={sLight} strokeWidth="0.5"
+        initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }}
+        transition={{ delay: 3.5, duration: 3.5, ease: [0.22, 1, 0.36, 1] }} />
+
+      {/* Internal structure lines — like X-ray */}
+      <motion.line x1="55" y1="35" x2="55" y2="170" stroke={sLight} strokeWidth="0.25" strokeDasharray="2 6"
+        initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 1 }}
+        transition={{ delay: 4.5, duration: 3 }} />
+      <motion.line x1="25" y1="100" x2="85" y2="100" stroke={sLight} strokeWidth="0.25" strokeDasharray="2 6"
+        initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 1 }}
+        transition={{ delay: 4.8, duration: 3 }} />
+
       {/* Height dimension */}
-      <motion.g initial={{ opacity: 0 }} animate={{ opacity: 0.04 }} transition={{ delay: 4, duration: 1.5 }}>
-        <line x1="23" y1="33" x2="23" y2="168" stroke="white" strokeWidth="0.3" strokeDasharray="2 4" />
-        <line x1="21" y1="35" x2="25" y2="35" stroke="white" strokeWidth="0.3" />
-        <line x1="21" y1="165" x2="25" y2="165" stroke="white" strokeWidth="0.3" />
+      <motion.g initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 5.5, duration: 2 }}>
+        <line x1="18" y1="33" x2="18" y2="173" stroke={sLight} strokeWidth="0.3" strokeDasharray="1.5 4" />
+        <line x1="16" y1="35" x2="20" y2="35" stroke={sLight} strokeWidth="0.3" />
+        <line x1="16" y1="170" x2="20" y2="170" stroke={sLight} strokeWidth="0.3" />
       </motion.g>
-    </motion.svg>
+
+      {/* Edge glow pulse */}
+      <motion.line x1="25" y1="35" x2="85" y2="35" stroke="rgba(200,200,220,0.06)" strokeWidth="0.8"
+        animate={{ opacity: [0.02, 0.08, 0.02] }}
+        transition={{ delay: 6, duration: 10, repeat: Infinity, ease: "easeInOut" }} />
+
+      {/* Breathing */}
+      <motion.rect x="0" y="0" width="150" height="200" fill="none"
+        animate={{ y: [0, -2, 0], x: [0, 1.5, 0], rotate: [0, 0.15, 0] }}
+        transition={{ delay: 7, duration: 20, repeat: Infinity, ease: "easeInOut" }} />
+    </svg>
   );
 }
+
+/* ═══════════════════════════════════════════════ */
 
 export function HeroTriptych() {
   const ref = useRef<HTMLDivElement>(null);
@@ -119,41 +181,26 @@ export function HeroTriptych() {
     <section ref={ref} onMouseMove={onMove}
       className="relative h-screen min-h-[600px] max-h-[1200px] overflow-hidden">
 
-      {/* WebGL Mesh Gradient */}
       <div className="absolute inset-0 z-0">
         <MeshGradient colors={["#d8d0c4", "#9898ae", "#3a64c0", "#1e2e60", "#181820"]} speed={0.6} />
       </div>
 
-      {/* Mouse glow */}
       <motion.div className="absolute inset-0 z-[2] pointer-events-none" style={{ background: glow }} />
 
-      {/* Grain */}
       <div className="absolute inset-0 z-[3] pointer-events-none opacity-[0.025] mix-blend-overlay"
         style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`, backgroundSize: "200px 200px" }} />
 
-      {/* ═══ LIGHT REFLECTION WAVE — halo sweeping left to right ═══ */}
-      <motion.div
-        className="absolute z-[4] pointer-events-none"
-        style={{
-          width: "35%", height: "120%", top: "-10%",
-          background: "radial-gradient(ellipse 100% 80% at 50% 50%, rgba(255,255,255,0.045) 0%, transparent 70%)",
-          filter: "blur(30px)",
-        }}
-        animate={{ left: ["-40%", "140%"] }}
-        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", repeatDelay: 4 }}
-      />
-
-      {/* ═══ BLUEPRINT WIREFRAMES — draw-in + drift ═══ */}
-      <div className="absolute inset-0 z-[5] flex items-end pointer-events-none">
-        <div className="w-full flex justify-between items-end px-[6vw] sm:px-[8vw] pb-[12vh] sm:pb-[14vh]">
-          <BlueprintIngot />
-          <BlueprintLayers />
-          <BlueprintMonolith />
+      {/* ASSEMBLY WIREFRAMES */}
+      <div className="absolute inset-0 z-[4] flex items-end pointer-events-none">
+        <div className="w-full flex justify-between items-end px-[6vw] sm:px-[8vw] pb-[10vh] sm:pb-[13vh]">
+          <AssemblyIngots />
+          <AssemblyLayers />
+          <AssemblyMonolith />
         </div>
       </div>
 
       {/* Typography */}
-      <div className="absolute inset-0 z-[6] flex items-center pointer-events-none">
+      <div className="absolute inset-0 z-[5] flex items-center pointer-events-none">
         <div className="w-full flex justify-between px-[6vw] sm:px-[8vw]">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}>
@@ -173,18 +220,16 @@ export function HeroTriptych() {
         </div>
       </div>
 
-      {/* Click zones */}
-      <div className="absolute inset-0 z-[7] grid grid-cols-3">
+      <div className="absolute inset-0 z-[6] grid grid-cols-3">
         <Link href="/garde-corps" aria-label="Fabriquer" />
         <Link href="/portes" aria-label="Protéger" />
         <Link href="/grilles" aria-label="Durer" />
       </div>
 
-      {/* Bottom fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-24 z-[8] pointer-events-none"
+      <div className="absolute bottom-0 left-0 right-0 h-24 z-[7] pointer-events-none"
         style={{ background: "linear-gradient(180deg, transparent 0%, var(--surface) 100%)" }} />
 
-      <motion.div className="absolute bottom-7 left-1/2 -translate-x-1/2 z-[9] pointer-events-none"
+      <motion.div className="absolute bottom-7 left-1/2 -translate-x-1/2 z-[8] pointer-events-none"
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2, duration: 1.5 }}>
         <p className="text-[10px] tracking-[0.3em] uppercase text-white/15">10 gammes &middot; 200+ RAL &middot; 3 000+ projets</p>
       </motion.div>
