@@ -70,4 +70,14 @@ body {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 2px; }
 
-/* Hero is now WebGL MeshGradient — no CSS gradient classes needed */
+/* Header mesh gradient — subtle animated bar */
+.header-mesh {
+  background: linear-gradient(90deg, #d8d0c4, #9898ae, #3a64c0, #1e2e60, #181820);
+  background-size: 300% 100%;
+  animation: header-flow 20s ease-in-out infinite;
+  opacity: 0.08;
+}
+@keyframes header-flow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
