@@ -43,7 +43,7 @@ export function GammesShowcase() {
             >
               <Link
                 href={`/${getCategorySlug(gamme.categoryId)}/${gamme.slug}`}
-                className="group block p-6 bg-surface hover:bg-surface-elevated transition-colors duration-500 h-full relative"
+                className="group card-glow block p-6 bg-surface hover:bg-surface-elevated transition-colors duration-500 h-full relative"
               >
                 {/* Accent dot */}
                 <div className="flex items-center gap-2 mb-5">

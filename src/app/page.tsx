@@ -12,13 +12,15 @@ export default function Home() {
   return (
     <>
       <Header />
-      <main className="flex-1">
+      <main className="flex-1 relative z-10">
         <HeroTriptych />
+        <div className="section-sep" />
         <GammesShowcase />
         <StatsCounter />
         <PhilosophySection />
         <LogoMarquee />
         <RealisationsPreview />
+        <div className="section-sep" />
         <CTASection />
       </main>
       <Footer />
