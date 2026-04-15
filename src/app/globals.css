@@ -71,210 +71,89 @@ body {
 ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 2px; }
 
 /* ═══════════════════════════════════════════════
-   HERO — LIVING GRADIENT PANELS
-   Animated mesh gradients that breathe and shift.
+   HERO — MERGED GRADIENT UNIVERSE
+   One fluid gradient: beige → blue → charcoal
+   Breathing layers. Metallic light line.
    ═══════════════════════════════════════════════ */
 
-@property --g1 { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
-@property --g2 { syntax: '<angle>'; initial-value: 120deg; inherits: false; }
-@property --g3 { syntax: '<percentage>'; initial-value: 30%; inherits: false; }
-@property --g4 { syntax: '<percentage>'; initial-value: 70%; inherits: false; }
-
-/* FABRIQUER — warm silver/beige living gradient */
-.panel-fabriquer {
-  background:
-    conic-gradient(from var(--g1) at var(--g3) 40%, #d8d4cc, #c8c4bc, #ddd8d0, #c0bcb4, #d8d4cc),
-    conic-gradient(from var(--g2) at var(--g4) 60%, #cec8c0, #d4d0c8, #c4c0b8, #d8d4ce, #cec8c0);
-  background-blend-mode: soft-light;
-  animation: gradient-shift 20s ease-in-out infinite;
+.hero-gradient {
+  background: linear-gradient(
+    105deg,
+    #d8d2c8 0%,
+    #ccc6bc 12%,
+    #a8a8b4 22%,
+    #6080b8 32%,
+    #3a64c0 42%,
+    #2a54b0 55%,
+    #2448a0 65%,
+    #2a3a78 75%,
+    #262838 85%,
+    #1e1e26 95%,
+    #181820 100%
+  );
 }
 
-/* PROTEGER — deep digital blue, vivid */
-.panel-proteger {
-  background:
-    conic-gradient(from var(--g1) at var(--g3) 45%, #2a5cc0, #3a6ad0, #1e4aa8, #3060c8, #2a5cc0),
-    conic-gradient(from var(--g2) at var(--g4) 55%, #3464cc, #2454b8, #3a6ed4, #1e48a4, #3464cc);
-  background-blend-mode: screen;
-  animation: gradient-shift 18s ease-in-out infinite;
+/* Breathing gradient orbs — superposed, different rhythms */
+.hero-breath-1 {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: radial-gradient(ellipse 80% 60% at 20% 50%, rgba(220,216,208,0.25) 0%, transparent 70%);
+  animation: breath1 18s ease-in-out infinite;
+}
+.hero-breath-2 {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: radial-gradient(ellipse 60% 70% at 55% 45%, rgba(60,100,200,0.12) 0%, transparent 65%);
+  animation: breath2 22s ease-in-out infinite;
+}
+.hero-breath-3 {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: radial-gradient(ellipse 50% 50% at 82% 55%, rgba(30,30,40,0.2) 0%, transparent 60%);
+  animation: breath3 26s ease-in-out infinite;
 }
 
-/* DURER — deep charcoal with subtle warm undertone */
-.panel-durer {
-  background:
-    conic-gradient(from var(--g1) at var(--g3) 50%, #2a2a32, #323238, #26262e, #2e2e36, #2a2a32),
-    conic-gradient(from var(--g2) at var(--g4) 50%, #2e2e34, #24242c, #302e36, #282830, #2e2e34);
-  background-blend-mode: overlay;
-  animation: gradient-shift 24s ease-in-out infinite;
+@keyframes breath1 {
+  0%, 100% { opacity: 0.6; transform: translate(0, 0) scale(1); }
+  33% { opacity: 1; transform: translate(3%, 4%) scale(1.08); }
+  66% { opacity: 0.7; transform: translate(-2%, -3%) scale(0.95); }
+}
+@keyframes breath2 {
+  0%, 100% { opacity: 0.5; transform: translate(0, 0) scale(1); }
+  40% { opacity: 0.9; transform: translate(-4%, 3%) scale(1.1); }
+  70% { opacity: 0.6; transform: translate(3%, -2%) scale(0.96); }
+}
+@keyframes breath3 {
+  0%, 100% { opacity: 0.4; transform: translate(0, 0) scale(1); }
+  50% { opacity: 0.8; transform: translate(2%, -3%) scale(1.06); }
 }
 
-@keyframes gradient-shift {
-  0%   { --g1: 0deg;   --g2: 120deg; --g3: 25%; --g4: 75%; }
-  25%  { --g1: 90deg;  --g2: 210deg; --g3: 40%; --g4: 60%; }
-  50%  { --g1: 180deg; --g2: 300deg; --g3: 35%; --g4: 65%; }
-  75%  { --g1: 270deg; --g2: 30deg;  --g3: 30%; --g4: 70%; }
-  100% { --g1: 360deg; --g2: 480deg; --g3: 25%; --g4: 75%; }
+/* Metallic light line — slow diagonal sweep */
+.hero-lightline {
+  position: absolute; z-index: 3; pointer-events: none;
+  width: 1px; height: 300%;
+  top: -100%;
+  background: linear-gradient(180deg,
+    transparent 20%,
+    rgba(255,255,255,0.08) 40%,
+    rgba(255,255,255,0.15) 50%,
+    rgba(255,255,255,0.08) 60%,
+    transparent 80%
+  );
+  filter: blur(1px);
+  animation: lightline 12s ease-in-out infinite;
+  animation-delay: 3s;
+  transform: rotate(15deg);
+}
+@keyframes lightline {
+  0%   { left: -5%; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { left: 105%; opacity: 0; }
 }
 
-/* Subtle grain overlay on panels */
-.panel-fabriquer::before,
-.panel-proteger::before,
-.panel-durer::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  opacity: 0.04;
+/* Grain texture */
+.hero-grain {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  opacity: 0.035;
   mix-blend-mode: overlay;
-  pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 200px 200px;
-  z-index: 0;
-}
-
-/* ═══════════════════════════════════════════════
-   CSS 3D FORMS — Pure CSS, zero dependencies
-   Real 3D boxes with metallic material rendering
-   ═══════════════════════════════════════════════ */
-
-/* --- SHARED 3D SETUP --- */
-.ingots-scene, .layers-scene, .monolith-scene {
-  perspective: 600px;
-}
-
-.ingots-group, .layers-group, .monolith-group {
-  transform-style: preserve-3d;
-  animation: slow-float 8s ease-in-out infinite;
-}
-
-@keyframes slow-float {
-  0%, 100% { transform: translateY(0) rotateX(-20deg) rotateY(-30deg); }
-  50% { transform: translateY(-6px) rotateX(-22deg) rotateY(-28deg); }
-}
-
-.monolith-group {
-  animation: slow-float-mono 10s ease-in-out infinite;
-}
-@keyframes slow-float-mono {
-  0%, 100% { transform: translateY(0) rotateX(-15deg) rotateY(-25deg); }
-  50% { transform: translateY(-5px) rotateX(-17deg) rotateY(-23deg); }
-}
-
-.layers-group {
-  animation: slow-float-layers 9s ease-in-out infinite;
-}
-@keyframes slow-float-layers {
-  0%, 100% { transform: translateY(0) rotateX(-35deg) rotateY(5deg); }
-  50% { transform: translateY(-5px) rotateX(-37deg) rotateY(7deg); }
-}
-
-/* Hover speed up + lift */
-.panel-cell:hover .ingots-group,
-.panel-cell:hover .layers-group,
-.panel-cell:hover .monolith-group {
-  animation-duration: 4s;
-  transform: translateY(-10px);
-}
-
-/* --- FACE STYLING --- */
-.face {
-  position: absolute;
-  backface-visibility: hidden;
-}
-
-/* --- INGOTS --- */
-.ingots-scene { width: 160px; height: 100px; }
-.ingots-group { width: 160px; height: 100px; transform-style: preserve-3d; }
-
-.ingot { position: absolute; transform-style: preserve-3d; }
-
-/* Bottom ingot — 120x30x60 */
-.ingot-bottom { width: 120px; height: 30px; left: 0; top: 45px; }
-.ingot-bottom .front  { width: 120px; height: 30px; background: linear-gradient(180deg, #8a8890, #6a6870); transform: translateZ(30px); }
-.ingot-bottom .back   { width: 120px; height: 30px; background: #5a5860; transform: translateZ(-30px) rotateY(180deg); }
-.ingot-bottom .top    { width: 120px; height: 60px; background: linear-gradient(135deg, #a8a6a2, #929090, #a0a09c); transform: rotateX(90deg) translateZ(-15px); top: -15px; }
-.ingot-bottom .bottom-face { width: 120px; height: 60px; background: #585860; transform: rotateX(-90deg) translateZ(-15px); top: -15px; }
-.ingot-bottom .left   { width: 60px; height: 30px; background: linear-gradient(180deg, #7a787a, #5e5c60); transform: rotateY(-90deg) translateZ(0px); left: -30px; }
-.ingot-bottom .right  { width: 60px; height: 30px; background: linear-gradient(180deg, #9a989a, #7a7880); transform: rotateY(90deg) translateZ(90px); left: -30px; }
-
-/* Top ingot — 110x28x55, offset, bright aluminum */
-.ingot-top { width: 110px; height: 28px; left: 5px; top: 12px; }
-.ingot-top .front.bright  { width: 110px; height: 28px; background: linear-gradient(180deg, #c8c6c2, #b0aeaa); transform: translateZ(27px); }
-.ingot-top .back.bright   { width: 110px; height: 28px; background: #a0a09c; transform: translateZ(-27px) rotateY(180deg); }
-.ingot-top .top.bright    { width: 110px; height: 54px; background: linear-gradient(135deg, #e8e6e0, #d4d2cc, #dcdad4, #c8c6c0); transform: rotateX(90deg) translateZ(-14px); top: -13px; box-shadow: inset 0 0 30px rgba(255,255,255,0.08); }
-.ingot-top .bottom-face.bright { width: 110px; height: 54px; background: #9a9894; transform: rotateX(-90deg) translateZ(-14px); top: -13px; }
-.ingot-top .left.bright   { width: 54px; height: 28px; background: #b4b2ae; transform: rotateY(-90deg) translateZ(0px); left: -27px; }
-.ingot-top .right.bright  { width: 54px; height: 28px; background: linear-gradient(180deg, #d0ceca, #bab8b4); transform: rotateY(90deg) translateZ(83px); left: -27px; }
-
-/* Ground shadow for ingots */
-.ingots-scene::after {
-  content: "";
-  position: absolute;
-  bottom: -5px; left: 10%;
-  width: 80%; height: 8px;
-  background: radial-gradient(ellipse, rgba(0,0,0,0.15) 0%, transparent 70%);
-  filter: blur(4px);
-}
-
-/* --- GLASS LAYERS --- */
-.layers-scene { width: 150px; height: 130px; }
-.layers-group { width: 150px; height: 130px; transform-style: preserve-3d; }
-
-.glass-plate {
-  position: absolute;
-  width: 100px; height: 100px;
-  left: 25px;
-  border-radius: 4px;
-  transform: rotateZ(45deg);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-}
-
-.plate-1 {
-  top: 70px;
-  background: linear-gradient(135deg, rgba(80,120,190,0.45), rgba(50,90,160,0.35));
-  transform: rotateZ(45deg) translateZ(-20px);
-}
-.plate-2 {
-  top: 45px;
-  background: linear-gradient(135deg, rgba(110,150,210,0.55), rgba(70,120,185,0.45));
-  transform: rotateZ(45deg) translateZ(0px);
-}
-.plate-3 {
-  top: 20px;
-  background: linear-gradient(135deg, rgba(180,210,245,0.8), rgba(140,180,230,0.65));
-  transform: rotateZ(45deg) translateZ(20px);
-  box-shadow: 0 4px 30px rgba(100,160,255,0.15), inset 0 1px 0 rgba(255,255,255,0.25);
-}
-
-/* Hover spread layers */
-.panel-cell:hover .plate-1 { transform: rotateZ(45deg) translateZ(-35px); transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
-.panel-cell:hover .plate-2 { transform: rotateZ(45deg) translateZ(0px); transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.05s; }
-.panel-cell:hover .plate-3 { transform: rotateZ(45deg) translateZ(35px); transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.1s; }
-
-.layers-scene::after {
-  content: "";
-  position: absolute;
-  bottom: 0; left: 15%;
-  width: 70%; height: 6px;
-  background: radial-gradient(ellipse, rgba(0,0,0,0.1) 0%, transparent 70%);
-  filter: blur(4px);
-}
-
-/* --- MONOLITH --- */
-.monolith-scene { width: 100px; height: 140px; }
-.monolith-group { width: 100px; height: 140px; transform-style: preserve-3d; }
-
-.monolith-box { position: absolute; width: 60px; height: 110px; left: 20px; top: 10px; transform-style: preserve-3d; }
-.monolith-box .front.dark  { width: 60px; height: 110px; background: linear-gradient(180deg, #4a4a52, #38383e, #424248, #2e2e34); transform: translateZ(25px); }
-.monolith-box .back.dark   { width: 60px; height: 110px; background: #28282e; transform: translateZ(-25px) rotateY(180deg); }
-.monolith-box .top.dark    { width: 60px; height: 50px; background: linear-gradient(135deg, #585860, #4a4a52, #525258); transform: rotateX(90deg) translateZ(-55px); top: 0; }
-.monolith-box .bottom-face.dark { width: 60px; height: 50px; background: #222228; transform: rotateX(-90deg) translateZ(-55px); top: 0; }
-.monolith-box .left.dark   { width: 50px; height: 110px; background: linear-gradient(180deg, #3a3a42, #2a2a30); transform: rotateY(-90deg) translateZ(5px); left: -25px; }
-.monolith-box .right.dark  { width: 50px; height: 110px; background: linear-gradient(180deg, #4e4e56, #3e3e44); transform: rotateY(90deg) translateZ(35px); left: -25px; }
-
-.monolith-scene::after {
-  content: "";
-  position: absolute;
-  bottom: 0; left: 10%;
-  width: 80%; height: 8px;
-  background: radial-gradient(ellipse, rgba(0,0,0,0.2) 0%, transparent 70%);
-  filter: blur(5px);
 }
