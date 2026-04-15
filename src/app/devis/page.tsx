@@ -40,6 +40,9 @@ const assurances = [
   },
 ];
 
+const inputClasses =
+  "w-full px-4 py-3 text-[14px] bg-surface-card border border-border/30 rounded-xl text-text-primary placeholder:text-text-muted/50 focus:border-accent/50 focus:outline-none transition-colors";
+
 export default function DevisPage() {
   return (
     <>
@@ -54,62 +57,56 @@ export default function DevisPage() {
           ]}
         />
 
-        <section className="py-[var(--section-padding)] bg-surface relative">
+        <section className="py-[var(--section-padding)]">
           <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
             {/* Assurances row */}
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
-              className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12"
-            >
-              {assurances.map((item) => {
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-border/20 rounded-2xl overflow-hidden mb-12">
+              {assurances.map((item, i) => {
                 const Icon = item.icon;
                 return (
                   <motion.div
                     key={item.title}
-                    variants={{
-                      hidden: { opacity: 0, y: 20 },
-                      visible: {
-                        opacity: 1,
-                        y: 0,
-                        transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
-                      },
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{
+                      delay: i * 0.08,
+                      duration: 0.8,
+                      ease: [0.22, 1, 0.36, 1],
                     }}
-                    className="flex items-start gap-3 p-4 rounded-xl bg-surface-card border border-border"
+                    className="flex items-start gap-3 p-4 bg-surface"
                   >
                     <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
                       <Icon size={18} className="text-accent" />
                     </div>
                     <div>
-                      <h3 className="text-sm font-semibold text-text-primary">
+                      <h3 className="text-[13px] font-semibold text-text-primary">
                         {item.title}
                       </h3>
-                      <p className="text-xs text-text-muted mt-0.5">
+                      <p className="text-[13px] text-text-muted mt-0.5">
                         {item.description}
                       </p>
                     </div>
                   </motion.div>
                 );
               })}
-            </motion.div>
+            </div>
 
             {/* Form */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             >
               <form
-                className="max-w-3xl mx-auto p-6 sm:p-8 rounded-2xl bg-surface-card border border-border"
+                className="max-w-3xl mx-auto p-6 sm:p-8 rounded-2xl bg-surface-card border border-border/30"
                 onSubmit={(e) => e.preventDefault()}
               >
-                <h3 className="text-xl font-bold text-text-primary mb-2">
+                <h3 className="text-[14px] font-bold text-text-primary mb-2">
                   Formulaire de devis
                 </h3>
-                <p className="text-sm text-text-muted mb-8">
+                <p className="text-[13px] text-text-muted mb-8">
                   Remplissez les champs ci-dessous et nous vous recontactons sous
                   48h.
                 </p>
@@ -120,7 +117,7 @@ export default function DevisPage() {
                     <div>
                       <label
                         htmlFor="nom"
-                        className="block text-sm font-medium text-text-secondary mb-2"
+                        className="block text-[13px] font-medium text-text-muted mb-2"
                       >
                         Nom *
                       </label>
@@ -130,13 +127,13 @@ export default function DevisPage() {
                         name="nom"
                         required
                         placeholder="Dupont"
-                        className="w-full h-11 px-4 rounded-xl bg-surface-elevated border border-border text-text-primary text-sm placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30 transition-colors"
+                        className={inputClasses}
                       />
                     </div>
                     <div>
                       <label
                         htmlFor="prenom"
-                        className="block text-sm font-medium text-text-secondary mb-2"
+                        className="block text-[13px] font-medium text-text-muted mb-2"
                       >
                         Prenom *
                       </label>
@@ -146,7 +143,7 @@ export default function DevisPage() {
                         name="prenom"
                         required
                         placeholder="Jean"
-                        className="w-full h-11 px-4 rounded-xl bg-surface-elevated border border-border text-text-primary text-sm placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30 transition-colors"
+                        className={inputClasses}
                       />
                     </div>
                   </div>
@@ -156,7 +153,7 @@ export default function DevisPage() {
                     <div>
                       <label
                         htmlFor="email"
-                        className="block text-sm font-medium text-text-secondary mb-2"
+                        className="block text-[13px] font-medium text-text-muted mb-2"
                       >
                         Email *
                       </label>
@@ -166,13 +163,13 @@ export default function DevisPage() {
                         name="email"
                         required
                         placeholder="jean@exemple.fr"
-                        className="w-full h-11 px-4 rounded-xl bg-surface-elevated border border-border text-text-primary text-sm placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30 transition-colors"
+                        className={inputClasses}
                       />
                     </div>
                     <div>
                       <label
                         htmlFor="telephone"
-                        className="block text-sm font-medium text-text-secondary mb-2"
+                        className="block text-[13px] font-medium text-text-muted mb-2"
                       >
                         Telephone *
                       </label>
@@ -182,7 +179,7 @@ export default function DevisPage() {
                         name="telephone"
                         required
                         placeholder="06 12 34 56 78"
-                        className="w-full h-11 px-4 rounded-xl bg-surface-elevated border border-border text-text-primary text-sm placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30 transition-colors"
+                        className={inputClasses}
                       />
                     </div>
                   </div>
@@ -191,10 +188,10 @@ export default function DevisPage() {
                   <div>
                     <label
                       htmlFor="societe"
-                      className="block text-sm font-medium text-text-secondary mb-2"
+                      className="block text-[13px] font-medium text-text-muted mb-2"
                     >
                       Societe{" "}
-                      <span className="text-text-muted font-normal">
+                      <span className="text-text-muted/50 font-normal">
                         (optionnel)
                       </span>
                     </label>
@@ -203,7 +200,7 @@ export default function DevisPage() {
                       id="societe"
                       name="societe"
                       placeholder="Nom de votre entreprise"
-                      className="w-full h-11 px-4 rounded-xl bg-surface-elevated border border-border text-text-primary text-sm placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30 transition-colors"
+                      className={inputClasses}
                     />
                   </div>
 
@@ -211,7 +208,7 @@ export default function DevisPage() {
                   <div>
                     <label
                       htmlFor="type-projet"
-                      className="block text-sm font-medium text-text-secondary mb-2"
+                      className="block text-[13px] font-medium text-text-muted mb-2"
                     >
                       Type de projet *
                     </label>
@@ -219,7 +216,7 @@ export default function DevisPage() {
                       id="type-projet"
                       name="type-projet"
                       required
-                      className="w-full h-11 px-4 rounded-xl bg-surface-elevated border border-border text-text-primary text-sm focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30 transition-colors appearance-none cursor-pointer"
+                      className={`${inputClasses} appearance-none cursor-pointer`}
                     >
                       <option value="">Selectionnez une gamme</option>
                       {projectTypes.map((type) => (
@@ -234,7 +231,7 @@ export default function DevisPage() {
                   <div>
                     <label
                       htmlFor="description"
-                      className="block text-sm font-medium text-text-secondary mb-2"
+                      className="block text-[13px] font-medium text-text-muted mb-2"
                     >
                       Description du projet *
                     </label>
@@ -244,25 +241,25 @@ export default function DevisPage() {
                       required
                       rows={6}
                       placeholder="Decrivez votre projet : dimensions, materiaux souhaites, contraintes techniques, delais..."
-                      className="w-full px-4 py-3 rounded-xl bg-surface-elevated border border-border text-text-primary text-sm placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30 transition-colors resize-none"
+                      className={`${inputClasses} resize-none`}
                     />
                   </div>
 
                   {/* Fichiers joints mention */}
-                  <div className="flex items-start gap-3 p-4 rounded-xl bg-surface-elevated border border-border/50">
+                  <div className="flex items-start gap-3 p-4 rounded-xl bg-surface border border-border/30">
                     <Paperclip
                       size={18}
                       className="text-text-muted shrink-0 mt-0.5"
                     />
                     <div>
-                      <p className="text-sm text-text-secondary">
+                      <p className="text-[14px] text-text-secondary">
                         Fichiers joints
                       </p>
-                      <p className="text-xs text-text-muted mt-1">
+                      <p className="text-[13px] text-text-muted mt-1">
                         Plans DWG, PDF, images — envoyez vos fichiers a{" "}
                         <a
                           href="mailto:contact@azconcept.fr"
-                          className="text-accent hover:underline"
+                          className="text-accent hover:text-text-primary transition-colors"
                         >
                           contact@azconcept.fr
                         </a>{" "}

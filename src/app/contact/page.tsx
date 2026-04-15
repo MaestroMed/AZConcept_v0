@@ -44,6 +44,9 @@ const subjectOptions = [
   "Autre",
 ];
 
+const inputClasses =
+  "w-full px-4 py-3 text-[14px] bg-surface-card border border-border/30 rounded-xl text-text-primary placeholder:text-text-muted/50 focus:border-accent/50 focus:outline-none transition-colors";
+
 export default function ContactPage() {
   return (
     <>
@@ -58,44 +61,53 @@ export default function ContactPage() {
           ]}
         />
 
-        <section className="py-[var(--section-padding)] bg-surface relative">
+        <section className="py-[var(--section-padding)]">
           <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16">
               {/* Contact Info - Left */}
               <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                 className="lg:col-span-2 space-y-8"
               >
                 <div>
-                  <h2 className="text-2xl font-bold text-text-primary mb-2">
+                  <p className="text-[11px] uppercase tracking-[0.2em] text-text-muted mb-3">
                     Coordonnees
+                  </p>
+                  <h2 className="text-[2rem] sm:text-[2.6rem] lg:text-[3.2rem] font-bold tracking-[-0.02em] text-text-primary leading-[1.1] mb-2">
+                    Nous joindre
                   </h2>
-                  <p className="text-text-secondary text-sm">
+                  <p className="text-[14px] text-text-secondary leading-[1.7]">
                     N&apos;hesitez pas a nous contacter par telephone, email ou en
                     remplissant le formulaire ci-contre.
                   </p>
                 </div>
 
                 <div className="space-y-6">
-                  {contactDetails.map((detail) => {
+                  {contactDetails.map((detail, i) => {
                     const Icon = detail.icon;
                     const content = (
-                      <div className="flex items-start gap-4 group">
+                      <motion.div
+                        initial={{ opacity: 0, y: 16 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: i * 0.08, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                        className="flex items-start gap-4 group"
+                      >
                         <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center shrink-0 group-hover:bg-accent/20 transition-colors">
                           <Icon size={18} className="text-accent" />
                         </div>
                         <div>
-                          <p className="text-xs uppercase tracking-wider text-text-muted mb-1">
+                          <p className="text-[11px] uppercase tracking-[0.2em] text-text-muted mb-1">
                             {detail.label}
                           </p>
-                          <p className="text-sm text-text-primary whitespace-pre-line">
+                          <p className="text-[14px] text-text-primary whitespace-pre-line">
                             {detail.value}
                           </p>
                         </div>
-                      </div>
+                      </motion.div>
                     );
 
                     if (detail.href) {
@@ -115,33 +127,33 @@ export default function ContactPage() {
 
                 {/* Map Placeholder */}
                 <motion.div
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: 0.3, duration: 0.5 }}
-                  className="rounded-2xl bg-surface-card border border-border overflow-hidden aspect-[4/3] flex items-center justify-center"
+                  transition={{ delay: 0.16, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                  className="rounded-2xl bg-surface-card border border-border/30 overflow-hidden aspect-[4/3] flex items-center justify-center"
                 >
                   <div className="text-center">
                     <MapPin size={32} className="text-text-muted/30 mx-auto mb-2" />
-                    <p className="text-sm text-text-muted">{companyInfo.address}</p>
-                    <p className="text-xs text-text-muted">{companyInfo.city}</p>
+                    <p className="text-[13px] text-text-muted">{companyInfo.address}</p>
+                    <p className="text-[13px] text-text-muted">{companyInfo.city}</p>
                   </div>
                 </motion.div>
               </motion.div>
 
               {/* Contact Form - Right */}
               <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ delay: 0.08, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                 className="lg:col-span-3"
               >
                 <form
-                  className="p-6 sm:p-8 rounded-2xl bg-surface-card border border-border"
+                  className="p-6 sm:p-8 rounded-2xl bg-surface-card border border-border/30"
                   onSubmit={(e) => e.preventDefault()}
                 >
-                  <h3 className="text-xl font-bold text-text-primary mb-6">
+                  <h3 className="text-[14px] font-bold text-text-primary mb-6">
                     Envoyez-nous un message
                   </h3>
 
@@ -150,7 +162,7 @@ export default function ContactPage() {
                     <div>
                       <label
                         htmlFor="nom"
-                        className="block text-sm font-medium text-text-secondary mb-2"
+                        className="block text-[13px] font-medium text-text-muted mb-2"
                       >
                         Nom complet *
                       </label>
@@ -160,7 +172,7 @@ export default function ContactPage() {
                         name="nom"
                         required
                         placeholder="Jean Dupont"
-                        className="w-full h-11 px-4 rounded-xl bg-surface-elevated border border-border text-text-primary text-sm placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30 transition-colors"
+                        className={inputClasses}
                       />
                     </div>
 
@@ -168,7 +180,7 @@ export default function ContactPage() {
                     <div>
                       <label
                         htmlFor="email"
-                        className="block text-sm font-medium text-text-secondary mb-2"
+                        className="block text-[13px] font-medium text-text-muted mb-2"
                       >
                         Email *
                       </label>
@@ -178,7 +190,7 @@ export default function ContactPage() {
                         name="email"
                         required
                         placeholder="jean@exemple.fr"
-                        className="w-full h-11 px-4 rounded-xl bg-surface-elevated border border-border text-text-primary text-sm placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30 transition-colors"
+                        className={inputClasses}
                       />
                     </div>
 
@@ -186,7 +198,7 @@ export default function ContactPage() {
                     <div>
                       <label
                         htmlFor="telephone"
-                        className="block text-sm font-medium text-text-secondary mb-2"
+                        className="block text-[13px] font-medium text-text-muted mb-2"
                       >
                         Telephone
                       </label>
@@ -195,7 +207,7 @@ export default function ContactPage() {
                         id="telephone"
                         name="telephone"
                         placeholder="06 12 34 56 78"
-                        className="w-full h-11 px-4 rounded-xl bg-surface-elevated border border-border text-text-primary text-sm placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30 transition-colors"
+                        className={inputClasses}
                       />
                     </div>
 
@@ -203,7 +215,7 @@ export default function ContactPage() {
                     <div>
                       <label
                         htmlFor="sujet"
-                        className="block text-sm font-medium text-text-secondary mb-2"
+                        className="block text-[13px] font-medium text-text-muted mb-2"
                       >
                         Sujet *
                       </label>
@@ -211,9 +223,9 @@ export default function ContactPage() {
                         id="sujet"
                         name="sujet"
                         required
-                        className="w-full h-11 px-4 rounded-xl bg-surface-elevated border border-border text-text-primary text-sm focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30 transition-colors appearance-none cursor-pointer"
+                        className={`${inputClasses} appearance-none cursor-pointer`}
                       >
-                        <option value="" className="text-text-muted">
+                        <option value="">
                           Selectionnez un sujet
                         </option>
                         {subjectOptions.map((opt) => (
@@ -228,7 +240,7 @@ export default function ContactPage() {
                     <div>
                       <label
                         htmlFor="message"
-                        className="block text-sm font-medium text-text-secondary mb-2"
+                        className="block text-[13px] font-medium text-text-muted mb-2"
                       >
                         Message *
                       </label>
@@ -238,7 +250,7 @@ export default function ContactPage() {
                         required
                         rows={5}
                         placeholder="Decrivez votre projet ou votre demande..."
-                        className="w-full px-4 py-3 rounded-xl bg-surface-elevated border border-border text-text-primary text-sm placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30 transition-colors resize-none"
+                        className={`${inputClasses} resize-none`}
                       />
                     </div>
 

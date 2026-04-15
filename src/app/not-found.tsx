@@ -10,23 +10,20 @@ export default function NotFound() {
   return (
     <>
       <Header />
-      <main className="flex-1 flex items-center justify-center min-h-[60vh] bg-surface relative overflow-hidden">
-        {/* Background glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px] pointer-events-none" />
-
-        <div className="relative z-10 text-center px-[var(--container-padding)]">
+      <main className="flex-1 flex items-center justify-center min-h-[60vh]">
+        <div className="text-center px-[var(--container-padding)]">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             <p className="text-8xl sm:text-9xl font-black text-accent/20 tracking-tighter mb-4">
               404
             </p>
-            <h1 className="text-3xl sm:text-4xl font-bold text-text-primary mb-4">
+            <h1 className="text-[2rem] sm:text-[2.6rem] lg:text-[3.2rem] font-bold tracking-[-0.02em] text-text-primary leading-[1.1] mb-4">
               Page introuvable
             </h1>
-            <p className="text-text-secondary max-w-md mx-auto mb-8">
+            <p className="text-[14px] text-text-secondary leading-[1.7] max-w-md mx-auto mb-8">
               La page que vous recherchez n&apos;existe pas ou a ete deplacee.
               Revenez a l&apos;accueil pour continuer votre navigation.
             </p>

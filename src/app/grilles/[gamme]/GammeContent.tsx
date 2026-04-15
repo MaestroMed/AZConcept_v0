@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowUpRight, Check } from "lucide-react";
 import { PageHero } from "@/components/shared/PageHero";
-import { SectionHeader } from "@/components/shared/SectionHeader";
 import type { Category, Gamme } from "@/types";
 
 interface GammeContentProps {
@@ -12,19 +11,6 @@ interface GammeContentProps {
   gamme: Gamme;
   categorySlug: string;
 }
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: i * 0.1,
-      duration: 0.5,
-      ease: [0.22, 1, 0.36, 1] as const,
-    },
-  }),
-};
 
 export function GammeContent({
   category,
@@ -41,42 +27,44 @@ export function GammeContent({
           { label: category.name, href: `/${categorySlug}` },
           { label: gamme.name },
         ]}
-        accentColor={gamme.accentColor}
       />
 
       {/* Gamme description & features */}
-      <section className="py-16 sm:py-20 bg-surface">
+      <section className="py-[var(--section-padding)]">
         <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             >
-              <h2 className="text-2xl sm:text-3xl font-bold text-text-primary mb-6">
-                A propos de la gamme {gamme.name}
+              <p className="text-[11px] uppercase tracking-[0.2em] text-text-muted mb-3">
+                A propos
+              </p>
+              <h2 className="text-[2rem] sm:text-[2.6rem] lg:text-[3.2rem] font-bold tracking-[-0.02em] text-text-primary leading-[1.1] mb-6">
+                Gamme {gamme.name}
               </h2>
-              <p className="text-text-secondary text-lg leading-relaxed">
+              <p className="text-[14px] text-text-secondary leading-[1.7]">
                 {gamme.description}
               </p>
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-              className="rounded-2xl bg-surface-card border border-border p-8"
+              transition={{ delay: 0.08, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="rounded-2xl bg-surface-card border border-border/30 p-8"
             >
-              <h3 className="text-lg font-semibold text-text-primary mb-5">
+              <h3 className="text-[14px] font-semibold text-text-primary mb-5">
                 Points cles
               </h3>
               <ul className="space-y-3">
                 {gamme.features.map((feature) => (
                   <li key={feature} className="flex items-start gap-3">
                     <span
-                      className="mt-1 flex items-center justify-center w-5 h-5 rounded-full shrink-0"
+                      className="mt-0.5 flex items-center justify-center w-5 h-5 rounded-full shrink-0"
                       style={{ backgroundColor: `${gamme.accentColor}20` }}
                     >
                       <Check
@@ -84,7 +72,7 @@ export function GammeContent({
                         style={{ color: gamme.accentColor }}
                       />
                     </span>
-                    <span className="text-text-secondary">{feature}</span>
+                    <span className="text-[14px] text-text-secondary leading-[1.7]">{feature}</span>
                   </li>
                 ))}
               </ul>
@@ -94,38 +82,45 @@ export function GammeContent({
       </section>
 
       {/* Modeles grid */}
-      <section className="py-20 sm:py-28 bg-surface-elevated">
+      <section className="py-[var(--section-padding)]">
         <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
-          <SectionHeader
-            title="Nos modeles"
-            subtitle={`${gamme.modeles.length} modele${gamme.modeles.length > 1 ? "s" : ""} dans la gamme ${gamme.name}`}
-          />
+          <div className="mb-14">
+            <p className="text-[11px] uppercase tracking-[0.2em] text-text-muted mb-3">
+              Nos modeles
+            </p>
+            <h2 className="text-[2rem] sm:text-[2.6rem] lg:text-[3.2rem] font-bold tracking-[-0.02em] text-text-primary leading-[1.1]">
+              {gamme.modeles.length} modele{gamme.modeles.length > 1 ? "s" : ""}
+            </h2>
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-border/20 rounded-2xl overflow-hidden">
             {gamme.modeles.map((modele, i) => (
               <motion.div
                 key={modele.id}
-                custom={i}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-50px" }}
-                variants={cardVariants}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{
+                  delay: i * 0.08,
+                  duration: 0.8,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
               >
                 <Link
                   href={`/${categorySlug}/${gamme.slug}/${modele.slug}`}
-                  className="group block rounded-2xl bg-surface-card border border-border p-8 h-full transition-all duration-300 hover:border-border-light hover:shadow-[0_0_40px_rgba(65,105,225,0.08)]"
+                  className="group block bg-surface p-8 hover:bg-surface-elevated transition-colors duration-500 h-full"
                 >
                   <div className="flex items-start justify-between mb-4">
-                    <h3 className="text-xl font-bold text-text-primary group-hover:text-accent transition-colors">
+                    <h3 className="text-[2rem] font-bold tracking-[-0.02em] text-text-primary leading-[1.1] group-hover:text-accent transition-colors">
                       {modele.name}
                     </h3>
-                    <ArrowRight
+                    <ArrowUpRight
                       size={18}
-                      className="text-text-muted group-hover:text-accent group-hover:translate-x-1 transition-all mt-1 shrink-0"
+                      className="text-text-muted/0 group-hover:text-accent group-hover:opacity-100 opacity-0 transition-all duration-500 mt-1 shrink-0"
                     />
                   </div>
 
-                  <p className="text-sm text-accent font-medium mb-3">
+                  <p className="text-[13px] text-accent font-medium mb-4">
                     {modele.tagline}
                   </p>
 
@@ -133,7 +128,7 @@ export function GammeContent({
                     {modele.features.slice(0, 4).map((feature) => (
                       <li
                         key={feature}
-                        className="flex items-start gap-2 text-sm text-text-secondary"
+                        className="flex items-start gap-2 text-[13px] text-text-muted"
                       >
                         <span
                           className="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0"

@@ -92,29 +92,29 @@ export default function CGVPage() {
           ]}
         />
 
-        <section className="py-[var(--section-padding)] bg-surface relative">
+        <section className="py-[var(--section-padding)]">
           <div className="max-w-3xl mx-auto px-[var(--container-padding)]">
             <div className="space-y-10">
               {articles.map((article, i) => (
                 <motion.div
                   key={article.title}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{
-                    delay: i * 0.03,
-                    duration: 0.5,
+                    delay: i * 0.08,
+                    duration: 0.8,
                     ease: [0.22, 1, 0.36, 1],
                   }}
                 >
-                  <h2 className="text-xl font-bold text-text-primary mb-4">
+                  <h2 className="text-[2rem] font-bold tracking-[-0.02em] text-text-primary leading-[1.1] mb-4">
                     {article.title}
                   </h2>
                   <div className="space-y-3">
                     {article.content.map((paragraph, j) => (
                       <p
                         key={j}
-                        className="text-sm text-text-secondary leading-relaxed"
+                        className="text-[14px] text-text-secondary leading-[1.7]"
                       >
                         {paragraph}
                       </p>
@@ -128,8 +128,8 @@ export default function CGVPage() {
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.3, duration: 0.5 }}
-              className="mt-16 pt-8 border-t border-border text-xs text-text-muted"
+              transition={{ delay: 0.16, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="mt-16 pt-8 border-t border-border/30 text-[13px] text-text-muted"
             >
               Derniere mise a jour : Avril 2026
             </motion.p>

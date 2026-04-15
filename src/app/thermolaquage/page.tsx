@@ -14,7 +14,6 @@ import {
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageHero } from "@/components/shared/PageHero";
-import { SectionHeader } from "@/components/shared/SectionHeader";
 import { Button } from "@/components/shared/Button";
 
 const processSteps = [
@@ -110,26 +109,30 @@ export default function ThermolaquagePage() {
         />
 
         {/* Process Section */}
-        <section className="py-[var(--section-padding)] bg-surface relative">
+        <section className="py-[var(--section-padding)]">
           <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
-            <SectionHeader
-              title="Notre process"
-              subtitle="6 etapes pour une finition irremprochable."
-            />
+            <div className="mb-14">
+              <p className="text-[11px] uppercase tracking-[0.2em] text-text-muted mb-3">
+                Notre process
+              </p>
+              <h2 className="text-[2rem] sm:text-[2.6rem] lg:text-[3.2rem] font-bold tracking-[-0.02em] text-text-primary leading-[1.1]">
+                6 etapes pour une finition irreprochable
+              </h2>
+            </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border/20 rounded-2xl overflow-hidden">
               {processSteps.map((step, i) => (
                 <motion.div
                   key={step.step}
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{
-                    delay: i * 0.1,
-                    duration: 0.5,
+                    delay: i * 0.08,
+                    duration: 0.8,
                     ease: [0.22, 1, 0.36, 1],
                   }}
-                  className="relative p-6 rounded-2xl bg-surface-card border border-border hover:border-border-light transition-all duration-300 group"
+                  className="relative p-6 bg-surface hover:bg-surface-elevated transition-colors duration-500 group"
                 >
                   <span className="text-5xl font-black text-accent/10 absolute top-4 right-4">
                     {step.step}
@@ -139,11 +142,11 @@ export default function ThermolaquagePage() {
                       <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center">
                         <CheckCircle2 size={16} className="text-accent" />
                       </div>
-                      <h3 className="text-lg font-bold text-text-primary">
+                      <h3 className="text-[14px] font-bold text-text-primary">
                         {step.title}
                       </h3>
                     </div>
-                    <p className="text-sm text-text-secondary leading-relaxed">
+                    <p className="text-[13px] text-text-muted leading-[1.7]">
                       {step.description}
                     </p>
                   </div>
@@ -154,37 +157,40 @@ export default function ThermolaquagePage() {
         </section>
 
         {/* Advantages Grid */}
-        <section className="py-[var(--section-padding)] bg-surface-elevated relative overflow-hidden">
-          <div className="noise-overlay absolute inset-0" />
-          <div className="relative z-10 max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
-            <SectionHeader
-              title="Nos avantages"
-              subtitle="Pourquoi choisir le thermolaquage AZ Concept."
-            />
+        <section className="py-[var(--section-padding)]">
+          <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
+            <div className="mb-14">
+              <p className="text-[11px] uppercase tracking-[0.2em] text-text-muted mb-3">
+                Nos avantages
+              </p>
+              <h2 className="text-[2rem] sm:text-[2.6rem] lg:text-[3.2rem] font-bold tracking-[-0.02em] text-text-primary leading-[1.1]">
+                Pourquoi choisir le thermolaquage AZ Concept
+              </h2>
+            </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border/20 rounded-2xl overflow-hidden">
               {advantages.map((adv, i) => {
                 const Icon = adv.icon;
                 return (
                   <motion.div
                     key={adv.title}
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ opacity: 0, y: 16 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{
-                      delay: i * 0.1,
-                      duration: 0.5,
+                      delay: i * 0.08,
+                      duration: 0.8,
                       ease: [0.22, 1, 0.36, 1],
                     }}
-                    className="p-6 rounded-2xl bg-surface-card border border-border hover:border-accent/30 transition-all duration-300 group"
+                    className="p-6 bg-surface hover:bg-surface-elevated transition-colors duration-500 group"
                   >
                     <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-4 group-hover:bg-accent/20 transition-colors">
                       <Icon size={24} className="text-accent" />
                     </div>
-                    <h3 className="text-lg font-bold text-text-primary mb-2">
+                    <h3 className="text-[14px] font-bold text-text-primary mb-2">
                       {adv.title}
                     </h3>
-                    <p className="text-sm text-text-secondary leading-relaxed">
+                    <p className="text-[13px] text-text-muted leading-[1.7]">
                       {adv.description}
                     </p>
                   </motion.div>
@@ -195,14 +201,14 @@ export default function ThermolaquagePage() {
         </section>
 
         {/* RAL Teaser Section */}
-        <section className="py-[var(--section-padding)] bg-surface relative">
+        <section className="py-[var(--section-padding)]">
           <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="relative rounded-2xl bg-surface-card border border-border p-8 sm:p-12 overflow-hidden"
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="relative rounded-2xl bg-surface-card border border-border/30 p-8 sm:p-12 overflow-hidden"
             >
               {/* Decorative color swatches */}
               <div className="absolute top-0 right-0 w-64 h-64 opacity-20 pointer-events-none">
@@ -223,10 +229,13 @@ export default function ThermolaquagePage() {
               </div>
 
               <div className="relative z-10 max-w-2xl">
-                <h3 className="text-2xl sm:text-3xl font-bold text-text-primary mb-4">
+                <p className="text-[11px] uppercase tracking-[0.2em] text-text-muted mb-3">
+                  Palette
+                </p>
+                <h3 className="text-[2rem] sm:text-[2.6rem] lg:text-[3.2rem] font-bold tracking-[-0.02em] text-text-primary leading-[1.1] mb-4">
                   200+ couleurs RAL disponibles
                 </h3>
-                <p className="text-text-secondary leading-relaxed mb-6">
+                <p className="text-[14px] text-text-secondary leading-[1.7] mb-6">
                   Du blanc pur RAL 9010 au noir profond RAL 9005, en passant par
                   les gris anthracite, bleus acier et teintes sur mesure.
                   Collections speciales Adaptacolor : Patina, Polaris, Dichroic.
@@ -241,21 +250,21 @@ export default function ThermolaquagePage() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-[var(--section-padding)] bg-surface-elevated relative overflow-hidden">
-          <div className="noise-overlay absolute inset-0" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[120px] pointer-events-none" />
-
-          <div className="relative z-10 max-w-3xl mx-auto px-[var(--container-padding)] text-center">
+        <section className="py-[var(--section-padding)]">
+          <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)] text-center">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             >
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-text-primary mb-6">
+              <p className="text-[11px] uppercase tracking-[0.2em] text-text-muted mb-3">
+                Passer a l&apos;action
+              </p>
+              <h2 className="text-[2rem] sm:text-[2.6rem] lg:text-[3.2rem] font-bold tracking-[-0.02em] text-text-primary leading-[1.1] mb-4">
                 Un projet de thermolaquage ?
               </h2>
-              <p className="text-lg text-text-secondary mb-10 max-w-xl mx-auto">
+              <p className="text-[14px] text-text-secondary leading-[1.7] mb-10 max-w-xl mx-auto">
                 Devis gratuit sous 48h. Petites et grandes series. Sous-traitance
                 acceptee.
               </p>

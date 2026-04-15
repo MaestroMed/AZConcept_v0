@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { PageHero } from "@/components/shared/PageHero";
 import type { Category, Gamme } from "@/types";
 
@@ -10,19 +10,6 @@ interface CategoryContentProps {
   category: Category;
   gammes: Gamme[];
 }
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: i * 0.1,
-      duration: 0.5,
-      ease: [0.22, 1, 0.36, 1] as const,
-    },
-  }),
-};
 
 export function CategoryContent({ category, gammes }: CategoryContentProps) {
   return (
@@ -34,46 +21,57 @@ export function CategoryContent({ category, gammes }: CategoryContentProps) {
           { label: "Accueil", href: "/" },
           { label: category.name },
         ]}
-        accentColor={category.color}
       />
 
-      <section className="py-20 sm:py-28 bg-surface">
+      <section className="py-[var(--section-padding)]">
         <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          <div className="mb-14">
+            <p className="text-[11px] uppercase tracking-[0.2em] text-text-muted mb-3">
+              Nos gammes
+            </p>
+            <h2 className="text-[2rem] sm:text-[2.6rem] lg:text-[3.2rem] font-bold tracking-[-0.02em] text-text-primary leading-[1.1]">
+              {gammes.length} gamme{gammes.length > 1 ? "s" : ""} disponible{gammes.length > 1 ? "s" : ""}
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-border/20 rounded-2xl overflow-hidden">
             {gammes.map((gamme, i) => (
               <motion.div
                 key={gamme.id}
-                custom={i}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-50px" }}
-                variants={cardVariants}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{
+                  delay: i * 0.08,
+                  duration: 0.8,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
               >
                 <Link
                   href={`/portes/${gamme.slug}`}
-                  className="group block rounded-2xl bg-surface-card border border-border p-8 sm:p-10 transition-all duration-300 hover:border-border-light hover:shadow-[0_0_40px_rgba(65,105,225,0.08)]"
+                  className="group block bg-surface p-8 sm:p-10 hover:bg-surface-elevated transition-colors duration-500 h-full"
                 >
                   <div className="flex items-start justify-between mb-6">
                     <div className="flex items-center gap-3">
                       <span
-                        className="w-3 h-3 rounded-full shrink-0"
+                        className="w-2 h-2 rounded-full shrink-0"
                         style={{ backgroundColor: gamme.accentColor }}
                       />
-                      <h3 className="text-2xl sm:text-3xl font-bold text-text-primary group-hover:text-accent transition-colors">
+                      <h3 className="text-[2rem] sm:text-[2.6rem] lg:text-[3.2rem] font-bold tracking-[-0.02em] text-text-primary leading-[1.1] group-hover:text-accent transition-colors">
                         {gamme.name}
                       </h3>
                     </div>
-                    <ArrowRight
+                    <ArrowUpRight
                       size={20}
-                      className="text-text-muted group-hover:text-accent group-hover:translate-x-1 transition-all mt-2"
+                      className="text-text-muted/0 group-hover:text-accent group-hover:opacity-100 opacity-0 transition-all duration-500 mt-2 shrink-0"
                     />
                   </div>
 
-                  <p className="text-lg text-accent font-medium mb-3">
+                  <p className="text-[14px] text-accent font-medium mb-3">
                     {gamme.tagline}
                   </p>
 
-                  <p className="text-text-secondary mb-6 leading-relaxed">
+                  <p className="text-[14px] text-text-secondary leading-[1.7] mb-6">
                     {gamme.description}
                   </p>
 
@@ -82,13 +80,13 @@ export function CategoryContent({ category, gammes }: CategoryContentProps) {
                       {gamme.features.slice(0, 3).map((feature) => (
                         <span
                           key={feature}
-                          className="text-xs px-3 py-1 rounded-full bg-surface-elevated text-text-muted border border-border"
+                          className="text-[11px] uppercase tracking-[0.05em] px-3 py-1 rounded-full bg-surface-elevated text-text-muted border border-border/30"
                         >
                           {feature}
                         </span>
                       ))}
                     </div>
-                    <span className="text-sm text-text-muted whitespace-nowrap ml-4">
+                    <span className="text-[13px] text-text-muted whitespace-nowrap ml-4">
                       {gamme.modeles.length} modele{gamme.modeles.length > 1 ? "s" : ""}
                     </span>
                   </div>

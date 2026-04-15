@@ -35,30 +35,30 @@ export default function RealisationsPage() {
           ]}
         />
 
-        <section className="py-[var(--section-padding)] bg-surface relative">
+        <section className="py-[var(--section-padding)]">
           <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-            >
-              {realisations.map((project) => (
+            <div className="mb-14">
+              <p className="text-[11px] uppercase tracking-[0.2em] text-text-muted mb-3">
+                Portfolio
+              </p>
+              <h2 className="text-[2rem] sm:text-[2.6rem] lg:text-[3.2rem] font-bold tracking-[-0.02em] text-text-primary leading-[1.1]">
+                {realisations.length} projet{realisations.length > 1 ? "s" : ""}
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border/20 rounded-2xl overflow-hidden">
+              {realisations.map((project, i) => (
                 <motion.div
                   key={project.id}
-                  variants={{
-                    hidden: { opacity: 0, y: 30 },
-                    visible: {
-                      opacity: 1,
-                      y: 0,
-                      transition: {
-                        duration: 0.5,
-                        ease: [0.22, 1, 0.36, 1],
-                      },
-                    },
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{
+                    delay: i * 0.08,
+                    duration: 0.8,
+                    ease: [0.22, 1, 0.36, 1],
                   }}
-                  className="group relative rounded-2xl bg-surface-card border border-border hover:border-border-light overflow-hidden transition-all duration-300 hover:shadow-[0_8px_40px_rgba(0,0,0,0.3)]"
+                  className="group bg-surface hover:bg-surface-elevated transition-colors duration-500 overflow-hidden"
                 >
                   {/* Project image */}
                   <div className="aspect-[4/3] relative overflow-hidden">
@@ -81,7 +81,7 @@ export default function RealisationsPage() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60" />
                     {/* Gamme badge */}
                     <div className="absolute top-4 left-4">
-                      <span className="px-3 py-1 text-[10px] uppercase tracking-widest font-semibold text-white/80 bg-black/40 backdrop-blur-sm rounded-md">
+                      <span className="px-3 py-1 text-[11px] uppercase tracking-[0.2em] font-semibold text-white/80 bg-black/40 backdrop-blur-sm rounded-md">
                         {project.gamme}
                       </span>
                     </div>
@@ -89,31 +89,31 @@ export default function RealisationsPage() {
 
                   <div className="p-5">
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="text-[10px] uppercase tracking-widest text-accent font-medium">
+                      <span className="text-[11px] uppercase tracking-[0.2em] text-accent font-medium">
                         {project.category}
                       </span>
-                      <span className="text-text-muted">&middot;</span>
-                      <span className="text-[10px] text-text-muted">
+                      <span className="text-text-muted/40">&middot;</span>
+                      <span className="text-[11px] text-text-muted">
                         {project.year}
                       </span>
                     </div>
 
-                    <h3 className="text-base font-semibold text-text-primary mb-2 group-hover:text-white transition-colors">
+                    <h3 className="text-[14px] font-semibold text-text-primary mb-2 group-hover:text-white transition-colors">
                       {project.title}
                     </h3>
 
-                    <p className="text-sm text-text-secondary leading-relaxed mb-3 line-clamp-2">
+                    <p className="text-[13px] text-text-muted leading-[1.7] mb-3 line-clamp-2">
                       {project.description}
                     </p>
 
-                    <div className="flex items-center gap-1 text-xs text-text-muted">
+                    <div className="flex items-center gap-1 text-[13px] text-text-muted">
                       <MapPin size={12} />
                       {project.location}
                     </div>
                   </div>
                 </motion.div>
               ))}
-            </motion.div>
+            </div>
           </div>
         </section>
       </main>

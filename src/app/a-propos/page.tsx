@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageHero } from "@/components/shared/PageHero";
-import { SectionHeader } from "@/components/shared/SectionHeader";
 import { Button } from "@/components/shared/Button";
 import { companyInfo } from "@/data/company";
 import { stats } from "@/data/stats";
@@ -70,22 +69,22 @@ export default function AProposPage() {
         />
 
         {/* Company Story */}
-        <section className="py-[var(--section-padding)] bg-surface relative">
+        <section className="py-[var(--section-padding)]">
           <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
               <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               >
-                <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-4">
+                <p className="text-[11px] uppercase tracking-[0.2em] text-text-muted mb-3">
                   Notre histoire
                 </p>
-                <h2 className="text-3xl sm:text-4xl font-bold text-text-primary mb-6">
+                <h2 className="text-[2rem] sm:text-[2.6rem] lg:text-[3.2rem] font-bold tracking-[-0.02em] text-text-primary leading-[1.1] mb-6">
                   Depuis {companyInfo.foundedYear}, la metallerie d&apos;exception
                 </h2>
-                <div className="space-y-4 text-text-secondary leading-relaxed">
+                <div className="space-y-4 text-[14px] text-text-secondary leading-[1.7]">
                   <p>
                     Fonde en {companyInfo.foundedYear} a{" "}
                     {companyInfo.city.split(" ").slice(1).join(" ")},{" "}
@@ -108,17 +107,17 @@ export default function AProposPage() {
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                className="relative rounded-2xl bg-surface-card border border-border overflow-hidden aspect-[4/3] flex items-center justify-center"
+                transition={{ delay: 0.08, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                className="relative rounded-2xl bg-surface-card border border-border/30 overflow-hidden aspect-[4/3] flex items-center justify-center"
               >
                 <div className="text-center">
                   <span className="text-7xl sm:text-8xl font-black text-accent/10 tracking-tighter">
                     AZ
                   </span>
-                  <p className="text-sm text-text-muted mt-2">
+                  <p className="text-[13px] text-text-muted mt-2">
                     Atelier {companyInfo.workshopSize}m2 — {companyInfo.region}
                   </p>
                 </div>
@@ -128,24 +127,27 @@ export default function AProposPage() {
         </section>
 
         {/* Philosophy / Values */}
-        <section className="py-[var(--section-padding)] bg-surface-elevated relative overflow-hidden">
-          <div className="noise-overlay absolute inset-0" />
-          <div className="relative z-10 max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
-            <SectionHeader
-              title="Notre Philosophie"
-              subtitle="Trois piliers. Une obsession : l'excellence."
-            />
+        <section className="py-[var(--section-padding)]">
+          <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
+            <div className="mb-16">
+              <p className="text-[11px] uppercase tracking-[0.2em] text-text-muted mb-3">
+                Philosophie
+              </p>
+              <h2 className="text-[2rem] sm:text-[2.6rem] lg:text-[3.2rem] font-bold tracking-[-0.02em] text-text-primary leading-[1.1]">
+                Trois piliers. Une obsession : l&apos;excellence.
+              </h2>
+            </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
               {pillars.map((pillar, i) => (
                 <motion.div
                   key={pillar.word}
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{
-                    delay: i * 0.15,
-                    duration: 0.6,
+                    delay: i * 0.08,
+                    duration: 0.8,
                     ease: [0.22, 1, 0.36, 1],
                   }}
                   className="relative"
@@ -160,7 +162,7 @@ export default function AProposPage() {
                     className="w-16 h-[2px] mb-6"
                     style={{ backgroundColor: pillar.color }}
                   />
-                  <p className="text-text-secondary leading-relaxed">
+                  <p className="text-[14px] text-text-secondary leading-[1.7]">
                     {pillar.description}
                   </p>
                 </motion.div>
@@ -170,32 +172,36 @@ export default function AProposPage() {
         </section>
 
         {/* Stats */}
-        <section className="py-[var(--section-padding)] bg-surface relative">
+        <section className="py-[var(--section-padding)]">
           <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
-            <SectionHeader
-              title="En chiffres"
-              subtitle="Des resultats qui parlent d'eux-memes."
-            />
+            <div className="mb-14">
+              <p className="text-[11px] uppercase tracking-[0.2em] text-text-muted mb-3">
+                En chiffres
+              </p>
+              <h2 className="text-[2rem] sm:text-[2.6rem] lg:text-[3.2rem] font-bold tracking-[-0.02em] text-text-primary leading-[1.1]">
+                Des resultats qui parlent d&apos;eux-memes
+              </h2>
+            </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8 sm:gap-12">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-px bg-border/20 rounded-2xl overflow-hidden">
               {stats.map((stat, i) => (
                 <motion.div
                   key={stat.label}
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{
-                    delay: i * 0.1,
-                    duration: 0.5,
+                    delay: i * 0.08,
+                    duration: 0.8,
                     ease: [0.22, 1, 0.36, 1],
                   }}
-                  className="text-center"
+                  className="text-center bg-surface p-6"
                 >
                   <div className="text-4xl sm:text-5xl font-black tracking-tight text-text-primary">
                     {stat.value.toLocaleString("fr-FR")}
                     <span className="text-accent">{stat.suffix}</span>
                   </div>
-                  <p className="mt-2 text-sm text-text-secondary">
+                  <p className="mt-2 text-[13px] text-text-muted">
                     {stat.label}
                   </p>
                 </motion.div>
@@ -205,37 +211,40 @@ export default function AProposPage() {
         </section>
 
         {/* Team Teaser */}
-        <section className="py-[var(--section-padding)] bg-surface-elevated relative overflow-hidden">
-          <div className="noise-overlay absolute inset-0" />
-          <div className="relative z-10 max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
-            <SectionHeader
-              title="L'equipe"
-              subtitle="Des specialistes a chaque etape."
-            />
+        <section className="py-[var(--section-padding)]">
+          <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
+            <div className="mb-14">
+              <p className="text-[11px] uppercase tracking-[0.2em] text-text-muted mb-3">
+                L&apos;equipe
+              </p>
+              <h2 className="text-[2rem] sm:text-[2.6rem] lg:text-[3.2rem] font-bold tracking-[-0.02em] text-text-primary leading-[1.1]">
+                Des specialistes a chaque etape
+              </h2>
+            </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px bg-border/20 rounded-2xl overflow-hidden">
               {teamMembers.map((member, i) => (
                 <motion.div
                   key={member.role}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{
-                    delay: i * 0.1,
-                    duration: 0.5,
+                    delay: i * 0.08,
+                    duration: 0.8,
                     ease: [0.22, 1, 0.36, 1],
                   }}
-                  className="p-5 rounded-2xl bg-surface-card border border-border text-center hover:border-border-light transition-all duration-300"
+                  className="p-5 bg-surface hover:bg-surface-elevated transition-colors duration-500 text-center"
                 >
                   <div className="w-14 h-14 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-3">
                     <span className="text-lg font-bold text-accent">
                       {member.role.charAt(0)}
                     </span>
                   </div>
-                  <h3 className="text-sm font-semibold text-text-primary mb-1">
+                  <h3 className="text-[13px] font-semibold text-text-primary mb-1">
                     {member.role}
                   </h3>
-                  <p className="text-xs text-text-muted">{member.description}</p>
+                  <p className="text-[13px] text-text-muted">{member.description}</p>
                 </motion.div>
               ))}
             </div>
@@ -243,29 +252,29 @@ export default function AProposPage() {
         </section>
 
         {/* Partners */}
-        <section className="py-16 bg-surface border-y border-border overflow-hidden">
+        <section className="py-16 border-y border-border/30 overflow-hidden">
           <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-center text-xs uppercase tracking-[0.2em] text-text-muted mb-10"
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="text-center text-[11px] uppercase tracking-[0.2em] text-text-muted mb-10"
           >
             Ils nous font confiance
           </motion.p>
 
           <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-px bg-border/20 rounded-2xl overflow-hidden">
               {partners.map((partner, i) => (
                 <motion.div
                   key={partner.name}
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.08, duration: 0.4 }}
-                  className="flex items-center justify-center p-6 rounded-xl bg-surface-card border border-border"
+                  transition={{ delay: i * 0.08, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                  className="flex items-center justify-center p-6 bg-surface"
                 >
-                  <span className="text-sm font-bold text-text-muted/50 tracking-wider uppercase text-center">
+                  <span className="text-[13px] font-bold text-text-muted/50 tracking-wider uppercase text-center">
                     {partner.name}
                   </span>
                 </motion.div>
@@ -275,21 +284,21 @@ export default function AProposPage() {
         </section>
 
         {/* CTA */}
-        <section className="py-[var(--section-padding)] bg-surface-elevated relative overflow-hidden">
-          <div className="noise-overlay absolute inset-0" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[120px] pointer-events-none" />
-
-          <div className="relative z-10 max-w-3xl mx-auto px-[var(--container-padding)] text-center">
+        <section className="py-[var(--section-padding)]">
+          <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)] text-center">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             >
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-text-primary mb-6">
+              <p className="text-[11px] uppercase tracking-[0.2em] text-text-muted mb-3">
+                Collaborer
+              </p>
+              <h2 className="text-[2rem] sm:text-[2.6rem] lg:text-[3.2rem] font-bold tracking-[-0.02em] text-text-primary leading-[1.1] mb-4">
                 Travaillons ensemble.
               </h2>
-              <p className="text-lg text-text-secondary mb-10 max-w-xl mx-auto">
+              <p className="text-[14px] text-text-secondary leading-[1.7] mb-10 max-w-xl mx-auto">
                 Un projet de metallerie, une question technique, une demande de
                 devis — notre equipe est a votre ecoute.
               </p>
