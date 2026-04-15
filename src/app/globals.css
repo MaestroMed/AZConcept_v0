@@ -118,20 +118,38 @@ body {
    CARD INTERACTIONS — premium hover effects
    ═══════════════════════════════════════════════ */
 
-/* Subtle top-edge glow on card hover */
+/* Premium card hover — glow + lift */
 .card-glow {
   position: relative;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease;
+}
+.card-glow:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15), 0 0 0 1px rgba(65,105,225,0.08);
 }
 .card-glow::before {
   content: "";
   position: absolute;
   top: 0; left: 10%; right: 10%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(65,105,225,0.3), transparent);
+  background: linear-gradient(90deg, transparent, rgba(65,105,225,0.25), transparent);
   opacity: 0;
   transition: opacity 0.5s ease;
+  z-index: 1;
 }
 .card-glow:hover::before {
+  opacity: 1;
+}
+.card-glow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(65,105,225,0.03) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+.card-glow:hover::after {
   opacity: 1;
 }
 

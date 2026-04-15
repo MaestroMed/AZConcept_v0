@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
+import { MiniMeshGradient } from "@/components/hero/MiniMeshGradient";
 
 interface BreadcrumbItem { label: string; href?: string; }
 
@@ -10,33 +11,32 @@ interface PageHeroProps {
   title: string;
   subtitle?: string;
   breadcrumbs?: BreadcrumbItem[];
-  /** "default" = neutral, "category" = gradient tint, "accent" = top accent bar */
   variant?: "default" | "category" | "accent";
-  /** Hex color for category gradient or accent bar */
   color?: string;
 }
 
 export function PageHero({ title, subtitle, breadcrumbs, variant = "default", color }: PageHeroProps) {
+  // Pick gradient color based on variant
+  const gradientColor = color || (variant === "category" ? "#3a64c0" : "#3a64c0");
+
   return (
     <section className="relative pt-24 pb-14 sm:pt-28 sm:pb-18 overflow-hidden">
-      {/* Accent bar — top edge colored line */}
+      {/* Living mesh gradient background — unique per page */}
+      <div className="absolute inset-0 z-0">
+        <MiniMeshGradient color={gradientColor} opacity={0.4} />
+      </div>
+
+      {/* Fade to surface at bottom */}
+      <div className="absolute bottom-0 left-0 right-0 h-20 z-[1] pointer-events-none"
+        style={{ background: "linear-gradient(180deg, transparent 0%, var(--surface) 100%)" }} />
+
+      {/* Accent bar — top colored line */}
       {variant === "accent" && color && (
-        <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: `linear-gradient(90deg, transparent, ${color}, transparent)` }} />
+        <div className="absolute top-0 left-0 right-0 h-[2px] z-[2]"
+          style={{ background: `linear-gradient(90deg, transparent, ${color}, transparent)` }} />
       )}
 
-      {/* Category gradient — radial tint */}
-      {variant === "category" && color && (
-        <div className="absolute inset-0 pointer-events-none"
-          style={{ background: `radial-gradient(ellipse 70% 60% at 70% 40%, ${color}08 0%, transparent 70%)` }} />
-      )}
-
-      {/* Default subtle gradient */}
-      {variant === "default" && (
-        <div className="absolute inset-0 pointer-events-none"
-          style={{ background: "linear-gradient(180deg, rgba(65,105,225,0.02) 0%, transparent 60%)" }} />
-      )}
-
-      <div className="relative max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
+      <div className="relative z-[3] max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
         {breadcrumbs && (
           <motion.nav initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}
             className="flex items-center gap-1.5 text-[12px] mb-6">
