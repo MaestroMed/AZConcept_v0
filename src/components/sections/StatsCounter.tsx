@@ -1,32 +1,38 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { useCountUp } from "@/lib/hooks/useCountUp";
 import { stats } from "@/data/stats";
 
-function StatItem({ value, suffix, label }: { value: number; suffix: string; label: string }) {
+function Stat({ value, suffix, label }: { value: number; suffix: string; label: string }) {
   const { count, ref } = useCountUp(value);
-
   return (
-    <div ref={ref} className="text-center">
-      <div className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-text-primary">
+    <div ref={ref} className="text-center py-8">
+      <div className="text-[2.4rem] sm:text-[3rem] font-semibold tracking-tight text-text-primary tabular-nums">
         {count.toLocaleString("fr-FR")}
-        <span className="text-text-muted">{suffix}</span>
+        <span className="text-text-muted font-normal">{suffix}</span>
       </div>
-      <p className="mt-1.5 text-[13px] text-text-secondary">{label}</p>
+      <p className="mt-1 text-[12px] text-text-secondary tracking-wide">{label}</p>
     </div>
   );
 }
 
 export function StatsCounter() {
   return (
-    <section className="py-16 border-y border-border/30">
+    <motion.section
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8 }}
+      className="border-y border-border/20"
+    >
       <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 divide-x divide-border/20">
           {stats.map((stat) => (
-            <StatItem key={stat.label} {...stat} />
+            <Stat key={stat.label} {...stat} />
           ))}
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }

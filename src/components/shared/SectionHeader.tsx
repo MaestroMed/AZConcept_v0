@@ -11,41 +11,27 @@ interface SectionHeaderProps {
   className?: string;
 }
 
-export function SectionHeader({
-  title,
-  subtitle,
-  light = false,
-  centered = true,
-  className,
-}: SectionHeaderProps) {
+export function SectionHeader({ title, subtitle, light = false, centered = true, className }: SectionHeaderProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className={cn(
-        "mb-16",
-        centered && "text-center",
-        className
-      )}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      className={cn("mb-14", centered && "text-center", className)}
     >
-      <h2
-        className={cn(
-          "text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight",
-          light ? "text-surface" : "text-text-primary"
-        )}
-      >
+      <h2 className={cn(
+        "text-[1.8rem] sm:text-[2.4rem] lg:text-[3rem] font-bold tracking-[-0.02em] leading-[1.1]",
+        light ? "text-surface" : "text-text-primary"
+      )}>
         {title}
       </h2>
       {subtitle && (
-        <p
-          className={cn(
-            "mt-4 text-lg sm:text-xl max-w-2xl",
-            centered && "mx-auto",
-            light ? "text-surface/70" : "text-text-secondary"
-          )}
-        >
+        <p className={cn(
+          "mt-3 text-[15px] max-w-xl leading-relaxed",
+          centered && "mx-auto",
+          light ? "text-surface/60" : "text-text-secondary"
+        )}>
           {subtitle}
         </p>
       )}

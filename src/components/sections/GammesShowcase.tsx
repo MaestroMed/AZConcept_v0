@@ -2,8 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
-import { SectionHeader } from "@/components/shared/SectionHeader";
+import { ArrowUpRight } from "lucide-react";
 import { getAllGammes } from "@/data/gammes";
 import { categories } from "@/data/categories";
 
@@ -17,50 +16,56 @@ export function GammesShowcase() {
   return (
     <section className="py-[var(--section-padding)]">
       <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
-        <SectionHeader
-          title="10 Gammes. Une Vision."
-          subtitle="Du minimalisme absolu a l'expression brute, chaque gamme repond a une vision architecturale precise."
-        />
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="mb-16"
+        >
+          <p className="text-[11px] uppercase tracking-[0.2em] text-text-muted mb-3">Nos gammes</p>
+          <h2 className="text-[2rem] sm:text-[2.6rem] lg:text-[3.2rem] font-bold tracking-[-0.02em] text-text-primary leading-[1.1]">
+            10 Gammes.<br />
+            <span className="text-text-secondary">Une Vision.</span>
+          </h2>
+        </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+        {/* Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px bg-border/30 rounded-2xl overflow-hidden">
           {gammes.map((gamme, i) => (
             <motion.div
               key={gamme.id}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.04, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ delay: i * 0.04, duration: 0.6 }}
             >
               <Link
                 href={`/${getCategorySlug(gamme.categoryId)}/${gamme.slug}`}
-                className="group block p-5 rounded-xl bg-surface-card/50 border border-border/50 hover:border-border-light hover:bg-surface-card transition-all duration-300 h-full"
+                className="group block p-6 bg-surface hover:bg-surface-elevated transition-colors duration-500 h-full relative"
               >
-                <div className="flex items-center gap-2 mb-3">
-                  <div
-                    className="w-1.5 h-1.5 rounded-full"
-                    style={{ backgroundColor: gamme.accentColor }}
-                  />
-                  <span className="text-[10px] uppercase tracking-[0.12em] text-text-muted font-medium">
+                {/* Accent dot */}
+                <div className="flex items-center gap-2 mb-5">
+                  <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: gamme.accentColor }} />
+                  <span className="text-[10px] uppercase tracking-[0.15em] text-text-muted">
                     {categories.find((c) => c.id === gamme.categoryId)?.name}
                   </span>
                 </div>
 
-                <h3 className="text-[15px] font-semibold text-text-primary mb-1 group-hover:text-white transition-colors">
+                {/* Name */}
+                <h3 className="text-[15px] font-semibold text-text-primary mb-1.5 group-hover:text-white transition-colors duration-300">
                   {gamme.name}
                 </h3>
-
-                <p className="text-[13px] text-text-secondary leading-relaxed mb-4">
+                <p className="text-[13px] text-text-secondary leading-relaxed mb-6">
                   {gamme.tagline}
                 </p>
 
+                {/* Bottom */}
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] text-text-muted">
-                    {gamme.modeles.length} modeles
-                  </span>
-                  <ArrowRight
-                    size={13}
-                    className="text-text-muted group-hover:text-text-secondary group-hover:translate-x-0.5 transition-all duration-200"
-                  />
+                  <span className="text-[11px] text-text-muted">{gamme.modeles.length} modeles</span>
+                  <ArrowUpRight size={14}
+                    className="text-text-muted opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
                 </div>
               </Link>
             </motion.div>
