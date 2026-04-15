@@ -24,7 +24,7 @@ export function StatsCounter() {
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.8 }}
-      className="border-y border-border/20"
+      className="glass-light rounded-2xl mx-[var(--container-padding)] my-4"
     >
       <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 divide-x divide-border/20">

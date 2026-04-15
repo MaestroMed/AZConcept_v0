@@ -25,7 +25,7 @@ export function Header() {
       <header className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
         scrolled
-          ? "bg-surface/80 backdrop-blur-2xl border-b border-border/15 shadow-[0_1px_20px_rgba(0,0,0,0.15)]"
+          ? "glass-strong border-b-0 shadow-[0_1px_20px_rgba(0,0,0,0.15)]"
           : "bg-transparent"
       )}>
         {/* Ondulation wave — bottom edge */}

@@ -41,7 +41,7 @@ export function PhilosophySection() {
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-border/20 rounded-2xl overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-px glass rounded-2xl overflow-hidden">
           {pillars.map((pillar, i) => (
             <motion.div
               key={pillar.word}
@@ -49,7 +49,7 @@ export function PhilosophySection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.12, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="bg-surface p-8 sm:p-10"
+              className="bg-white/[0.02] p-8 sm:p-10"
             >
               <h3 className="text-[1.6rem] sm:text-[2rem] font-bold tracking-[-0.02em] mb-5"
                 style={{ color: pillar.color }}>

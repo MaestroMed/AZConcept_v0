@@ -32,7 +32,7 @@ export function GammesShowcase() {
         </motion.div>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px bg-border/30 rounded-2xl overflow-hidden">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px glass rounded-2xl overflow-hidden">
           {gammes.map((gamme, i) => (
             <motion.div
               key={gamme.id}
@@ -43,7 +43,7 @@ export function GammesShowcase() {
             >
               <Link
                 href={`/${getCategorySlug(gamme.categoryId)}/${gamme.slug}`}
-                className="group block p-6 bg-surface hover:bg-surface-elevated transition-colors duration-500 h-full"
+                className="group block p-6 bg-white/[0.02] hover:bg-white/[0.05] transition-colors duration-500 h-full"
               >
                 {/* Accent dot */}
                 <div className="flex items-center gap-2 mb-5">
