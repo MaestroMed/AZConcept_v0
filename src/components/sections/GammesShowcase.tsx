@@ -14,7 +14,7 @@ export function GammesShowcase() {
   const gammes = getAllGammes();
 
   return (
-    <section className="py-[var(--section-padding)]">
+    <section className="py-[var(--section-padding)] bg-surface-elevated/40">
       <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
         {/* Header */}
         <motion.div

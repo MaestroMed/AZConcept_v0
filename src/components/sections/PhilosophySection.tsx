@@ -25,7 +25,7 @@ const pillars = [
 
 export function PhilosophySection() {
   return (
-    <section className="py-[var(--section-padding)]">
+    <section className="py-[var(--section-padding)] bg-surface-elevated/30">
       <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
