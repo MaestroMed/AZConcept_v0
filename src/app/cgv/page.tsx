@@ -107,7 +107,7 @@ export default function CGVPage() {
                     ease: [0.22, 1, 0.36, 1],
                   }}
                 >
-                  <h2 className="text-[2rem] font-bold tracking-[-0.02em] text-text-primary leading-[1.1] mb-4">
+                  <h2 className="text-[15px] font-medium text-text-primary mb-4">
                     {article.title}
                   </h2>
                   <div className="space-y-3">

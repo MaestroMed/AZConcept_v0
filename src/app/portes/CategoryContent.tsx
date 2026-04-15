@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
@@ -12,9 +13,13 @@ interface CategoryContentProps {
 }
 
 export function CategoryContent({ category, gammes }: CategoryContentProps) {
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+
   return (
     <>
       <PageHero
+        variant="category"
+        color="#3a64c0"
         title={category.name}
         subtitle={category.description}
         breadcrumbs={[
@@ -49,7 +54,14 @@ export function CategoryContent({ category, gammes }: CategoryContentProps) {
               >
                 <Link
                   href={`/portes/${gamme.slug}`}
-                  className="group block bg-surface p-8 sm:p-10 hover:bg-surface-elevated transition-colors duration-500 h-full"
+                  className="group block bg-surface p-8 sm:p-10 hover:bg-surface-elevated transition-all duration-500 h-full"
+                  onMouseEnter={() => setHoveredId(gamme.id)}
+                  onMouseLeave={() => setHoveredId(null)}
+                  style={{
+                    boxShadow: hoveredId === gamme.id
+                      ? `0 0 0 1px ${gamme.accentColor}20`
+                      : "none",
+                  }}
                 >
                   <div className="flex items-start justify-between mb-6">
                     <div className="flex items-center gap-3">
@@ -76,11 +88,11 @@ export function CategoryContent({ category, gammes }: CategoryContentProps) {
                   </p>
 
                   <div className="flex items-center justify-between">
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-1.5">
                       {gamme.features.slice(0, 3).map((feature) => (
                         <span
                           key={feature}
-                          className="text-[11px] uppercase tracking-[0.05em] px-3 py-1 rounded-full bg-surface-elevated text-text-muted border border-border/30"
+                          className="px-2 py-0.5 text-[11px] rounded-md bg-surface-card text-text-muted"
                         >
                           {feature}
                         </span>

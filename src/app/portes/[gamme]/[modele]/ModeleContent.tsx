@@ -22,6 +22,8 @@ export function ModeleContent({
   return (
     <>
       <PageHero
+        variant="accent"
+        color={gamme.accentColor}
         title={modele.name}
         subtitle={modele.tagline}
         breadcrumbs={[
@@ -32,10 +34,11 @@ export function ModeleContent({
         ]}
       />
 
-      {/* Description & Features */}
+      {/* 2-column asymmetric layout */}
       <section className="py-[var(--section-padding)]">
         <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-12 lg:gap-16 items-start">
+            {/* Left: description + features */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -58,22 +61,18 @@ export function ModeleContent({
               <ul className="space-y-3">
                 {modele.features.map((feature) => (
                   <li key={feature} className="flex items-start gap-3">
-                    <span
-                      className="mt-0.5 flex items-center justify-center w-5 h-5 rounded-full shrink-0"
-                      style={{ backgroundColor: `${gamme.accentColor}20` }}
-                    >
-                      <Check
-                        size={12}
-                        style={{ color: gamme.accentColor }}
-                      />
-                    </span>
+                    <Check
+                      size={16}
+                      className="mt-0.5 shrink-0"
+                      style={{ color: gamme.accentColor }}
+                    />
                     <span className="text-[14px] text-text-secondary leading-[1.7]">{feature}</span>
                   </li>
                 ))}
               </ul>
             </motion.div>
 
-            {/* Technical specs */}
+            {/* Right: specs card — sticky */}
             {modele.specs && (
               <motion.div
                 initial={{ opacity: 0, y: 16 }}
@@ -84,14 +83,12 @@ export function ModeleContent({
                   duration: 0.8,
                   ease: [0.22, 1, 0.36, 1],
                 }}
-                className="rounded-2xl overflow-hidden bg-border/20"
+                className="bg-surface-card rounded-2xl p-6 lg:sticky lg:top-24"
               >
-                <div className="bg-surface-card px-8 py-5">
-                  <h3 className="text-[14px] font-semibold text-text-primary">
-                    Fiche technique
-                  </h3>
-                </div>
-                <div className="grid grid-cols-1 gap-px">
+                <h3 className="text-[14px] font-semibold text-text-primary mb-5">
+                  Fiche technique
+                </h3>
+                <div className="space-y-0">
                   {Object.entries(modele.specs).map(
                     ([key, value], i) => (
                       <motion.div
@@ -100,7 +97,7 @@ export function ModeleContent({
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: i * 0.08, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                        className="flex items-start justify-between gap-4 px-8 py-4 bg-surface"
+                        className="flex items-start justify-between gap-4 py-3 border-b border-border/15"
                       >
                         <span className="text-[13px] text-text-muted font-medium whitespace-nowrap">
                           {key}
@@ -118,7 +115,7 @@ export function ModeleContent({
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* CTA Section — centered, below both columns */}
       <section className="py-[var(--section-padding)]">
         <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
           <motion.div

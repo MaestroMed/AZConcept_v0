@@ -9,7 +9,6 @@ import {
   Layers,
   ShieldCheck,
   ArrowRight,
-  CheckCircle2,
 } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -94,6 +93,13 @@ const advantages = [
   },
 ];
 
+const ralColors = [
+  "#C0392B", "#2980B9", "#27AE60", "#F39C12",
+  "#8E44AD", "#E74C3C", "#3498DB", "#2ECC71",
+  "#E67E22", "#9B59B6", "#1ABC9C", "#F1C40F",
+  "#34495E", "#95A5A6", "#D35400", "#16A085",
+];
+
 export default function ThermolaquagePage() {
   return (
     <>
@@ -108,7 +114,7 @@ export default function ThermolaquagePage() {
           ]}
         />
 
-        {/* Process Section */}
+        {/* Process Section — Vertical timeline */}
         <section className="py-[var(--section-padding)]">
           <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
             <div className="mb-14">
@@ -120,38 +126,43 @@ export default function ThermolaquagePage() {
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border/20 rounded-2xl overflow-hidden">
-              {processSteps.map((step, i) => (
-                <motion.div
-                  key={step.step}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{
-                    delay: i * 0.08,
-                    duration: 0.8,
-                    ease: [0.22, 1, 0.36, 1],
-                  }}
-                  className="relative p-6 bg-surface hover:bg-surface-elevated transition-colors duration-500 group"
-                >
-                  <span className="text-5xl font-black text-accent/10 absolute top-4 right-4">
-                    {step.step}
-                  </span>
-                  <div className="relative z-10">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center">
-                        <CheckCircle2 size={16} className="text-accent" />
-                      </div>
-                      <h3 className="text-[14px] font-bold text-text-primary">
+            <div className="relative max-w-2xl">
+              {/* Vertical timeline line */}
+              <div className="absolute left-4 top-0 bottom-0 w-px bg-border/20" />
+
+              <div className="space-y-8">
+                {processSteps.map((step, i) => (
+                  <motion.div
+                    key={step.step}
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{
+                      delay: i * 0.08,
+                      duration: 0.8,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                    className="relative flex items-start gap-6 pl-0"
+                  >
+                    {/* Numbered circle */}
+                    <div className="relative z-10 w-8 h-8 rounded-full border border-border/30 bg-surface flex items-center justify-center shrink-0">
+                      <span className="text-[12px] font-bold text-text-primary">
+                        {step.step}
+                      </span>
+                    </div>
+
+                    {/* Step content */}
+                    <div className="pb-2">
+                      <h3 className="text-[15px] font-medium text-text-primary mb-1">
                         {step.title}
                       </h3>
+                      <p className="text-[14px] text-text-secondary leading-[1.7]">
+                        {step.description}
+                      </p>
                     </div>
-                    <p className="text-[13px] text-text-muted leading-[1.7]">
-                      {step.description}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -190,7 +201,7 @@ export default function ThermolaquagePage() {
                     <h3 className="text-[14px] font-bold text-text-primary mb-2">
                       {adv.title}
                     </h3>
-                    <p className="text-[13px] text-text-muted leading-[1.7]">
+                    <p className="text-[14px] text-text-secondary leading-[1.7]">
                       {adv.description}
                     </p>
                   </motion.div>
@@ -200,7 +211,7 @@ export default function ThermolaquagePage() {
           </div>
         </section>
 
-        {/* RAL Teaser Section */}
+        {/* RAL Section — color circles that stagger in */}
         <section className="py-[var(--section-padding)]">
           <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
             <motion.div
@@ -210,25 +221,7 @@ export default function ThermolaquagePage() {
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               className="relative rounded-2xl bg-surface-card border border-border/30 p-8 sm:p-12 overflow-hidden"
             >
-              {/* Decorative color swatches */}
-              <div className="absolute top-0 right-0 w-64 h-64 opacity-20 pointer-events-none">
-                <div className="grid grid-cols-4 gap-1">
-                  {[
-                    "#C0392B", "#2980B9", "#27AE60", "#F39C12",
-                    "#8E44AD", "#E74C3C", "#3498DB", "#2ECC71",
-                    "#E67E22", "#9B59B6", "#1ABC9C", "#F1C40F",
-                    "#34495E", "#95A5A6", "#D35400", "#16A085",
-                  ].map((color, idx) => (
-                    <div
-                      key={idx}
-                      className="w-12 h-12 rounded-md"
-                      style={{ backgroundColor: color }}
-                    />
-                  ))}
-                </div>
-              </div>
-
-              <div className="relative z-10 max-w-2xl">
+              <div className="relative z-10 max-w-2xl mb-8">
                 <p className="text-[11px] uppercase tracking-[0.2em] text-text-muted mb-3">
                   Palette
                 </p>
@@ -244,6 +237,25 @@ export default function ThermolaquagePage() {
                   Demander le nuancier complet
                   <ArrowRight size={16} />
                 </Button>
+              </div>
+
+              {/* Color circles grid */}
+              <div className="grid grid-cols-8 sm:grid-cols-16 gap-3">
+                {ralColors.map((color, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{
+                      delay: idx * 0.03,
+                      duration: 0.4,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                    className="w-8 h-8 rounded-full"
+                    style={{ backgroundColor: color }}
+                  />
+                ))}
               </div>
             </motion.div>
           </div>

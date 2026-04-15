@@ -102,7 +102,7 @@ export default function RealisationsPage() {
                       {project.title}
                     </h3>
 
-                    <p className="text-[13px] text-text-muted leading-[1.7] mb-3 line-clamp-2">
+                    <p className="text-[14px] text-text-secondary leading-[1.7] mb-3 line-clamp-2">
                       {project.description}
                     </p>
 

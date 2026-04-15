@@ -85,16 +85,16 @@ export default function ContactPage() {
                   </p>
                 </div>
 
-                <div className="space-y-6">
+                <div className="space-y-2">
                   {contactDetails.map((detail, i) => {
                     const Icon = detail.icon;
-                    const content = (
+                    const inner = (
                       <motion.div
                         initial={{ opacity: 0, y: 16 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: i * 0.08, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                        className="flex items-start gap-4 group"
+                        className="flex items-start gap-4 group p-3 rounded-xl hover:bg-surface-elevated transition-colors duration-300"
                       >
                         <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center shrink-0 group-hover:bg-accent/20 transition-colors">
                           <Icon size={18} className="text-accent" />
@@ -115,13 +115,13 @@ export default function ContactPage() {
                         <a
                           key={detail.label}
                           href={detail.href}
-                          className="block hover:opacity-80 transition-opacity"
+                          className="block"
                         >
-                          {content}
+                          {inner}
                         </a>
                       );
                     }
-                    return <div key={detail.label}>{content}</div>;
+                    return <div key={detail.label}>{inner}</div>;
                   })}
                 </div>
 
@@ -135,13 +135,13 @@ export default function ContactPage() {
                 >
                   <div className="text-center">
                     <MapPin size={32} className="text-text-muted/30 mx-auto mb-2" />
-                    <p className="text-[13px] text-text-muted">{companyInfo.address}</p>
-                    <p className="text-[13px] text-text-muted">{companyInfo.city}</p>
+                    <p className="text-[14px] text-text-secondary leading-[1.7]">{companyInfo.address}</p>
+                    <p className="text-[14px] text-text-secondary leading-[1.7]">{companyInfo.city}</p>
                   </div>
                 </motion.div>
               </motion.div>
 
-              {/* Contact Form - Right */}
+              {/* Contact Form - Right with radial gradient */}
               <motion.div
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -151,6 +151,9 @@ export default function ContactPage() {
               >
                 <form
                   className="p-6 sm:p-8 rounded-2xl bg-surface-card border border-border/30"
+                  style={{
+                    background: "radial-gradient(ellipse at 50% 0%, rgba(65,105,225,0.03) 0%, transparent 50%), var(--surface-card)",
+                  }}
                   onSubmit={(e) => e.preventDefault()}
                 >
                   <h3 className="text-[14px] font-bold text-text-primary mb-6">
