@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import {
   Palette,
   Ruler,
@@ -14,6 +15,51 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageHero } from "@/components/shared/PageHero";
 import { Button } from "@/components/shared/Button";
+
+const collections = [
+  {
+    name: "Polaris",
+    description: "Finitions metalliques",
+    images: [
+      "/images/collections/polaris/1011.jpg",
+      "/images/collections/polaris/1012.jpg",
+      "/images/collections/polaris/1021.jpg",
+      "/images/collections/polaris/1022.jpg",
+      "/images/collections/polaris/1031.jpg",
+      "/images/collections/polaris/1041.jpg",
+      "/images/collections/polaris/1061.jpg",
+      "/images/collections/polaris/1071.jpg",
+    ],
+  },
+  {
+    name: "Patina",
+    description: "Patines oxydees",
+    images: [
+      "/images/collections/patina/295.jpg",
+      "/images/collections/patina/296.jpg",
+      "/images/collections/patina/307.jpg",
+      "/images/collections/patina/319.jpg",
+      "/images/collections/patina/331.jpg",
+      "/images/collections/patina/343.jpg",
+      "/images/collections/patina/344.jpg",
+      "/images/collections/patina/355.jpg",
+    ],
+  },
+  {
+    name: "Dichroic",
+    description: "Effets chromatiques",
+    images: [
+      "/images/collections/dichroic/140101.jpg",
+      "/images/collections/dichroic/140102.jpg",
+      "/images/collections/dichroic/140103.jpg",
+      "/images/collections/dichroic/140104.jpg",
+      "/images/collections/dichroic/140201.jpg",
+      "/images/collections/dichroic/140202.jpg",
+      "/images/collections/dichroic/140203.jpg",
+      "/images/collections/dichroic/140204.jpg",
+    ],
+  },
+];
 
 const processSteps = [
   {
@@ -258,6 +304,74 @@ export default function ThermolaquagePage() {
                 ))}
               </div>
             </motion.div>
+          </div>
+        </section>
+
+        {/* Adaptacolor Collections */}
+        <section className="py-[var(--section-padding)]">
+          <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="mb-14"
+            >
+              <p className="text-[11px] uppercase tracking-[0.2em] text-text-muted mb-3">
+                Nos partenaires
+              </p>
+              <h2 className="text-[2rem] sm:text-[2.6rem] lg:text-[3.2rem] font-bold tracking-[-0.02em] text-text-primary leading-[1.1]">
+                Collections Adaptacolor
+              </h2>
+            </motion.div>
+
+            <div className="space-y-12">
+              {collections.map((collection, ci) => (
+                <motion.div
+                  key={collection.name}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{
+                    delay: ci * 0.08,
+                    duration: 0.8,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                >
+                  <h3 className="text-[15px] font-medium text-text-primary mb-1">
+                    {collection.name}
+                  </h3>
+                  <p className="text-[14px] text-text-secondary mb-4">
+                    {collection.description}
+                  </p>
+                  <div className="grid grid-cols-4 gap-3">
+                    {collection.images.map((src, idx) => (
+                      <motion.div
+                        key={src}
+                        initial={{ opacity: 0, y: 16 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{
+                          delay: idx * 0.04,
+                          duration: 0.8,
+                          ease: [0.22, 1, 0.36, 1],
+                        }}
+                        className="rounded-xl overflow-hidden aspect-square relative"
+                      >
+                        <Image
+                          src={src}
+                          alt={`${collection.name} ${idx + 1}`}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 640px) 25vw, 200px"
+                          unoptimized
+                        />
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </section>
 

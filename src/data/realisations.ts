@@ -89,4 +89,81 @@ export const realisations: Realisation[] = [
     year: 2025,
     imageUrl: "/images/realisations/facade-bardage-bois.jpg",
   },
+  {
+    id: "garde-corps-barreaux-residence",
+    title: "Residence — Garde-corps a barreaux",
+    category: "Garde-Corps",
+    gamme: "FORGE",
+    description:
+      "Garde-corps a barreaux verticaux en acier thermolaque. Lignes epurees, finition soignee.",
+    location: "Ile-de-France",
+    year: 2024,
+    imageUrl: "/images/realisations/garde-corps-barreaux.jpg",
+  },
+  {
+    id: "projet-construction-5",
+    title: "Programme neuf — Balcons filants",
+    category: "Garde-Corps",
+    gamme: "SECU+",
+    description:
+      "Garde-corps en tole perforee sur balcons filants. Logement collectif, conformite NF P01-012.",
+    location: "Ile-de-France",
+    year: 2025,
+    imageUrl: "/images/realisations/projet-construction-5.jpg",
+  },
+  {
+    id: "projet-construction-6",
+    title: "Immeuble collectif — Clotures metalliques",
+    category: "Grilles",
+    gamme: "DECOR",
+    description:
+      "Clotures et panneaux decoratifs en acier decoupe laser pour parties communes d'un programme neuf.",
+    location: "Val-de-Marne",
+    year: 2025,
+    imageUrl: "/images/realisations/projet-construction-6.jpg",
+  },
+  {
+    id: "projet-construction-7",
+    title: "Residence BBC — Garde-corps vitre",
+    category: "Garde-Corps",
+    gamme: "AURA",
+    description:
+      "Garde-corps verre feuillete sur structure aluminium. Transparence maximale, norme BBC.",
+    location: "Hauts-de-Seine",
+    year: 2024,
+    imageUrl: "/images/realisations/projet-construction-7.jpg",
+  },
+  {
+    id: "projet-construction-8",
+    title: "Programme R+5 — Habillage facades",
+    category: "Grilles",
+    gamme: "FACADE",
+    description:
+      "Habillage de facades metalliques sur immeuble de logements. Panneaux cassettes aluminium thermolaque.",
+    location: "Seine-Saint-Denis",
+    year: 2025,
+    imageUrl: "/images/realisations/projet-construction-8.jpg",
+  },
+  {
+    id: "projet-construction-9",
+    title: "Residence seniors — Garde-corps securises",
+    category: "Garde-Corps",
+    gamme: "SECU+",
+    description:
+      "Garde-corps conformes accessibilite PMR. Hauteur renforcee, remplissage tole pleine en partie basse.",
+    location: "Essonne",
+    year: 2024,
+    imageUrl: "/images/realisations/projet-construction-9.jpg",
+  },
+  {
+    id: "projet-construction-10",
+    title: "Ecoquartier — Grilles ventilation decoratives",
+    category: "Grilles",
+    gamme: "AIRFLOW",
+    description:
+      "Grilles de ventilation integrees en facade. Design contemporain, performance aeraulique optimisee.",
+    location: "Ile-de-France",
+    year: 2025,
+    imageUrl: "/images/realisations/projet-construction-10.jpg",
+  },
 ];

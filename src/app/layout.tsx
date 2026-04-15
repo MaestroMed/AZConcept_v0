@@ -30,6 +30,25 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "AZ Concept",
+  url: "https://azconcept.fr",
+  logo: "https://azconcept.fr/images/branding/logo.png",
+  description: "Metallerie d'exception — garde-corps, portes, grilles & facades. 10 gammes, 200+ couleurs RAL.",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "23 Chemin du Bac des Aubins",
+    addressLocality: "Bruyeres-sur-Oise",
+    postalCode: "95820",
+    addressCountry: "FR",
+  },
+  telephone: "+33971357496",
+  email: "contact@azconcept.fr",
+  sameAs: ["https://azconstruction.fr", "https://azepoxy.fr"],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -37,6 +56,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" className={`${inter.variable} h-full antialiased`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-surface text-text-primary font-sans">
         <AmbientBackground />
         {children}

@@ -9,7 +9,8 @@
       "mcp__Claude_in_Chrome__computer",
       "mcp__Claude_in_Chrome__javascript_tool",
       "WebSearch",
-      "WebFetch(domain:adaptacolor.com)"
+      "WebFetch(domain:adaptacolor.com)",
+      "Bash(npm uninstall:*)"
     ]
   }
 }

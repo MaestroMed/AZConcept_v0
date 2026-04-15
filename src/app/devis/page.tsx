@@ -1,7 +1,8 @@
 "use client";
 
+import { useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
-import { Send, Paperclip, Clock, FileText } from "lucide-react";
+import { Send, Paperclip, Clock, FileText, Loader2, CheckCircle2 } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageHero } from "@/components/shared/PageHero";
@@ -44,6 +45,37 @@ const inputClasses =
   "w-full px-4 py-3 text-[14px] bg-surface-card border border-border/30 rounded-xl text-text-primary placeholder:text-text-muted/50 focus:border-accent/50 focus:outline-none transition-colors";
 
 export default function DevisPage() {
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    setSuccess(false);
+
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      const res = await fetch("/api/devis", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) throw new Error("Erreur serveur");
+
+      setSuccess(true);
+      e.currentTarget.reset();
+    } catch {
+      setError("Une erreur est survenue. Veuillez reessayer.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <>
       <Header />
@@ -99,196 +131,230 @@ export default function DevisPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             >
-              <form
-                className="max-w-3xl mx-auto p-6 sm:p-8 rounded-2xl bg-surface-card border border-border/30"
-                onSubmit={(e) => e.preventDefault()}
-              >
-                {/* Section: Vos informations */}
-                <div className="mb-8">
-                  <p className="text-[11px] uppercase tracking-[0.2em] text-text-muted mb-3">
-                    Vos informations
-                  </p>
-                  <h3 className="text-[15px] font-medium text-text-primary mb-6">
-                    Formulaire de devis
+              {success ? (
+                <div className="max-w-3xl mx-auto p-6 sm:p-8 rounded-2xl bg-surface-card border border-border/30 flex flex-col items-center justify-center text-center min-h-[400px]">
+                  <CheckCircle2 size={48} className="text-green-500 mb-4" />
+                  <h3 className="text-[18px] font-bold text-text-primary mb-2">
+                    Demande envoyee !
                   </h3>
-
-                  <div className="space-y-5">
-                    {/* Row: Nom + Prenom */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <label
-                          htmlFor="nom"
-                          className="block text-[13px] font-medium text-text-muted mb-2"
-                        >
-                          Nom *
-                        </label>
-                        <input
-                          type="text"
-                          id="nom"
-                          name="nom"
-                          required
-                          placeholder="Dupont"
-                          className={inputClasses}
-                        />
-                      </div>
-                      <div>
-                        <label
-                          htmlFor="prenom"
-                          className="block text-[13px] font-medium text-text-muted mb-2"
-                        >
-                          Prenom *
-                        </label>
-                        <input
-                          type="text"
-                          id="prenom"
-                          name="prenom"
-                          required
-                          placeholder="Jean"
-                          className={inputClasses}
-                        />
-                      </div>
-                    </div>
-
-                    {/* Row: Email + Telephone */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <label
-                          htmlFor="email"
-                          className="block text-[13px] font-medium text-text-muted mb-2"
-                        >
-                          Email *
-                        </label>
-                        <input
-                          type="email"
-                          id="email"
-                          name="email"
-                          required
-                          placeholder="jean@exemple.fr"
-                          className={inputClasses}
-                        />
-                      </div>
-                      <div>
-                        <label
-                          htmlFor="telephone"
-                          className="block text-[13px] font-medium text-text-muted mb-2"
-                        >
-                          Telephone *
-                        </label>
-                        <input
-                          type="tel"
-                          id="telephone"
-                          name="telephone"
-                          required
-                          placeholder="06 12 34 56 78"
-                          className={inputClasses}
-                        />
-                      </div>
-                    </div>
-
-                    {/* Societe */}
-                    <div>
-                      <label
-                        htmlFor="societe"
-                        className="block text-[13px] font-medium text-text-muted mb-2"
-                      >
-                        Societe{" "}
-                        <span className="text-text-muted/50 font-normal">
-                          (optionnel)
-                        </span>
-                      </label>
-                      <input
-                        type="text"
-                        id="societe"
-                        name="societe"
-                        placeholder="Nom de votre entreprise"
-                        className={inputClasses}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Section: Votre projet */}
-                <div className="mb-8 pt-6 border-t border-border/15">
-                  <p className="text-[11px] uppercase tracking-[0.2em] text-text-muted mb-5">
-                    Votre projet
+                  <p className="text-[14px] text-text-secondary leading-[1.7] mb-6">
+                    Nous vous enverrons un devis detaille sous 48h ouvrees.
                   </p>
+                  <button
+                    onClick={() => setSuccess(false)}
+                    className="text-[14px] text-accent hover:text-text-primary transition-colors"
+                  >
+                    Envoyer une autre demande
+                  </button>
+                </div>
+              ) : (
+                <form
+                  className="max-w-3xl mx-auto p-6 sm:p-8 rounded-2xl bg-surface-card border border-border/30"
+                  onSubmit={handleSubmit}
+                >
+                  {/* Section: Vos informations */}
+                  <div className="mb-8">
+                    <p className="text-[11px] uppercase tracking-[0.2em] text-text-muted mb-3">
+                      Vos informations
+                    </p>
+                    <h3 className="text-[15px] font-medium text-text-primary mb-6">
+                      Formulaire de devis
+                    </h3>
 
-                  <div className="space-y-5">
-                    {/* Type de projet */}
-                    <div>
-                      <label
-                        htmlFor="type-projet"
-                        className="block text-[13px] font-medium text-text-muted mb-2"
-                      >
-                        Type de projet *
-                      </label>
-                      <select
-                        id="type-projet"
-                        name="type-projet"
-                        required
-                        className={`${inputClasses} appearance-none cursor-pointer`}
-                      >
-                        <option value="">Selectionnez une gamme</option>
-                        {projectTypes.map((type) => (
-                          <option key={type} value={type}>
-                            {type}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                    {error && (
+                      <div className="mb-5 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-[14px] text-red-400">
+                        {error}
+                      </div>
+                    )}
 
-                    {/* Description du projet */}
-                    <div>
-                      <label
-                        htmlFor="description"
-                        className="block text-[13px] font-medium text-text-muted mb-2"
-                      >
-                        Description du projet *
-                      </label>
-                      <textarea
-                        id="description"
-                        name="description"
-                        required
-                        rows={6}
-                        placeholder="Decrivez votre projet : dimensions, materiaux souhaites, contraintes techniques, delais..."
-                        className={`${inputClasses} resize-none`}
-                      />
-                    </div>
-
-                    {/* Fichiers joints mention */}
-                    <div className="flex items-start gap-3 p-4 rounded-xl bg-surface border border-border/30">
-                      <Paperclip
-                        size={18}
-                        className="text-text-muted shrink-0 mt-0.5"
-                      />
-                      <div>
-                        <p className="text-[14px] text-text-secondary">
-                          Fichiers joints
-                        </p>
-                        <p className="text-[14px] text-text-secondary leading-[1.7] mt-1">
-                          Plans DWG, PDF, images — envoyez vos fichiers a{" "}
-                          <a
-                            href="mailto:contact@azconcept.fr"
-                            className="text-accent hover:text-text-primary transition-colors"
+                    <div className="space-y-5">
+                      {/* Row: Nom + Prenom */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label
+                            htmlFor="nom"
+                            className="block text-[13px] font-medium text-text-muted mb-2"
                           >
-                            contact@azconcept.fr
-                          </a>{" "}
-                          en referencant votre demande.
-                        </p>
+                            Nom *
+                          </label>
+                          <input
+                            type="text"
+                            id="nom"
+                            name="nom"
+                            required
+                            placeholder="Dupont"
+                            className={inputClasses}
+                          />
+                        </div>
+                        <div>
+                          <label
+                            htmlFor="prenom"
+                            className="block text-[13px] font-medium text-text-muted mb-2"
+                          >
+                            Prenom *
+                          </label>
+                          <input
+                            type="text"
+                            id="prenom"
+                            name="prenom"
+                            required
+                            placeholder="Jean"
+                            className={inputClasses}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Row: Email + Telephone */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label
+                            htmlFor="email"
+                            className="block text-[13px] font-medium text-text-muted mb-2"
+                          >
+                            Email *
+                          </label>
+                          <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            required
+                            placeholder="jean@exemple.fr"
+                            className={inputClasses}
+                          />
+                        </div>
+                        <div>
+                          <label
+                            htmlFor="telephone"
+                            className="block text-[13px] font-medium text-text-muted mb-2"
+                          >
+                            Telephone *
+                          </label>
+                          <input
+                            type="tel"
+                            id="telephone"
+                            name="telephone"
+                            required
+                            placeholder="06 12 34 56 78"
+                            className={inputClasses}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Societe */}
+                      <div>
+                        <label
+                          htmlFor="societe"
+                          className="block text-[13px] font-medium text-text-muted mb-2"
+                        >
+                          Societe{" "}
+                          <span className="text-text-muted/50 font-normal">
+                            (optionnel)
+                          </span>
+                        </label>
+                        <input
+                          type="text"
+                          id="societe"
+                          name="societe"
+                          placeholder="Nom de votre entreprise"
+                          className={inputClasses}
+                        />
                       </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Submit with glow */}
-                <Button
-                  type="submit"
-                  className="w-full sm:w-auto shadow-[0_0_20px_rgba(65,105,225,0.2)]"
-                >
-                  Envoyer la demande de devis
-                  <Send size={16} />
-                </Button>
-              </form>
+                  {/* Section: Votre projet */}
+                  <div className="mb-8 pt-6 border-t border-border/15">
+                    <p className="text-[11px] uppercase tracking-[0.2em] text-text-muted mb-5">
+                      Votre projet
+                    </p>
+
+                    <div className="space-y-5">
+                      {/* Type de projet */}
+                      <div>
+                        <label
+                          htmlFor="type-projet"
+                          className="block text-[13px] font-medium text-text-muted mb-2"
+                        >
+                          Type de projet *
+                        </label>
+                        <select
+                          id="type-projet"
+                          name="type-projet"
+                          required
+                          className={`${inputClasses} appearance-none cursor-pointer`}
+                        >
+                          <option value="">Selectionnez une gamme</option>
+                          {projectTypes.map((type) => (
+                            <option key={type} value={type}>
+                              {type}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      {/* Description du projet */}
+                      <div>
+                        <label
+                          htmlFor="description"
+                          className="block text-[13px] font-medium text-text-muted mb-2"
+                        >
+                          Description du projet *
+                        </label>
+                        <textarea
+                          id="description"
+                          name="description"
+                          required
+                          rows={6}
+                          placeholder="Decrivez votre projet : dimensions, materiaux souhaites, contraintes techniques, delais..."
+                          className={`${inputClasses} resize-none`}
+                        />
+                      </div>
+
+                      {/* Fichiers joints mention */}
+                      <div className="flex items-start gap-3 p-4 rounded-xl bg-surface border border-border/30">
+                        <Paperclip
+                          size={18}
+                          className="text-text-muted shrink-0 mt-0.5"
+                        />
+                        <div>
+                          <p className="text-[14px] text-text-secondary">
+                            Fichiers joints
+                          </p>
+                          <p className="text-[14px] text-text-secondary leading-[1.7] mt-1">
+                            Plans DWG, PDF, images — envoyez vos fichiers a{" "}
+                            <a
+                              href="mailto:contact@azconcept.fr"
+                              className="text-accent hover:text-text-primary transition-colors"
+                            >
+                              contact@azconcept.fr
+                            </a>{" "}
+                            en referencant votre demande.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Submit with glow */}
+                  <Button
+                    type="submit"
+                    className="w-full sm:w-auto shadow-[0_0_20px_rgba(65,105,225,0.2)]"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <>
+                        <Loader2 size={16} className="animate-spin" />
+                        Envoi en cours...
+                      </>
+                    ) : (
+                      <>
+                        Envoyer la demande de devis
+                        <Send size={16} />
+                      </>
+                    )}
+                  </Button>
+                </form>
+              )}
             </motion.div>
           </div>
         </section>

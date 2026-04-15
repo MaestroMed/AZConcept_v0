@@ -6,6 +6,7 @@ import { StatsCounter } from "@/components/sections/StatsCounter";
 import { PhilosophySection } from "@/components/sections/PhilosophySection";
 import { LogoMarquee } from "@/components/sections/LogoMarquee";
 import { RealisationsPreview } from "@/components/sections/RealisationsPreview";
+import { Testimonials } from "@/components/sections/Testimonials";
 import { CTASection } from "@/components/sections/CTASection";
 
 export default function Home() {
@@ -20,6 +21,7 @@ export default function Home() {
         <PhilosophySection />
         <LogoMarquee />
         <RealisationsPreview />
+        <Testimonials />
         <div className="section-sep" />
         <CTASection />
       </main>
