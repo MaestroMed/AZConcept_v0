@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { SectionHeader } from "@/components/shared/SectionHeader";
 import { getAllGammes } from "@/data/gammes";
 import { categories } from "@/data/categories";
@@ -16,79 +15,57 @@ export function GammesShowcase() {
   const gammes = getAllGammes();
 
   return (
-    <section className="py-[var(--section-padding)] bg-surface-elevated relative overflow-hidden">
-      <div className="noise-overlay absolute inset-0" />
-
-      <div className="relative z-10 max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
+    <section className="py-[var(--section-padding)]">
+      <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
         <SectionHeader
           title="10 Gammes. Une Vision."
           subtitle="Du minimalisme absolu a l'expression brute, chaque gamme repond a une vision architecturale precise."
         />
 
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={{ visible: { transition: { staggerChildren: 0.06 } } }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4"
-        >
-          {gammes.map((gamme) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+          {gammes.map((gamme, i) => (
             <motion.div
               key={gamme.id}
-              variants={{
-                hidden: { opacity: 0, y: 30 },
-                visible: {
-                  opacity: 1,
-                  y: 0,
-                  transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
-                },
-              }}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.04, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             >
               <Link
                 href={`/${getCategorySlug(gamme.categoryId)}/${gamme.slug}`}
-                className="group relative block p-6 rounded-2xl bg-surface-card border border-border hover:border-border-light transition-all duration-300 hover:shadow-[0_8px_40px_rgba(0,0,0,0.3)] overflow-hidden h-full"
+                className="group block p-5 rounded-xl bg-surface-card/50 border border-border/50 hover:border-border-light hover:bg-surface-card transition-all duration-300 h-full"
               >
-                {/* Accent line top */}
-                <div
-                  className="absolute top-0 left-0 right-0 h-[2px] scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"
-                  style={{ backgroundColor: gamme.accentColor }}
-                />
-
-                {/* Badge */}
-                <div className="flex items-center gap-2 mb-4">
+                <div className="flex items-center gap-2 mb-3">
                   <div
-                    className="w-2 h-2 rounded-full"
+                    className="w-1.5 h-1.5 rounded-full"
                     style={{ backgroundColor: gamme.accentColor }}
                   />
-                  <span className="text-[10px] uppercase tracking-widest text-text-muted">
+                  <span className="text-[10px] uppercase tracking-[0.12em] text-text-muted font-medium">
                     {categories.find((c) => c.id === gamme.categoryId)?.name}
                   </span>
                 </div>
 
-                {/* Name */}
-                <h3 className="text-lg font-bold text-text-primary mb-1 group-hover:text-white transition-colors">
+                <h3 className="text-[15px] font-semibold text-text-primary mb-1 group-hover:text-white transition-colors">
                   {gamme.name}
                 </h3>
 
-                {/* Tagline */}
-                <p className="text-sm text-text-secondary mb-4">
+                <p className="text-[13px] text-text-secondary leading-relaxed mb-4">
                   {gamme.tagline}
                 </p>
 
-                {/* Model count */}
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-text-muted">
+                  <span className="text-[11px] text-text-muted">
                     {gamme.modeles.length} modeles
                   </span>
                   <ArrowRight
-                    size={14}
-                    className="text-text-muted group-hover:text-text-primary group-hover:translate-x-1 transition-all duration-300"
+                    size={13}
+                    className="text-text-muted group-hover:text-text-secondary group-hover:translate-x-0.5 transition-all duration-200"
                   />
                 </div>
               </Link>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
