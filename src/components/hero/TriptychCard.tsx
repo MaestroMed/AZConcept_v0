@@ -15,21 +15,21 @@ interface TriptychCardProps {
 const panels = {
   fabriquer: {
     src: "/images/hero/panel-fabriquer.jpg",
-    textColor: "#2a2a2e",
-    glow: "rgba(255,250,240,0.25)",
-    sweep: "rgba(255,255,255,0.07)",
+    textColor: "#2e2e32",
+    glow: "rgba(255,250,240,0.22)",
+    sweep: "rgba(255,255,255,0.06)",
   },
   proteger: {
     src: "/images/hero/panel-proteger.jpg",
     textColor: "#ffffff",
-    glow: "rgba(140,190,255,0.15)",
-    sweep: "rgba(200,230,255,0.06)",
+    glow: "rgba(140,190,255,0.14)",
+    sweep: "rgba(200,230,255,0.05)",
   },
   durer: {
     src: "/images/hero/panel-durer.jpg",
-    textColor: "#d8d8dc",
-    glow: "rgba(200,200,210,0.08)",
-    sweep: "rgba(255,255,255,0.04)",
+    textColor: "#d0d0d4",
+    glow: "rgba(180,180,200,0.08)",
+    sweep: "rgba(255,255,255,0.03)",
   },
 };
 
@@ -38,9 +38,10 @@ export function TriptychCard({ pillar, title, href, index }: TriptychCardProps) 
   const [hovered, setHovered] = useState(false);
   const p = panels[pillar];
 
+  // Mouse glow
   const mx = useMotionValue(50);
   const my = useMotionValue(50);
-  const glow = useMotionTemplate`radial-gradient(500px circle at ${mx}% ${my}%, ${p.glow} 0%, transparent 70%)`;
+  const glow = useMotionTemplate`radial-gradient(450px circle at ${mx}% ${my}%, ${p.glow} 0%, transparent 70%)`;
 
   const onMove = useCallback((e: React.MouseEvent) => {
     if (!ref.current) return;
@@ -50,17 +51,14 @@ export function TriptychCard({ pillar, title, href, index }: TriptychCardProps) 
   }, [mx, my]);
 
   return (
-    <motion.div
+    <div
       ref={ref}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: index * 0.25, duration: 1, ease: [0.22, 1, 0.36, 1] }}
       onMouseMove={onMove}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       className="relative h-full overflow-hidden group"
     >
-      {/* Background — DA panel image, perfect quality, objects included */}
+      {/* ── DA panel background — unoptimized for max quality ── */}
       <Image
         src={p.src}
         alt=""
@@ -68,56 +66,57 @@ export function TriptychCard({ pillar, title, href, index }: TriptychCardProps) 
         className="object-cover"
         sizes="(max-width: 768px) 100vw, 33vw"
         priority
+        quality={100}
       />
 
-      {/* Mouse-following glow */}
+      {/* ── Mouse glow ── */}
       <motion.div
-        className="absolute inset-0 z-[1] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+        className="absolute inset-0 z-[1] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700"
         style={{ background: glow }}
       />
 
-      {/* Slow diagonal light sweep */}
+      {/* ── Light sweep — slow, elegant, diagonal ── */}
       <motion.div
         className="absolute z-[2] pointer-events-none"
         style={{
-          width: "25%",
-          height: "250%",
-          top: "-75%",
-          background: `linear-gradient(105deg, transparent 42%, ${p.sweep} 49%, rgba(255,255,255,0.04) 50%, ${p.sweep} 51%, transparent 58%)`,
-          filter: "blur(6px)",
+          width: "20%",
+          height: "300%",
+          top: "-100%",
+          background: `linear-gradient(105deg, transparent 44%, ${p.sweep} 49%, rgba(255,255,255,0.03) 50%, ${p.sweep} 51%, transparent 56%)`,
+          filter: "blur(4px)",
         }}
-        animate={{ left: ["-30%", "130%"] }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", repeatDelay: 8 }}
+        animate={{ left: ["-25%", "125%"] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", repeatDelay: 10 }}
       />
 
-      {/* Title — web text positioned to match DA layout */}
-      <div className="absolute z-[3] px-6 sm:px-8 lg:px-10" style={{ top: "34%", transform: "translateY(-50%)" }}>
-        <motion.h2
-          className="text-[1.4rem] sm:text-[1.8rem] lg:text-[2.4rem] xl:text-[2.8rem] font-bold tracking-[-0.01em] leading-[1] select-none"
-          style={{ color: p.textColor }}
+      {/* ── Title — character reveal, NO initial opacity:0 on container ── */}
+      <div
+        className="absolute z-[3] px-6 sm:px-8 lg:px-10"
+        style={{ top: "34%", transform: "translateY(-50%)" }}
+      >
+        <h2
+          className="text-[1.4rem] sm:text-[1.7rem] lg:text-[2.2rem] xl:text-[2.6rem] font-semibold tracking-[0.01em] leading-[1] select-none"
+          style={{
+            color: p.textColor,
+            fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
+          }}
         >
-          {title.split("").map((char, i) => (
-            <motion.span
-              key={i}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 + index * 0.25 + i * 0.02, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="inline-block"
-            >
-              {char === " " ? "\u00A0" : char}
-            </motion.span>
-          ))}
-        </motion.h2>
+          {title}
+        </h2>
       </div>
 
-      {/* Divider between panels */}
+      {/* ── Panel divider ── */}
       {pillar !== "durer" && (
-        <div className="absolute top-0 right-0 bottom-0 w-px hidden md:block z-[4] pointer-events-none"
-          style={{ background: "linear-gradient(180deg, transparent 5%, rgba(0,0,0,0.08) 50%, transparent 95%)" }} />
+        <div
+          className="absolute top-0 right-0 bottom-0 w-px hidden md:block z-[4] pointer-events-none"
+          style={{
+            background: "linear-gradient(180deg, transparent 8%, rgba(0,0,0,0.06) 50%, transparent 92%)",
+          }}
+        />
       )}
 
-      {/* Clickable link */}
+      {/* ── Link ── */}
       <Link href={href} className="absolute inset-0 z-[5]" aria-label={title} />
-    </motion.div>
+    </div>
   );
 }
