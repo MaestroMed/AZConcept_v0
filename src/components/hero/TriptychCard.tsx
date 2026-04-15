@@ -1,13 +1,7 @@
 "use client";
 
 import { useRef, useState, useCallback } from "react";
-import {
-  motion,
-  useSpring,
-  useTransform,
-  useMotionValue,
-  useMotionTemplate,
-} from "framer-motion";
+import { motion, useMotionValue, useMotionTemplate } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -18,153 +12,96 @@ interface TriptychCardProps {
   index: number;
 }
 
-const config = {
+const panels = {
   fabriquer: {
-    panelSrc: "/images/hero/panel-fabriquer.jpg",
-    objSrc: "/images/hero/obj-ingots.png",
+    src: "/images/hero/panel-fabriquer.jpg",
     textColor: "#2a2a2e",
-    glowColor: "rgba(255,248,240,0.35)",
-    sweepColor: "rgba(255,255,255,0.12)",
-    objWidth: 180,
-    objHeight: 130,
-    objBottom: "14%",
-    objLeft: "12%",
+    glow: "rgba(255,250,240,0.25)",
+    sweep: "rgba(255,255,255,0.07)",
   },
   proteger: {
-    panelSrc: "/images/hero/panel-proteger.jpg",
-    objSrc: "/images/hero/obj-layers.png",
+    src: "/images/hero/panel-proteger.jpg",
     textColor: "#ffffff",
-    glowColor: "rgba(120,180,255,0.2)",
-    sweepColor: "rgba(180,220,255,0.1)",
-    objWidth: 190,
-    objHeight: 140,
-    objBottom: "14%",
-    objLeft: "50%",
+    glow: "rgba(140,190,255,0.15)",
+    sweep: "rgba(200,230,255,0.06)",
   },
   durer: {
-    panelSrc: "/images/hero/panel-durer.jpg",
-    objSrc: "/images/hero/obj-cube.png",
-    textColor: "#e0e0e4",
-    glowColor: "rgba(200,200,220,0.12)",
-    sweepColor: "rgba(255,255,255,0.06)",
-    objWidth: 150,
-    objHeight: 170,
-    objBottom: "12%",
-    objLeft: "50%",
+    src: "/images/hero/panel-durer.jpg",
+    textColor: "#d8d8dc",
+    glow: "rgba(200,200,210,0.08)",
+    sweep: "rgba(255,255,255,0.04)",
   },
 };
 
 export function TriptychCard({ pillar, title, href, index }: TriptychCardProps) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
-  const c = config[pillar];
+  const ref = useRef<HTMLDivElement>(null);
+  const [hovered, setHovered] = useState(false);
+  const p = panels[pillar];
 
-  // Mouse tracking for glow + parallax
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const glowX = useMotionValue(50);
-  const glowY = useMotionValue(50);
-  const glowBg = useMotionTemplate`radial-gradient(600px circle at ${glowX}% ${glowY}%, ${c.glowColor} 0%, transparent 70%)`;
+  const mx = useMotionValue(50);
+  const my = useMotionValue(50);
+  const glow = useMotionTemplate`radial-gradient(500px circle at ${mx}% ${my}%, ${p.glow} 0%, transparent 70%)`;
 
-  const spr = { damping: 40, stiffness: 120 };
-  const objX = useSpring(useTransform(mouseX, [-0.5, 0.5], [-8, 8]), spr);
-  const objY = useSpring(useTransform(mouseY, [-0.5, 0.5], [-5, 5]), spr);
-
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!cardRef.current) return;
-      const r = cardRef.current.getBoundingClientRect();
-      mouseX.set((e.clientX - r.left) / r.width - 0.5);
-      mouseY.set((e.clientY - r.top) / r.height - 0.5);
-      glowX.set(((e.clientX - r.left) / r.width) * 100);
-      glowY.set(((e.clientY - r.top) / r.height) * 100);
-    },
-    [mouseX, mouseY, glowX, glowY]
-  );
+  const onMove = useCallback((e: React.MouseEvent) => {
+    if (!ref.current) return;
+    const r = ref.current.getBoundingClientRect();
+    mx.set(((e.clientX - r.left) / r.width) * 100);
+    my.set(((e.clientY - r.top) / r.height) * 100);
+  }, [mx, my]);
 
   return (
     <motion.div
-      ref={cardRef}
+      ref={ref}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ delay: index * 0.3, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => { setIsHovered(false); mouseX.set(0); mouseY.set(0); }}
-      className="relative h-full cursor-pointer overflow-hidden group"
+      transition={{ delay: index * 0.25, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+      onMouseMove={onMove}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="relative h-full overflow-hidden group"
     >
-      {/* ═══ PANEL BACKGROUND — DA image, perfect quality ═══ */}
+      {/* Background — DA panel image, perfect quality, objects included */}
       <Image
-        src={c.panelSrc}
+        src={p.src}
         alt=""
         fill
         className="object-cover"
-        sizes="33vw"
-        priority={index === 0}
-        quality={90}
+        sizes="(max-width: 768px) 100vw, 33vw"
+        priority
       />
 
-      {/* ═══ LIVING LIGHT — animated glow orbs "breathing" ═══ */}
+      {/* Mouse-following glow */}
       <motion.div
-        className="absolute pointer-events-none z-[1]"
+        className="absolute inset-0 z-[1] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+        style={{ background: glow }}
+      />
+
+      {/* Slow diagonal light sweep */}
+      <motion.div
+        className="absolute z-[2] pointer-events-none"
         style={{
-          width: "130%", height: "50%", top: "10%", left: "-15%",
-          borderRadius: "50%",
-          background: `radial-gradient(ellipse, ${c.sweepColor} 0%, transparent 70%)`,
-          filter: "blur(40px)",
+          width: "25%",
+          height: "250%",
+          top: "-75%",
+          background: `linear-gradient(105deg, transparent 42%, ${p.sweep} 49%, rgba(255,255,255,0.04) 50%, ${p.sweep} 51%, transparent 58%)`,
+          filter: "blur(6px)",
         }}
-        animate={{
-          x: ["-5%", "12%", "-8%", "6%", "-5%"],
-          y: ["-3%", "8%", "12%", "3%", "-3%"],
-          scale: [1, 1.15, 0.95, 1.1, 1],
-        }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute pointer-events-none z-[1]"
-        style={{
-          width: "80%", height: "40%", right: "-10%", bottom: "15%",
-          borderRadius: "50%",
-          background: `radial-gradient(ellipse, ${c.sweepColor} 0%, transparent 65%)`,
-          filter: "blur(50px)",
-        }}
-        animate={{
-          x: ["5%", "-10%", "8%", "-5%", "5%"],
-          opacity: [0.5, 1, 0.6, 0.8, 0.5],
-        }}
-        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+        animate={{ left: ["-30%", "130%"] }}
+        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", repeatDelay: 8 }}
       />
 
-      {/* ═══ MOUSE GLOW ═══ */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none z-[2] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-        style={{ background: glowBg }}
-      />
-
-      {/* ═══ LIGHT SWEEP — slow diagonal glint across the panel ═══ */}
-      <motion.div
-        className="absolute pointer-events-none z-[3]"
-        style={{
-          width: "30%", height: "200%", top: "-50%",
-          background: `linear-gradient(105deg, transparent 40%, ${c.sweepColor} 48%, rgba(255,255,255,0.08) 50%, ${c.sweepColor} 52%, transparent 60%)`,
-          filter: "blur(8px)",
-        }}
-        animate={{ left: ["-40%", "140%"] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", repeatDelay: 6 }}
-      />
-
-      {/* ═══ TITLE — web text with character animation ═══ */}
-      <div className="absolute z-[5] px-8 sm:px-10 lg:px-12" style={{ top: "32%", transform: "translateY(-50%)" }}>
+      {/* Title — web text positioned to match DA layout */}
+      <div className="absolute z-[3] px-6 sm:px-8 lg:px-10" style={{ top: "34%", transform: "translateY(-50%)" }}>
         <motion.h2
-          className="text-[1.6rem] sm:text-[2rem] lg:text-[2.6rem] xl:text-[3rem] font-bold tracking-[-0.01em] leading-[1] select-none"
-          style={{ color: c.textColor }}
+          className="text-[1.4rem] sm:text-[1.8rem] lg:text-[2.4rem] xl:text-[2.8rem] font-bold tracking-[-0.01em] leading-[1] select-none"
+          style={{ color: p.textColor }}
         >
           {title.split("").map((char, i) => (
             <motion.span
               key={i}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 + index * 0.3 + i * 0.025, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ delay: 0.5 + index * 0.25 + i * 0.02, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               className="inline-block"
             >
               {char === " " ? "\u00A0" : char}
@@ -173,53 +110,14 @@ export function TriptychCard({ pillar, title, href, index }: TriptychCardProps) 
         </motion.h2>
       </div>
 
-      {/* ═══ 3D OBJECT — from DA, with parallax + float + hover glow ═══ */}
-      <motion.div
-        className="absolute z-[4]"
-        style={{
-          bottom: c.objBottom,
-          left: pillar === "fabriquer" ? c.objLeft : undefined,
-          right: undefined,
-          x: pillar !== "fabriquer" ? "-50%" : undefined,
-          width: c.objWidth,
-          height: c.objHeight,
-        }}
-        animate={isHovered ? { scale: 1.05, y: -6 } : { scale: 1, y: [0, -4, 0] }}
-        transition={
-          isHovered
-            ? { type: "spring", damping: 20, stiffness: 120 }
-            : { duration: 7, repeat: Infinity, ease: "easeInOut" }
-        }
-      >
-        <motion.div style={{ x: objX, y: objY }} className="w-full h-full relative">
-          <Image
-            src={c.objSrc}
-            alt={title}
-            fill
-            className="object-contain drop-shadow-[0_8px_24px_rgba(0,0,0,0.2)]"
-            sizes="300px"
-          />
-          {/* Hover glow around object */}
-          <motion.div
-            className="absolute inset-[-20%] rounded-full pointer-events-none"
-            style={{
-              background: `radial-gradient(ellipse, ${c.glowColor} 0%, transparent 60%)`,
-              filter: "blur(20px)",
-            }}
-            animate={isHovered ? { opacity: 0.8, scale: 1.1 } : { opacity: 0, scale: 0.9 }}
-            transition={{ duration: 0.5 }}
-          />
-        </motion.div>
-      </motion.div>
-
-      {/* ═══ PANEL DIVIDER ═══ */}
+      {/* Divider between panels */}
       {pillar !== "durer" && (
-        <div className="absolute top-0 right-0 bottom-0 w-[1px] hidden md:block pointer-events-none z-[6]"
-          style={{ background: "linear-gradient(180deg, transparent 5%, rgba(0,0,0,0.08) 30%, rgba(0,0,0,0.12) 50%, rgba(0,0,0,0.08) 70%, transparent 95%)" }} />
+        <div className="absolute top-0 right-0 bottom-0 w-px hidden md:block z-[4] pointer-events-none"
+          style={{ background: "linear-gradient(180deg, transparent 5%, rgba(0,0,0,0.08) 50%, transparent 95%)" }} />
       )}
 
-      {/* Link overlay */}
-      <Link href={href} className="absolute inset-0 z-[7]" aria-label={title} />
+      {/* Clickable link */}
+      <Link href={href} className="absolute inset-0 z-[5]" aria-label={title} />
     </motion.div>
   );
 }
