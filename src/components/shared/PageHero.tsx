@@ -70,6 +70,7 @@ export function PageHero({
 
         {breadcrumbs && (
           <motion.nav
+            aria-label="Fil d\u2019Ariane"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.1 }}

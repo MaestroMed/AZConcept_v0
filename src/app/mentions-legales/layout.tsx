@@ -1,15 +1,11 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Mentions legales",
+  title: "Mentions légales",
   description:
-    "Mentions legales du site AZ Concept. Informations sur l'editeur, l'hebergement et la propriete intellectuelle.",
+    "Mentions légales du site AZ Concept — éditeur, hébergement, propriété intellectuelle, droit applicable.",
 };
 
-export default function MentionsLegalesLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function MentionsLegalesLayout({ children }: { children: React.ReactNode }) {
   return children;
 }

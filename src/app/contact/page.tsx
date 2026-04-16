@@ -27,6 +27,7 @@ function Field({
   required,
   textarea,
   options,
+  autoComplete,
 }: {
   label: string;
   name: string;
@@ -34,18 +35,36 @@ function Field({
   required?: boolean;
   textarea?: boolean;
   options?: string[];
+  autoComplete?: string;
 }) {
   const base =
-    "w-full bg-transparent px-0 py-3.5 text-[15px] text-ivory placeholder:text-ash border-b border-ivory/15 focus:border-champagne focus:outline-none transition-colors";
+    "w-full bg-transparent px-0 py-3.5 text-[15px] text-ivory placeholder:text-ash border-b border-ivory/15 " +
+    "focus:border-champagne focus:outline-none transition-colors " +
+    "focus-visible:shadow-[0_2px_0_0_var(--champagne)] focus-visible:[outline:none]";
   return (
     <div className="group">
       <label htmlFor={name} className="block font-mono text-[10.5px] uppercase tracking-[0.16em] text-platinum mb-2">
-        {label} {required && <span className="text-champagne">·</span>}
+        {label} {required && <span className="text-champagne" aria-hidden>·</span>}
       </label>
       {textarea ? (
-        <textarea id={name} name={name} required={required} rows={5} className={`${base} resize-none`} placeholder="—" />
+        <textarea
+          id={name}
+          name={name}
+          required={required}
+          rows={5}
+          autoComplete={autoComplete}
+          className={`${base} resize-none`}
+          placeholder="—"
+        />
       ) : options ? (
-        <select id={name} name={name} required={required} defaultValue="" className={`${base} appearance-none cursor-pointer`}>
+        <select
+          id={name}
+          name={name}
+          required={required}
+          defaultValue=""
+          autoComplete={autoComplete}
+          className={`${base} appearance-none cursor-pointer`}
+        >
           <option value="" disabled>
             —
           </option>
@@ -56,7 +75,15 @@ function Field({
           ))}
         </select>
       ) : (
-        <input type={type} id={name} name={name} required={required} placeholder="—" className={base} />
+        <input
+          type={type}
+          id={name}
+          name={name}
+          required={required}
+          autoComplete={autoComplete}
+          placeholder="—"
+          className={base}
+        />
       )}
     </div>
   );
@@ -227,20 +254,33 @@ export default function ContactPage() {
                     </button>
                   </motion.div>
                 ) : (
-                  <form onSubmit={handleSubmit} className="space-y-7">
-                    {error && (
-                      <div className="p-3 rounded-[2px] bg-red-500/10 border border-red-500/30 text-[13px] text-red-300">
-                        {error}
-                      </div>
-                    )}
+                  <form onSubmit={handleSubmit} className="relative space-y-7" noValidate>
+                    <div role="alert" aria-live="polite" aria-atomic="true">
+                      {error && (
+                        <div className="p-3 rounded-[2px] bg-red-500/10 border border-red-500/30 text-[13px] text-red-300">
+                          {error}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Honeypot anti-spam (invisible, tabIndex=-1) */}
+                    <input
+                      type="text"
+                      name="hp_website"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      aria-hidden="true"
+                      className="absolute -left-[9999px] h-0 w-0"
+                      defaultValue=""
+                    />
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-7">
-                      <Field label="Nom complet" name="nom" required />
-                      <Field label="Société" name="societe" />
+                      <Field label="Nom complet" name="nom" required autoComplete="name" />
+                      <Field label="Société" name="societe" autoComplete="organization" />
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-7">
-                      <Field label="Email" name="email" type="email" required />
-                      <Field label="Téléphone" name="telephone" type="tel" />
+                      <Field label="Email" name="email" type="email" required autoComplete="email" />
+                      <Field label="Téléphone" name="telephone" type="tel" autoComplete="tel" />
                     </div>
                     <Field label="Sujet" name="sujet" required options={subjectOptions} />
                     <Field label="Votre message" name="message" textarea required />

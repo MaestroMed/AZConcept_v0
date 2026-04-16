@@ -1,15 +1,11 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "A propos",
+  title: "À propos — Atelier depuis 2018",
   description:
-    "Decouvrez l'histoire d'AZ Concept : metallerie d'exception depuis 2018. Atelier 1800m2, 10 gammes, 200+ couleurs RAL en Ile-de-France.",
+    "AZ Concept, métallerie architecturale à Bruyères-sur-Oise. Atelier 1 800 m², dix gammes, 200+ teintes RAL, partenaire Jansen. Fondée en 2018.",
 };
 
-export default function AProposLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AProposLayout({ children }: { children: React.ReactNode }) {
   return children;
 }

@@ -1,15 +1,11 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Conditions Generales de Vente",
+  title: "Conditions Générales de Vente",
   description:
-    "Conditions Generales de Vente (CGV) d'AZ Concept. Devis, commandes, paiement, livraison et garantie.",
+    "CGV d’AZ Concept : devis, commandes, paiement, livraison, garantie et droit applicable.",
 };
 
-export default function CGVLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function CGVLayout({ children }: { children: React.ReactNode }) {
   return children;
 }

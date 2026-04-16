@@ -195,7 +195,10 @@ export function GammeContent({ category, gamme, categorySlug }: GammeContentProp
                           </li>
                         ))}
                       </ul>
-                      <span className="shrink-0 inline-flex items-center justify-center h-10 w-10 rounded-full border border-ivory/15 text-ivory/80 group-hover:border-champagne group-hover:text-champagne transition-colors">
+                      <span
+                        aria-hidden
+                        className="shrink-0 inline-flex items-center justify-center h-10 w-10 rounded-full border border-ivory/15 text-ivory/80 group-hover:border-champagne group-hover:text-champagne transition-colors"
+                      >
                         <ArrowUpRight size={13} />
                       </span>
                     </div>

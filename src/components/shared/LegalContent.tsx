@@ -12,8 +12,20 @@ interface LegalContentProps {
   lastUpdate?: string;
 }
 
+/** Slugify a title for deep-link anchors (strips accents). */
+function toAnchor(s: string) {
+  return s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
 /** Shared editorial layout for static legal pages. */
-export function LegalContent({ sections, lastUpdate = "Avril 2026" }: LegalContentProps) {
+export function LegalContent({ sections, lastUpdate }: LegalContentProps) {
+  const date = lastUpdate ??
+    new Date().toLocaleDateString("fr-FR", { month: "long", year: "numeric" });
   return (
     <section className="relative py-[var(--section-padding)]">
       <div className="max-w-3xl mx-auto px-[var(--container-padding)]">
@@ -23,11 +35,12 @@ export function LegalContent({ sections, lastUpdate = "Avril 2026" }: LegalConte
             return (
               <motion.li
                 key={section.title}
+                id={toAnchor(section.title)}
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ delay: i * 0.04, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                className="grid grid-cols-12 gap-6"
+                className="group grid grid-cols-12 gap-6 scroll-mt-28"
               >
                 <div className="col-span-12 sm:col-span-2">
                   <span className="font-mono text-[10.5px] tabular-nums text-champagne">
@@ -35,8 +48,15 @@ export function LegalContent({ sections, lastUpdate = "Avril 2026" }: LegalConte
                   </span>
                 </div>
                 <div className="col-span-12 sm:col-span-10">
-                  <h2 className="display text-ivory text-[clamp(1.4rem,2.6vw,2rem)] leading-tight tracking-[-0.018em] mb-6">
+                  <h2 className="display text-ivory text-[clamp(1.4rem,2.6vw,2rem)] leading-tight tracking-[-0.018em] mb-6 flex items-baseline gap-3">
                     {section.title}
+                    <a
+                      href={`#${toAnchor(section.title)}`}
+                      aria-label={`Lien direct vers ${section.title}`}
+                      className="font-mono text-[13px] text-ash opacity-0 group-hover:opacity-100 hover:text-champagne transition-opacity"
+                    >
+                      #
+                    </a>
                   </h2>
                   <div className="space-y-4 max-w-prose">
                     {section.content.map((p, j) => (
@@ -55,7 +75,7 @@ export function LegalContent({ sections, lastUpdate = "Avril 2026" }: LegalConte
           <p className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-ash">
             Dernière mise à jour
           </p>
-          <p className="font-mono text-[11px] text-pearl tabular-nums">{lastUpdate}</p>
+          <p className="font-mono text-[11px] text-pearl tabular-nums">{date}</p>
         </div>
       </div>
     </section>

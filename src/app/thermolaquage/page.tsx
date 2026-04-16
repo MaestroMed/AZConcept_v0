@@ -128,7 +128,7 @@ export default function ThermolaquagePage() {
 
           <div className="absolute top-0 inset-x-0 pt-[calc(76px+2rem)]">
             <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
-              <nav className="flex items-center gap-1.5 font-mono text-[11px] tracking-[0.06em]">
+              <nav aria-label="Fil d&rsquo;Ariane" className="flex items-center gap-1.5 font-mono text-[11px] tracking-[0.06em]">
                 <Link href="/" className="text-platinum hover:text-champagne transition-colors">Accueil</Link>
                 <span className="text-ash">›</span>
                 <span className="text-ivory">Thermolaquage</span>

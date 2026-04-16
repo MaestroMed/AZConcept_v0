@@ -78,6 +78,7 @@ export function GammesShowcase() {
                       {index} / {total}
                     </span>
                     <ArrowUpRight
+                      aria-hidden
                       size={16}
                       className="text-ivory/25 group-hover:text-champagne group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-all"
                     />

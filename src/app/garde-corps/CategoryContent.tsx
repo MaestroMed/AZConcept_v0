@@ -142,7 +142,10 @@ export function CategoryContent({ category, gammes }: CategoryContentProps) {
                               </span>
                             ))}
                           </div>
-                          <span className="shrink-0 inline-flex items-center justify-center h-10 w-10 rounded-full border border-ivory/25 text-ivory/90 group-hover:border-champagne group-hover:text-champagne transition-colors">
+                          <span
+                            aria-hidden
+                            className="shrink-0 inline-flex items-center justify-center h-10 w-10 rounded-full border border-ivory/25 text-ivory/90 group-hover:border-champagne group-hover:text-champagne transition-colors"
+                          >
                             <ArrowUpRight size={14} />
                           </span>
                         </div>

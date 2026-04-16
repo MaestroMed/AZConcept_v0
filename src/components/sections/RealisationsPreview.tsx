@@ -96,7 +96,10 @@ export function RealisationsPreview() {
                       {hero.location} · {hero.year}
                     </p>
                   </div>
-                  <span className="h-11 w-11 shrink-0 inline-flex items-center justify-center rounded-full border border-ivory/25 text-ivory group-hover:border-champagne group-hover:text-champagne transition-colors">
+                  <span
+                    aria-hidden
+                    className="h-11 w-11 shrink-0 inline-flex items-center justify-center rounded-full border border-ivory/25 text-ivory group-hover:border-champagne group-hover:text-champagne transition-colors"
+                  >
                     <ArrowUpRight size={16} />
                   </span>
                 </div>

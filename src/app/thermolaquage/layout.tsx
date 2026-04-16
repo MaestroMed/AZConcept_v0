@@ -1,15 +1,11 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Thermolaquage",
+  title: "Thermolaquage — 200+ RAL, cabine 7 m, Adaptacolor",
   description:
-    "Thermolaquage haute performance : cabine 7m, 200+ couleurs RAL, finitions Adaptacolor, service express 48h. AZ Concept, Ile-de-France.",
+    "Service thermolaquage haute performance : cabine 7 m, four XXL, 200+ teintes RAL, collections exclusives Adaptacolor (Patina, Polaris, Dichroïque). Express 48 h.",
 };
 
-export default function ThermolaquageLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function ThermolaquageLayout({ children }: { children: React.ReactNode }) {
   return children;
 }
