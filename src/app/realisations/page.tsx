@@ -1,119 +1,172 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { MapPin } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageHero } from "@/components/shared/PageHero";
+import { Eyebrow } from "@/components/shared/Eyebrow";
 import { realisations } from "@/data/realisations";
 
-const gammeGradients: Record<string, string> = {
-  AURA: "from-blue-900/40 to-indigo-950/60",
-  FORGE: "from-amber-900/40 to-stone-950/60",
-  FIREWALL: "from-red-900/40 to-slate-950/60",
-  DECOR: "from-emerald-900/40 to-teal-950/60",
-  ATELIER: "from-zinc-800/40 to-neutral-950/60",
-  "JANSEN DESIGN": "from-sky-900/40 to-slate-950/60",
-  "SECU+": "from-violet-900/40 to-purple-950/60",
-  AIRFLOW: "from-cyan-900/40 to-blue-950/60",
-  TECHNIQUE: "from-gray-800/40 to-zinc-950/60",
-  FACADE: "from-rose-900/40 to-pink-950/60",
-};
+const categories = ["Toutes", "Garde-Corps", "Portes", "Grilles"];
+const years = ["Toutes années", "2025", "2024"];
+
+// Masonry aspect ratios per card index — gives the mosaic feel
+const ASPECTS = ["aspect-[4/5]", "aspect-[1/1]", "aspect-[4/5]", "aspect-[3/4]", "aspect-[1/1]"];
 
 export default function RealisationsPage() {
+  const [activeCat, setActiveCat] = useState<string>("Toutes");
+  const [activeYear, setActiveYear] = useState<string>("Toutes années");
+
+  const filtered = useMemo(() => {
+    return realisations.filter((r) => {
+      const catOk = activeCat === "Toutes" || r.category.toLowerCase().includes(activeCat.toLowerCase());
+      const yearOk = activeYear === "Toutes années" || String(r.year) === activeYear;
+      return catOk && yearOk;
+    });
+  }, [activeCat, activeYear]);
+
+  const total = String(realisations.length).padStart(2, "0");
+  const shown = String(filtered.length).padStart(2, "0");
+
   return (
     <>
       <Header />
       <main className="flex-1">
         <PageHero
-          title="Realisations"
-          subtitle="Nos projets temoignent de notre savoir-faire"
+          eyebrow="Portfolio"
+          index="—"
+          title="Réalisations,"
+          italicTail="nos ouvrages livrés."
+          subtitle={`Une sélection de ${realisations.length} ouvrages — garde-corps, portes, grilles, façades. Île-de-France principalement, avec quelques programmes nationaux.`}
           breadcrumbs={[
             { label: "Accueil", href: "/" },
-            { label: "Realisations" },
+            { label: "Réalisations" },
           ]}
         />
 
-        <section className="py-[var(--section-padding)]">
+        {/* Filters */}
+        <section className="relative py-[clamp(3rem,6vw,5rem)] border-b border-ivory/8">
           <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
-            <div className="mb-14">
-              <p className="text-[11px] uppercase tracking-[0.2em] text-text-muted mb-3">
-                Portfolio
-              </p>
-              <h2 className="text-[2rem] sm:text-[2.6rem] lg:text-[3.2rem] font-bold tracking-[-0.02em] text-text-primary leading-[1.1]">
-                {realisations.length} projet{realisations.length > 1 ? "s" : ""}
-              </h2>
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+              <div className="flex items-center gap-3 flex-wrap">
+                <Eyebrow label="Catégorie" className="mr-1" />
+                {categories.map((c) => {
+                  const active = c === activeCat;
+                  return (
+                    <button
+                      key={c}
+                      onClick={() => setActiveCat(c)}
+                      className={`font-mono text-[10.5px] uppercase tracking-[0.16em] px-4 py-2 rounded-full border transition-all ${
+                        active
+                          ? "bg-champagne text-ink border-champagne"
+                          : "border-ivory/15 text-ivory/70 hover:text-ivory hover:border-ivory/30"
+                      }`}
+                    >
+                      {c}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="flex items-center gap-3 flex-wrap">
+                <Eyebrow label="Année" className="mr-1" />
+                {years.map((y) => {
+                  const active = y === activeYear;
+                  return (
+                    <button
+                      key={y}
+                      onClick={() => setActiveYear(y)}
+                      className={`font-mono text-[10.5px] uppercase tracking-[0.16em] px-4 py-2 rounded-full border transition-all ${
+                        active
+                          ? "bg-champagne text-ink border-champagne"
+                          : "border-ivory/15 text-ivory/70 hover:text-ivory hover:border-ivory/30"
+                      }`}
+                    >
+                      {y}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border/20 rounded-2xl overflow-hidden">
-              {realisations.map((project, i) => (
-                <motion.div
-                  key={project.id}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{
-                    delay: i * 0.08,
-                    duration: 0.8,
-                    ease: [0.22, 1, 0.36, 1],
-                  }}
-                  className="group bg-surface hover:bg-surface-elevated transition-colors duration-500 overflow-hidden"
-                >
-                  {/* Project image */}
-                  <div className="aspect-[4/3] relative overflow-hidden">
-                    {project.imageUrl ? (
-                      <Image
-                        src={project.imageUrl}
-                        alt={project.title}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      />
-                    ) : (
-                      <div className={`absolute inset-0 bg-gradient-to-br ${gammeGradients[project.gamme] || "from-surface-hover to-surface-card"} flex items-center justify-center`}>
-                        <span className="text-5xl sm:text-6xl font-black text-white/10 tracking-tighter select-none">
-                          {project.gamme}
-                        </span>
-                      </div>
-                    )}
-                    {/* Dark overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60" />
-                    {/* Gamme badge */}
-                    <div className="absolute top-4 left-4">
-                      <span className="px-3 py-1 text-[11px] uppercase tracking-[0.2em] font-semibold text-white/80 bg-black/40 backdrop-blur-sm rounded-md">
-                        {project.gamme}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="p-5">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="text-[11px] uppercase tracking-[0.2em] text-accent font-medium">
-                        {project.category}
-                      </span>
-                      <span className="text-text-muted/40">&middot;</span>
-                      <span className="text-[11px] text-text-muted">
-                        {project.year}
-                      </span>
-                    </div>
-
-                    <h3 className="text-[14px] font-semibold text-text-primary mb-2 group-hover:text-white transition-colors">
-                      {project.title}
-                    </h3>
-
-                    <p className="text-[14px] text-text-secondary leading-[1.7] mb-3 line-clamp-2">
-                      {project.description}
-                    </p>
-
-                    <div className="flex items-center gap-1 text-[13px] text-text-muted">
-                      <MapPin size={12} />
-                      {project.location}
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
+            <div className="mt-6 flex items-center gap-3 font-mono text-[10.5px] tabular-nums text-ash">
+              <span className="text-champagne">{shown}</span>
+              <span className="h-px w-10 bg-ivory/15" />
+              <span>de {total} ouvrages</span>
             </div>
+          </div>
+        </section>
+
+        {/* Grid */}
+        <section className="relative py-[var(--section-padding)]">
+          <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
+            {filtered.length === 0 ? (
+              <div className="py-24 text-center">
+                <p className="display-italic text-ivory/50 text-2xl">Aucune réalisation ne correspond à ce filtre.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-7 lg:gap-8">
+                <AnimatePresence initial={false}>
+                  {filtered.map((p, i) => {
+                    const aspect = ASPECTS[i % ASPECTS.length];
+                    return (
+                      <motion.article
+                        key={p.id}
+                        layout
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.98 }}
+                        transition={{ delay: Math.min(i * 0.04, 0.4), duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                        className="group relative"
+                      >
+                        <div className={`relative ${aspect} overflow-hidden rounded-[2px] border border-ivory/8`}>
+                          {p.imageUrl ? (
+                            <Image
+                              src={p.imageUrl}
+                              alt={p.title}
+                              fill
+                              quality={85}
+                              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                              className="object-cover transition-transform duration-[1200ms] group-hover:scale-[1.05]"
+                            />
+                          ) : (
+                            <div className="absolute inset-0 bg-obsidian flex items-center justify-center">
+                              <span className="display text-ivory/20 text-4xl">{p.gamme}</span>
+                            </div>
+                          )}
+                          <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/15 to-transparent" />
+
+                          <div className="absolute top-0 inset-x-0 p-5 flex items-center justify-between">
+                            <span className="font-mono text-[10px] tabular-nums text-ivory/70 bg-ink/35 backdrop-blur-sm px-2.5 py-1 rounded-full border border-ivory/10">
+                              {String(i + 1).padStart(2, "0")} / {shown}
+                            </span>
+                            <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-ivory/75 bg-ink/35 backdrop-blur-sm px-2.5 py-1 rounded-full border border-ivory/10">
+                              {p.gamme}
+                            </span>
+                          </div>
+
+                          <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
+                            <span className="eyebrow text-champagne/85 block mb-2">{p.category}</span>
+                            <h3 className="display text-ivory text-[clamp(1.3rem,2.2vw,1.6rem)] leading-tight tracking-[-0.015em]">
+                              {p.title}
+                            </h3>
+                            <div className="mt-3 flex items-center gap-3 font-mono text-[10.5px] text-ivory/60">
+                              <MapPin size={11} />
+                              <span>{p.location}</span>
+                              <span className="h-px flex-1 bg-ivory/10" />
+                              <span className="tabular-nums">{p.year}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </motion.article>
+                    );
+                  })}
+                </AnimatePresence>
+              </div>
+            )}
           </div>
         </section>
       </main>

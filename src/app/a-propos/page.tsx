@@ -1,57 +1,38 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageHero } from "@/components/shared/PageHero";
 import { Button } from "@/components/shared/Button";
+import { Eyebrow } from "@/components/shared/Eyebrow";
+import { ImageStrip } from "@/components/shared/ImageStrip";
+import { LogoMarquee } from "@/components/sections/LogoMarquee";
 import { companyInfo } from "@/data/company";
 import { stats } from "@/data/stats";
-import { partners } from "@/data/partners";
-import { ArrowRight } from "lucide-react";
 
-const pillars = [
-  {
-    word: "FABRIQUER.",
-    color: "#B8B8C8",
-    description:
-      "De la decoupe laser a la soudure certifiee, chaque piece nait dans notre atelier de 1 800m2. Nous maitrisons toute la chaine de production.",
-  },
-  {
-    word: "PROTEGER.",
-    color: "#2563EB",
-    description:
-      "Notre cabine de thermolaquage de 7 metres et 200+ teintes RAL garantissent une finition durable. La protection est notre signature.",
-  },
-  {
-    word: "DURER.",
-    color: "#8888A0",
-    description:
-      "Certifications coupe-feu, traitements anticorrosion, materiaux nobles — nos ouvrages sont concus pour traverser les decennies.",
-  },
+const timeline = [
+  { year: "2018", title: "Fondation", note: "Création d'AZ Concept à Bruyères-sur-Oise. Atelier initial 400 m²." },
+  { year: "2020", title: "Thermolaquage intégré", note: "Installation de la cabine 7 m et du four XXL. Production verticalisée." },
+  { year: "2022", title: "Partenariat Jansen", note: "Intégration du réseau restreint des métalliers premium Jansen." },
+  { year: "2024", title: "Extension 1 800 m²", note: "Triplement de la surface atelier, pôle bureau d'études, pôle prototypage." },
+  { year: "2026", title: "Collection éditoriale", note: "Dix gammes architecturales dessinées pour les architectes." },
 ];
 
-const teamMembers = [
-  {
-    role: "Direction",
-    description: "Pilotage strategique, relations grands comptes",
-  },
-  {
-    role: "Bureau d'etudes",
-    description: "Conception, plans DWG, calculs de structure",
-  },
-  {
-    role: "Atelier metallerie",
-    description: "Decoupe, soudure, assemblage, finition",
-  },
-  {
-    role: "Thermolaquage",
-    description: "Preparation, poudrage, cuisson, controle",
-  },
-  {
-    role: "Pose & chantier",
-    description: "Installation sur site, coordination chantier",
-  },
+const values = [
+  { idx: "01", title: "Le dessin avant tout", body: "Chaque projet commence sur un plan. Nous refusons les ouvrages imposés qui n'ont pas été pensés." },
+  { idx: "02", title: "Intégralement sous le même toit", body: "Bureau d'études, découpe, soudure, thermolaquage, pose — un seul interlocuteur, zéro sous-traitance sensible." },
+  { idx: "03", title: "Le normatif comme point de départ", body: "NF, EI, ERP, PMR — la conformité ne se rajoute pas après, elle informe le dessin dès la première esquisse." },
+  { idx: "04", title: "Des matériaux qui durent", body: "Acier premium Jansen, inox 316L, corten, verre feuilleté — les choix que l'architecte ferait pour sa propre maison." },
+];
+
+const team = [
+  { letter: "D", role: "Direction",         body: "Pilotage stratégique, relations grands comptes, validation technique finale." },
+  { letter: "É", role: "Bureau d'études",   body: "Conception, plans DWG, calculs de structure, dialogue architecte." },
+  { letter: "A", role: "Atelier",           body: "Découpe laser, soudure TIG/MIG certifiée, pliage CNC, assemblage." },
+  { letter: "T", role: "Thermolaquage",     body: "Préparation, poudrage, cuisson, contrôle qualité finitions." },
+  { letter: "P", role: "Pose & chantier",   body: "Installation sur site, coordination, réception d'ouvrage." },
 ];
 
 export default function AProposPage() {
@@ -60,266 +41,283 @@ export default function AProposPage() {
       <Header />
       <main className="flex-1">
         <PageHero
-          title="A propos"
-          subtitle="L'histoire d'AZ Concept"
+          eyebrow="Maison"
+          index="—"
+          title="L'atelier,"
+          italicTail="depuis 2018."
+          subtitle={`Fondée à ${companyInfo.city.split(" ").slice(1).join(" ")}, AZ Concept est née d\u2019une conviction : la métallerie architecturale mérite le même niveau d\u2019exigence que les métiers d\u2019art. ${companyInfo.workshopSize} m² d\u2019atelier, dix gammes, trois mille ouvrages livrés.`}
           breadcrumbs={[
             { label: "Accueil", href: "/" },
-            { label: "A propos" },
+            { label: "À propos" },
           ]}
         />
 
-        {/* Company Story — Full-width editorial intro */}
-        <section className="py-[var(--section-padding)]">
+        {/* Manifesto split with founder feel */}
+        <section className="relative py-[var(--section-padding)]">
           <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="max-w-3xl"
-            >
-              <p className="text-[11px] uppercase tracking-[0.2em] text-text-muted mb-3">
-                Notre histoire
-              </p>
-              <h2 className="text-[2rem] sm:text-[2.6rem] lg:text-[3.2rem] font-bold tracking-[-0.02em] text-text-primary leading-[1.1] mb-6">
-                Depuis {companyInfo.foundedYear}, la metallerie d&apos;exception
-              </h2>
-            </motion.div>
-
-            {/* 2-column content */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 mt-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
               <motion.div
-                initial={{ opacity: 0, y: 16 }}
+                initial={{ opacity: 0, y: 18 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.08, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                className="space-y-4 text-[14px] text-text-secondary leading-[1.7]"
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                className="lg:col-span-5"
               >
-                <p>
-                  Fonde en {companyInfo.foundedYear} a{" "}
-                  {companyInfo.city.split(" ").slice(1).join(" ")},{" "}
-                  {companyInfo.name} est ne d&apos;une conviction : la metallerie
-                  architecturale merite le meme niveau d&apos;exigence que les
-                  metiers d&apos;art.
-                </p>
-                <p>
-                  De notre atelier de {companyInfo.workshopSize}m2, nous concevons,
-                  fabriquons et posons des ouvrages metalliques sur mesure pour
-                  l&apos;architecture et la construction. Garde-corps, portes,
-                  grilles, facades — chaque projet est une creation unique.
-                </p>
+                <Eyebrow index="Chapitre I" label="Manifeste" className="mb-6" />
+                <h2 className="display text-ivory text-[clamp(2rem,4.5vw,3.4rem)] leading-[1] tracking-[-0.025em]">
+                  Nous livrons<br />
+                  <span className="display-italic font-light text-champagne">des ouvrages.</span>
+                </h2>
               </motion.div>
-
               <motion.div
-                initial={{ opacity: 0, y: 16 }}
+                initial={{ opacity: 0, y: 18 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.16, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                className="space-y-4 text-[14px] text-text-secondary leading-[1.7]"
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ delay: 0.1, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                className="lg:col-span-6 lg:col-start-7 space-y-6"
               >
-                <p>
-                  Avec notre cabine de thermolaquage integree et plus de{" "}
-                  {companyInfo.ralColors} teintes RAL, nous maitrisons la chaine
-                  complete, du metal brut a la finition parfaite.
+                <p className="text-[17px] sm:text-[18px] leading-[1.7] text-pearl/85">
+                  Nous ne livrons pas un produit. Nous livrons un ouvrage &mdash; dessiné
+                  avec l&rsquo;architecte, fabriqué à la main, protégé pour un siècle.
+                  Cette exigence informe chaque soudure, chaque laque, chaque pose.
                 </p>
-                <div className="rounded-2xl bg-surface-card border border-border/30 p-6 mt-4 flex items-center justify-center">
-                  <div className="text-center">
-                    <span className="text-5xl sm:text-6xl font-black text-accent/10 tracking-tighter">
-                      AZ
-                    </span>
-                    <p className="text-[13px] text-text-muted mt-2">
-                      Atelier {companyInfo.workshopSize}m2 — {companyInfo.region}
-                    </p>
-                  </div>
-                </div>
+                <p className="text-[16px] leading-[1.7] text-pearl/70">
+                  Intégralement sous le même toit : dessin, découpe laser, soudure,
+                  thermolaquage 200+ RAL, collections exclusives Adaptacolor, pose
+                  sur chantier. Un seul interlocuteur, du devis à la réception.
+                </p>
               </motion.div>
             </div>
           </div>
         </section>
 
-        {/* Philosophy / Pillars — 3 cards with colored top border */}
-        <section className="py-[var(--section-padding)]">
+        {/* Atelier mosaic */}
+        <ImageStrip
+          layout="mosaic"
+          eyebrow="L'atelier · Bruyères-sur-Oise"
+          title="— 1 800 m²."
+          images={[
+            "/images/ambiance/industrial-workshop.jpg",
+            "/images/ambiance/welding-sparks.jpg",
+            "/images/ambiance/atelier-metal.jpg",
+            "/images/ambiance/metal-texture.jpg",
+            "/images/ambiance/steel-structure.jpg",
+            "/images/ambiance/architecture-moderne.jpg",
+          ]}
+          captions={[
+            "Poste découpe laser",
+            "Soudure TIG certifiée",
+            "Pôle métallerie lourde",
+            "Acier brut pré-laquage",
+            "Prototypage sur site",
+            "Bureau d'études",
+          ]}
+        />
+
+        {/* Timeline */}
+        <section className="relative py-[var(--section-padding)]">
           <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
-            <div className="mb-16">
-              <p className="text-[11px] uppercase tracking-[0.2em] text-text-muted mb-3">
-                Philosophie
-              </p>
-              <h2 className="text-[2rem] sm:text-[2.6rem] lg:text-[3.2rem] font-bold tracking-[-0.02em] text-text-primary leading-[1.1]">
-                Trois piliers. Une obsession : l&apos;excellence.
+            <div className="mb-16 sm:mb-24">
+              <Eyebrow index="Chapitre II" label="Chronologie" className="mb-6" />
+              <h2 className="display text-ivory text-[clamp(2rem,4.5vw,3.4rem)] leading-[1] tracking-[-0.025em]">
+                Huit années,<br />
+                <span className="display-italic font-light text-platinum">cinq jalons.</span>
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {pillars.map((pillar, i) => (
-                <motion.div
-                  key={pillar.word}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{
-                    delay: i * 0.08,
-                    duration: 0.8,
-                    ease: [0.22, 1, 0.36, 1],
-                  }}
-                  className="bg-surface-card rounded-2xl overflow-hidden"
-                >
-                  {/* Colored top border */}
-                  <div
-                    className="h-[3px] rounded-t"
-                    style={{ backgroundColor: pillar.color }}
-                  />
-                  <div className="p-8">
-                    <h3
-                      className="text-4xl sm:text-5xl font-black tracking-tight mb-6"
-                      style={{ color: pillar.color }}
-                    >
-                      {pillar.word}
-                    </h3>
-                    <p className="text-[14px] text-text-secondary leading-[1.7]">
-                      {pillar.description}
+            <div className="relative">
+              <div aria-hidden className="absolute left-6 sm:left-10 top-4 bottom-4 w-px bg-gradient-to-b from-transparent via-ivory/15 to-transparent" />
+              <ol className="space-y-12">
+                {timeline.map((t, i) => (
+                  <motion.li
+                    key={t.year}
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, amount: 0.3 }}
+                    transition={{ delay: i * 0.06, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                    className="relative pl-16 sm:pl-24"
+                  >
+                    <span
+                      aria-hidden
+                      className="absolute left-[18px] sm:left-[34px] top-[11px] h-[12px] w-[12px] rounded-full"
+                      style={{ background: "var(--champagne)", boxShadow: "0 0 18px rgba(201,163,92,0.6)" }}
+                    />
+                    <div className="flex items-baseline gap-6 flex-wrap">
+                      <span className="display text-champagne text-[clamp(1.8rem,3vw,2.6rem)] font-light tabular-nums tracking-[-0.02em]">
+                        {t.year}
+                      </span>
+                      <h3 className="display text-ivory text-[clamp(1.5rem,2.4vw,2rem)] font-light leading-tight">
+                        {t.title}
+                      </h3>
+                    </div>
+                    <p className="mt-3 max-w-2xl text-[15px] leading-[1.65] text-pearl/75">
+                      {t.note}
                     </p>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.li>
+                ))}
+              </ol>
             </div>
           </div>
         </section>
 
-        {/* Stats — divide-x pattern */}
-        <section className="py-[var(--section-padding)]">
-          <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
-            <div className="mb-14">
-              <p className="text-[11px] uppercase tracking-[0.2em] text-text-muted mb-3">
-                En chiffres
-              </p>
-              <h2 className="text-[2rem] sm:text-[2.6rem] lg:text-[3.2rem] font-bold tracking-[-0.02em] text-text-primary leading-[1.1]">
-                Des resultats qui parlent d&apos;eux-memes
-              </h2>
-            </div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
+        {/* Pull quote */}
+        <section className="relative py-[clamp(5rem,10vw,10rem)]">
+          <div
+            className="absolute inset-0 pointer-events-none opacity-80"
+            style={{ background: "radial-gradient(40% 60% at 50% 50%, rgba(201,163,92,0.08) 0%, transparent 70%)" }}
+          />
+          <div className="relative max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
+            <motion.blockquote
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="flex flex-wrap justify-start divide-x divide-border/30"
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+              className="max-w-4xl"
             >
-              {stats.map((stat) => (
-                <div
-                  key={stat.label}
-                  className="text-center px-8 py-6 first:pl-0"
-                >
-                  <div className="text-4xl sm:text-5xl font-black tracking-tight text-text-primary">
-                    {stat.value.toLocaleString("fr-FR")}
-                    <span className="text-accent">{stat.suffix}</span>
-                  </div>
-                  <p className="mt-2 text-[13px] text-text-muted">
-                    {stat.label}
-                  </p>
-                </div>
-              ))}
-            </motion.div>
+              <p className="display text-ivory text-[clamp(2rem,4.5vw,3.8rem)] leading-[1.1] tracking-[-0.02em]">
+                <span className="display-italic text-champagne">«</span> Un garde-corps qu&rsquo;on
+                ne voit pas, une porte qui ne grince pas, une façade qui tient vingt
+                ans &mdash; c&rsquo;est <span className="display-italic text-champagne">ça</span>,
+                faire de la métallerie.
+                <span className="display-italic text-champagne"> »</span>
+              </p>
+              <footer className="mt-8 flex items-center gap-4">
+                <span className="h-px w-10 bg-champagne/40" />
+                <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-pearl">
+                  La Direction
+                </span>
+              </footer>
+            </motion.blockquote>
           </div>
         </section>
 
-        {/* Team — full-width section */}
-        <section className="py-[var(--section-padding)]">
+        {/* Values */}
+        <section className="relative py-[var(--section-padding)]">
           <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
-            <div className="mb-14">
-              <p className="text-[11px] uppercase tracking-[0.2em] text-text-muted mb-3">
-                L&apos;equipe
-              </p>
-              <h2 className="text-[2rem] sm:text-[2.6rem] lg:text-[3.2rem] font-bold tracking-[-0.02em] text-text-primary leading-[1.1]">
-                Des specialistes a chaque etape
-              </h2>
+            <div className="flex items-end justify-between mb-16 sm:mb-24 flex-wrap gap-6">
+              <div>
+                <Eyebrow index="Chapitre III" label="Valeurs" className="mb-6" />
+                <h2 className="display text-ivory text-[clamp(2rem,4.5vw,3.4rem)] leading-[1] tracking-[-0.025em]">
+                  Quatre engagements.<br />
+                  <span className="display-italic font-light text-platinum">Un cahier des charges.</span>
+                </h2>
+              </div>
+              <span className="font-mono text-[10.5px] tabular-nums text-ash">01 → 04</span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px bg-border/20 rounded-2xl overflow-hidden">
-              {teamMembers.map((member, i) => (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-ivory/8 border border-ivory/8">
+              {values.map((v, i) => (
                 <motion.div
-                  key={member.role}
+                  key={v.idx}
                   initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{
-                    delay: i * 0.08,
-                    duration: 0.8,
-                    ease: [0.22, 1, 0.36, 1],
-                  }}
-                  className="p-5 bg-surface hover:bg-surface-elevated transition-colors duration-500 text-center"
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ delay: i * 0.06, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                  className="bg-ink p-8 sm:p-10"
                 >
-                  <div className="w-14 h-14 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-3">
-                    <span className="text-lg font-bold text-accent">
-                      {member.role.charAt(0)}
-                    </span>
-                  </div>
-                  <h3 className="text-[13px] font-semibold text-text-primary mb-1">
-                    {member.role}
+                  <span className="font-mono text-[11px] tabular-nums text-champagne">{v.idx}</span>
+                  <h3 className="mt-6 display text-ivory text-[clamp(1.5rem,2.4vw,2rem)] leading-tight tracking-[-0.02em]">
+                    {v.title}
                   </h3>
-                  <p className="text-[14px] text-text-secondary leading-[1.7]">{member.description}</p>
+                  <p className="mt-4 text-[15px] leading-[1.65] text-pearl/75">{v.body}</p>
                 </motion.div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Partners */}
-        <section className="py-16 border-y border-border/30 overflow-hidden">
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="text-center text-[11px] uppercase tracking-[0.2em] text-text-muted mb-10"
-          >
-            Ils nous font confiance
-          </motion.p>
-
+        {/* Stats */}
+        <section className="relative py-[clamp(3rem,6vw,6rem)]">
           <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-px bg-border/20 rounded-2xl overflow-hidden">
-              {partners.map((partner, i) => (
+            <div className="rounded-[2px] border border-ivory/8 bg-gradient-to-br from-ivory/[0.015] to-transparent overflow-hidden">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6">
+                {stats.map((stat, i) => (
+                  <div
+                    key={stat.label}
+                    className="p-7 sm:p-8 border-l border-ivory/8 first:border-none"
+                  >
+                    <span className="font-mono text-[10px] tabular-nums text-ash">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <div className="mt-6 display font-light text-ivory text-[clamp(2rem,4.4vw,3rem)] tabular-nums tracking-[-0.025em] leading-[1]">
+                      {stat.value.toLocaleString("fr-FR")}
+                      <span className="display-italic text-champagne ml-0.5">{stat.suffix}</span>
+                    </div>
+                    <p className="mt-3 font-mono text-[10.5px] uppercase tracking-[0.16em] text-platinum">
+                      {stat.label}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Team */}
+        <section className="relative py-[var(--section-padding)]">
+          <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
+            <div className="mb-16 sm:mb-24">
+              <Eyebrow index="Chapitre IV" label="L'équipe" className="mb-6" />
+              <h2 className="display text-ivory text-[clamp(2rem,4.5vw,3.4rem)] leading-[1] tracking-[-0.025em]">
+                Cinq métiers.<br />
+                <span className="display-italic font-light text-platinum">Un seul toit.</span>
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px bg-ivory/8 border border-ivory/8">
+              {team.map((m, i) => (
                 <motion.div
-                  key={partner.name}
+                  key={m.role}
                   initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.08, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                  className="flex items-center justify-center p-6 bg-surface"
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ delay: i * 0.06, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                  className="bg-ink p-8"
                 >
-                  <span className="text-[13px] font-bold text-text-muted/50 tracking-wider uppercase text-center">
-                    {partner.name}
-                  </span>
+                  <div className="h-14 w-14 rounded-full border border-champagne/30 bg-champagne/5 inline-flex items-center justify-center display-italic text-champagne text-[22px]">
+                    {m.letter}
+                  </div>
+                  <h3 className="mt-6 font-mono text-[11px] uppercase tracking-[0.16em] text-ivory">
+                    {m.role}
+                  </h3>
+                  <p className="mt-3 text-[13.5px] leading-[1.6] text-pearl/70">{m.body}</p>
                 </motion.div>
               ))}
             </div>
           </div>
         </section>
+
+        {/* Partners marquee */}
+        <LogoMarquee />
 
         {/* CTA */}
-        <section className="py-[var(--section-padding)]">
-          <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)] text-center">
+        <section className="relative py-[var(--section-padding)] overflow-hidden">
+          <div className="absolute inset-0 pointer-events-none"
+            style={{ background: "radial-gradient(50% 50% at 50% 50%, rgba(201,163,92,0.12) 0%, transparent 70%)" }} />
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-champagne/40 to-transparent" />
+
+          <div className="relative max-w-3xl mx-auto px-[var(--container-padding)] text-center">
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
             >
-              <p className="text-[11px] uppercase tracking-[0.2em] text-text-muted mb-3">
-                Collaborer
-              </p>
-              <h2 className="text-[2rem] sm:text-[2.6rem] lg:text-[3.2rem] font-bold tracking-[-0.02em] text-text-primary leading-[1.1] mb-4">
-                Travaillons ensemble.
+              <span className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-champagne/85">— Collaborer —</span>
+              <h2 className="mt-8 display text-ivory text-[clamp(2.2rem,5vw,4.5rem)] leading-[0.95] tracking-[-0.03em]">
+                Travaillons<br />
+                <span className="display-italic font-light text-champagne">ensemble.</span>
               </h2>
-              <p className="text-[14px] text-text-secondary leading-[1.7] mb-10 max-w-xl mx-auto">
-                Un projet de metallerie, une question technique, une demande de
-                devis — notre equipe est a votre ecoute.
+              <p className="mt-8 text-[16px] leading-[1.65] text-pearl/80 max-w-xl mx-auto">
+                Un projet de métallerie architecturale, une question technique,
+                une demande de devis — notre équipe est à votre écoute.
               </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Button href="/devis" size="lg">
                   Demander un devis
-                  <ArrowRight size={18} />
+                  <ArrowRight size={16} />
                 </Button>
-                <Button href="/contact" variant="secondary" size="lg">
+                <Button href="/contact" variant="outline" size="lg">
                   Nous contacter
                 </Button>
               </div>
