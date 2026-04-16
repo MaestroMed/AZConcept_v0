@@ -7,7 +7,7 @@ export const categories: Category[] = [
     name: "Garde-Corps",
     triptychPillar: "fabriquer",
     description:
-      "Du minimalisme absolu a l'expression brute, nos garde-corps allient securite, design et savoir-faire metallier. 4 gammes pour chaque vision architecturale.",
+      "Du minimalisme absolu à l\u2019expression brute, nos garde-corps allient sécurité, design et savoir-faire métallier. Quatre gammes pour chaque vision architecturale.",
     color: "#B8B8C8",
     gammeIds: ["aura", "forge", "secu-plus", "atelier"],
   },
@@ -17,17 +17,17 @@ export const categories: Category[] = [
     name: "Portes",
     triptychPillar: "proteger",
     description:
-      "Portes d'entree design, portes coupe-feu architecturales, portes techniques — chaque ouverture est une promesse de protection et d'elegance.",
+      "Portes d\u2019entrée design, portes coupe-feu architecturales, portes techniques — chaque ouverture est une promesse de protection et d\u2019élégance.",
     color: "#1E3A8A",
     gammeIds: ["jansen-design", "firewall", "technique"],
   },
   {
     id: "grilles",
     slug: "grilles",
-    name: "Grilles & Facades",
+    name: "Grilles & Façades",
     triptychPillar: "durer",
     description:
-      "Ventilation premium, decorations laser, habillages architecturaux — des ouvrages concus pour traverser le temps avec style.",
+      "Ventilation premium, décorations laser, habillages architecturaux — des ouvrages conçus pour traverser le temps avec style.",
     color: "#1a1a2e",
     gammeIds: ["airflow", "decor", "facade"],
   },

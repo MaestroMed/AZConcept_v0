@@ -22,15 +22,15 @@ export const navigation: NavItem[] = [
     ],
   },
   {
-    name: "Grilles & Facades",
+    name: "Grilles & Façades",
     href: "/grilles",
     children: [
       { name: "AIRFLOW", href: "/grilles/airflow" },
-      { name: "DECOR", href: "/grilles/decor" },
-      { name: "FACADE", href: "/grilles/facade" },
+      { name: "DÉCOR", href: "/grilles/decor" },
+      { name: "FAÇADE", href: "/grilles/facade" },
     ],
   },
   { name: "Thermolaquage", href: "/thermolaquage" },
-  { name: "Realisations", href: "/realisations" },
+  { name: "Réalisations", href: "/realisations" },
   { name: "Contact", href: "/contact" },
 ];
