@@ -1,42 +1,78 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { ArrowRight, Phone } from "lucide-react";
+import { companyInfo } from "@/data/company";
 
 export function CTASection() {
   return (
-    <section className="py-[var(--section-padding)] relative overflow-hidden">
-      {/* Subtle gradient accent */}
-      <div className="absolute inset-0 pointer-events-none"
-        style={{ background: "radial-gradient(ellipse 60% 40% at 50% 50%, rgba(65,105,225,0.04) 0%, transparent 70%)" }} />
+    <section className="relative py-[var(--section-padding)] overflow-hidden">
+      {/* Halo */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(50% 50% at 50% 50%, rgba(201,163,92,0.14) 0%, rgba(201,163,92,0.04) 40%, transparent 70%)",
+        }}
+      />
+      {/* Top rule */}
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-champagne/40 to-transparent" />
 
-      <div className="relative max-w-2xl mx-auto px-[var(--container-padding)] text-center">
+      <div className="relative max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          className="text-center max-w-4xl mx-auto"
         >
-          <p className="text-[11px] uppercase tracking-[0.2em] text-text-muted mb-3">Votre projet</p>
-          <h2 className="text-[2rem] sm:text-[2.6rem] lg:text-[3rem] font-bold tracking-[-0.02em] text-text-primary leading-[1.1] mb-4">
-            Commencez ici.
+          <span className="font-mono text-[10.5px] uppercase tracking-[0.22em] text-champagne/80">
+            — Commencez ici —
+          </span>
+
+          <h2 className="mt-8 display text-ivory text-[clamp(2.8rem,7vw,6.5rem)] leading-[0.95] tracking-[-0.03em]">
+            Votre projet,<br />
+            <span className="display-italic font-light text-champagne">
+              notre atelier.
+            </span>
           </h2>
-          <p className="text-[15px] text-text-secondary leading-relaxed mb-10">
-            Devis gratuit sous 48h. Plans DWG acceptes.<br className="hidden sm:block" />
-            Un interlocuteur unique du devis a la pose.
+
+          <p className="mt-10 max-w-2xl mx-auto text-[16px] sm:text-[17px] leading-[1.6] text-pearl/80">
+            Un interlocuteur unique, du dessin à la pose. Devis gratuit sous
+            <span className="text-ivory"> 48 h</span>. Plans DWG, études techniques,
+            prototypes atelier — nous répondons à tous les cahiers des charges.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Link href="/devis"
-              className="inline-flex items-center gap-2 px-6 py-3 text-[14px] font-medium rounded-xl bg-accent text-white hover:bg-accent-hover transition-colors">
-              Demander un devis <ArrowRight size={16} />
+          <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link
+              href="/devis"
+              className="btn-editorial inline-flex items-center gap-3 h-14 px-8 rounded-full bg-ivory text-ink text-[14px] font-medium hover:bg-champagne-soft transition-colors"
+            >
+              Demander un devis
+              <ArrowRight size={15} />
             </Link>
-            <Link href="/contact"
-              className="inline-flex items-center px-6 py-3 text-[14px] font-medium rounded-xl text-text-secondary hover:text-text-primary border border-border/40 hover:border-border transition-all">
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-3 h-14 px-7 rounded-full border border-ivory/20 text-ivory/90 text-[14px] hover:border-champagne/60 hover:text-champagne transition-colors"
+            >
               Nous contacter
             </Link>
           </div>
+
+          {/* Inline phone */}
+          <a
+            href={companyInfo.phoneHref}
+            className="mt-12 inline-flex items-center gap-3 text-pearl/70 hover:text-champagne transition-colors group"
+          >
+            <span className="inline-flex items-center justify-center h-10 w-10 rounded-full border border-ivory/15 group-hover:border-champagne/60 transition-colors">
+              <Phone size={13} />
+            </span>
+            <span className="font-mono text-[13px] tabular-nums tracking-[0.04em]">
+              {companyInfo.phone}
+            </span>
+            <span className="eyebrow text-ash">Lun — Ven · 08:00–18:00</span>
+          </a>
         </motion.div>
       </div>
     </section>

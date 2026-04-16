@@ -15,14 +15,12 @@ export default function Home() {
       <Header />
       <main className="flex-1 relative z-10">
         <HeroTriptych />
-        <div className="section-sep" />
-        <GammesShowcase />
-        <StatsCounter />
-        <PhilosophySection />
         <LogoMarquee />
+        <PhilosophySection />
+        <StatsCounter />
+        <GammesShowcase />
         <RealisationsPreview />
         <Testimonials />
-        <div className="section-sep" />
         <CTASection />
       </main>
       <Footer />

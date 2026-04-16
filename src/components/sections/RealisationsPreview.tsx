@@ -3,79 +3,156 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, MapPin } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { realisations } from "@/data/realisations";
+import { Eyebrow } from "@/components/shared/Eyebrow";
+
+/*
+ * Realisations — Éditorial asymétrique.
+ * One hero tile + three smaller tiles on the right.
+ * Gallery-book feeling, numbered, with technical caption.
+ */
 
 export function RealisationsPreview() {
-  const featured = realisations.slice(0, 4);
+  const [hero, ...rest] = realisations.slice(0, 5);
+  const side = rest.slice(0, 4);
+  const total = String(realisations.length).padStart(2, "0");
 
   return (
-    <section className="py-[var(--section-padding)]">
+    <section className="relative py-[var(--section-padding)]">
       <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="flex items-end justify-between mb-12"
-        >
-          <div>
-            <p className="text-[11px] uppercase tracking-[0.2em] text-text-muted mb-3">Realisations</p>
-            <h2 className="text-[2rem] sm:text-[2.6rem] font-bold tracking-[-0.02em] text-text-primary">
-              Projets recents.
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-8 mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <Eyebrow index="Chapitre III" label="Portfolio" className="mb-6" />
+            <h2 className="display text-ivory text-[clamp(2.4rem,5vw,4rem)] leading-[0.98] tracking-[-0.028em]">
+              Ouvrages.<br />
+              <span className="display-italic font-light text-platinum">Sélection récente.</span>
             </h2>
-          </div>
-          <Link href="/realisations"
-            className="hidden sm:flex items-center gap-2 text-[13px] text-text-secondary hover:text-text-primary transition-colors">
-            Tout voir <ArrowRight size={14} />
-          </Link>
-        </motion.div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {featured.map((project, i) => (
-            <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.08, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            className="flex items-end gap-8"
+          >
+            <div>
+              <p className="eyebrow text-ash">Livrés</p>
+              <p className="display text-ivory text-[clamp(1.8rem,3vw,2.6rem)] tabular-nums tracking-[-0.02em] mt-1">
+                3&nbsp;000+
+              </p>
+            </div>
+            <Link
+              href="/realisations"
+              className="link-underline inline-flex items-center gap-2 text-[13px] tracking-[0.02em] text-ivory/80 hover:text-ivory"
             >
-              <div className="group rounded-xl overflow-hidden bg-surface-card border border-border/30 hover:border-border/60 transition-all duration-500">
-                <div className="aspect-[4/3] relative overflow-hidden">
-                  {project.imageUrl ? (
-                    <Image src={project.imageUrl} alt={project.title} fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw" />
-                  ) : (
-                    <div className="absolute inset-0 bg-surface-elevated flex items-center justify-center">
-                      <span className="text-3xl font-bold text-border">{project.gamme}</span>
-                    </div>
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-                  <div className="absolute top-3 left-3">
-                    <span className="px-2 py-0.5 text-[10px] uppercase tracking-wider text-white/70 bg-black/30 backdrop-blur-sm rounded">
-                      {project.gamme}
-                    </span>
-                  </div>
-                </div>
+              Tout voir <ArrowRight size={13} />
+            </Link>
+          </motion.div>
+        </div>
 
-                <div className="p-4">
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <span className="text-[10px] uppercase tracking-wider text-accent">{project.category}</span>
-                    <span className="text-text-muted/40">&middot;</span>
-                    <span className="text-[10px] text-text-muted">{project.year}</span>
+        {/* Editorial grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+          {/* Hero tile */}
+          <motion.article
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:col-span-7 group relative"
+          >
+            <Link href="/realisations" className="block">
+              <div className="relative aspect-[4/5] sm:aspect-[5/6] lg:aspect-[4/5] overflow-hidden rounded-[2px] border border-ivory/8">
+                <Image
+                  src={hero.imageUrl!}
+                  alt={hero.title}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 60vw"
+                  quality={90}
+                  className="object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/15 to-transparent" />
+                <div className="absolute inset-x-0 top-0 p-6 flex items-start justify-between">
+                  <span className="font-mono text-[10.5px] tabular-nums text-ivory/70">
+                    01 / {total}
+                  </span>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-ivory/70 bg-ink/40 backdrop-blur-sm px-2.5 py-1 rounded-full border border-ivory/10">
+                    {hero.gamme}
+                  </span>
+                </div>
+                <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 flex items-end justify-between gap-6">
+                  <div>
+                    <p className="eyebrow text-champagne/80">{hero.category}</p>
+                    <h3 className="mt-3 display text-ivory text-[clamp(1.8rem,3.5vw,2.6rem)] leading-[1.05] tracking-[-0.02em]">
+                      {hero.title}
+                    </h3>
+                    <p className="mt-2 font-mono text-[11px] text-ivory/55">
+                      {hero.location} · {hero.year}
+                    </p>
                   </div>
-                  <h3 className="text-[14px] font-medium text-text-primary mb-1.5 group-hover:text-white transition-colors line-clamp-1">
-                    {project.title}
-                  </h3>
-                  <div className="flex items-center gap-1 text-[11px] text-text-muted">
-                    <MapPin size={11} />
-                    {project.location}
-                  </div>
+                  <span className="h-11 w-11 shrink-0 inline-flex items-center justify-center rounded-full border border-ivory/25 text-ivory group-hover:border-champagne group-hover:text-champagne transition-colors">
+                    <ArrowUpRight size={16} />
+                  </span>
                 </div>
               </div>
-            </motion.div>
-          ))}
+            </Link>
+          </motion.article>
+
+          {/* Side column */}
+          <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6 lg:gap-4">
+            {side.map((r, i) => {
+              const n = String(i + 2).padStart(2, "0");
+              return (
+                <motion.article
+                  key={r.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ delay: 0.08 + i * 0.08, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                  className="group relative"
+                >
+                  <Link href="/realisations" className="flex items-stretch gap-4 p-3 rounded-[4px] border border-ivory/6 hover:border-ivory/14 transition-colors">
+                    <div className="relative aspect-[4/5] w-[36%] shrink-0 overflow-hidden rounded-[2px]">
+                      <Image
+                        src={r.imageUrl!}
+                        alt={r.title}
+                        fill
+                        sizes="160px"
+                        quality={75}
+                        className="object-cover transition-transform duration-[1000ms] group-hover:scale-[1.05]"
+                      />
+                      <div className="absolute inset-0 bg-ink/15" />
+                    </div>
+                    <div className="flex-1 min-w-0 py-1 flex flex-col justify-between">
+                      <div className="flex items-start justify-between gap-3">
+                        <span className="font-mono text-[10px] tabular-nums text-ash">
+                          {n} / {total}
+                        </span>
+                        <ArrowUpRight size={13} className="text-ivory/30 group-hover:text-champagne transition-colors" />
+                      </div>
+                      <div>
+                        <p className="font-mono text-[9.5px] uppercase tracking-[0.16em] text-champagne/75">
+                          {r.gamme}
+                        </p>
+                        <h4 className="mt-2 display text-[16px] sm:text-[18px] leading-tight tracking-[-0.015em] text-ivory line-clamp-2">
+                          {r.title}
+                        </h4>
+                        <p className="mt-1.5 font-mono text-[10px] text-ivory/45">
+                          {r.location} · {r.year}
+                        </p>
+                      </div>
+                    </div>
+                  </Link>
+                </motion.article>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

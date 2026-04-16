@@ -1,174 +1,57 @@
 "use client";
 
 import { useCallback, useRef } from "react";
-import { motion, useMotionValue, useMotionTemplate } from "framer-motion";
+import { motion, useMotionValue, useMotionTemplate, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
+import { ArrowRight, ArrowDown } from "lucide-react";
 import { MeshGradient } from "@/components/hero/MeshGradient";
 
-/* ═══════════════════════════════════════════════
-   ANIMATED ASSEMBLY — Complex multi-keyframe
-   Each shape starts decomposed, floats in from
-   different directions, assembles piece by piece.
-   Then breathes forever.
-   ═══════════════════════════════════════════════ */
+/*
+ * Hero — Editorial Atelier
+ * ----------------------------------------------------
+ * Structure: left column = oversized serif headline
+ * ("Metallerie / d'architecture.") with editorial
+ * metadata stacked below. Right column = layered
+ * featured image + quiet technical index (01/03).
+ * Bottom row = triptych of "Fabriquer. Proteger. Durer."
+ * as clickable verbs linking to each category.
+ */
 
-function AssemblyIngots() {
-  // Color adapted: dark strokes on light beige background
-  const s = "rgba(60,55,50,0.12)";
-  const sLight = "rgba(60,55,50,0.08)";
-
-  // Each edge is a separate element that flies in from a different direction
-  return (
-    <svg viewBox="0 0 220 160" fill="none" className="w-[160px] sm:w-[200px] lg:w-[260px]">
-      {/* === BOTTOM INGOT — 3 visible faces === */}
-      {/* Front face — slides up from below */}
-      <motion.path d="M15 95 L15 125 L135 125 L135 95Z" stroke={s} strokeWidth="0.6"
-        initial={{ y: 60, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 1.5, duration: 3, ease: [0.22, 1, 0.36, 1] }} />
-      {/* Top face — drops from above */}
-      <motion.path d="M15 95 L55 72 L175 72 L135 95Z" stroke={s} strokeWidth="0.6"
-        initial={{ y: -40, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 2, duration: 3, ease: [0.22, 1, 0.36, 1] }} />
-      {/* Side face — slides from right */}
-      <motion.path d="M135 95 L175 72 L175 102 L135 125Z" stroke={sLight} strokeWidth="0.6"
-        initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }}
-        transition={{ delay: 2.4, duration: 3, ease: [0.22, 1, 0.36, 1] }} />
-
-      {/* === TOP INGOT — brighter, arrives later === */}
-      {/* Front */}
-      <motion.path d="M30 58 L30 84 L140 84 L140 58Z" stroke={s} strokeWidth="0.7"
-        initial={{ y: 50, x: -30, opacity: 0 }} animate={{ y: 0, x: 0, opacity: 1 }}
-        transition={{ delay: 3, duration: 3.5, ease: [0.22, 1, 0.36, 1] }} />
-      {/* Top — the showcase face */}
-      <motion.path d="M30 58 L65 38 L175 38 L140 58Z" stroke={s} strokeWidth="0.7"
-        initial={{ y: -50, opacity: 0, scale: 0.8 }} animate={{ y: 0, opacity: 1, scale: 1 }}
-        transition={{ delay: 3.5, duration: 3.5, ease: [0.22, 1, 0.36, 1] }} />
-      {/* Side */}
-      <motion.path d="M140 58 L175 38 L175 64 L140 84Z" stroke={sLight} strokeWidth="0.6"
-        initial={{ x: 60, opacity: 0 }} animate={{ x: 0, opacity: 1 }}
-        transition={{ delay: 3.8, duration: 3, ease: [0.22, 1, 0.36, 1] }} />
-
-      {/* === ACCENT LINES — appear last, very subtle === */}
-      <motion.line x1="8" y1="55" x2="8" y2="128" stroke={sLight} strokeWidth="0.3" strokeDasharray="1.5 4"
-        initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 1 }}
-        transition={{ delay: 5, duration: 3 }} />
-      <motion.line x1="180" y1="35" x2="180" y2="68" stroke={sLight} strokeWidth="0.3" strokeDasharray="1.5 4"
-        initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 1 }}
-        transition={{ delay: 5.3, duration: 3 }} />
-
-      {/* === BREATHING — whole group pulses after assembly === */}
-      <motion.rect x="0" y="0" width="220" height="160" fill="none"
-        animate={{ y: [0, -3, 0], x: [0, 2, 0], rotate: [0, 0.3, 0] }}
-        transition={{ delay: 7, duration: 16, repeat: Infinity, ease: "easeInOut" }} />
-    </svg>
-  );
-}
-
-function AssemblyLayers() {
-  const s = "rgba(255,255,255,0.11)";
-  const sLight = "rgba(255,255,255,0.07)";
-
-  return (
-    <svg viewBox="0 0 200 180" fill="none" className="w-[150px] sm:w-[190px] lg:w-[240px]">
-      {/* === BOTTOM PLATE — arrives from bottom-left === */}
-      <motion.g initial={{ x: -40, y: 50, opacity: 0 }} animate={{ x: 0, y: 0, opacity: 1 }}
-        transition={{ delay: 1.8, duration: 3.5, ease: [0.22, 1, 0.36, 1] }}>
-        <path d="M25 125 L100 152 L175 125 L100 98Z" stroke={sLight} strokeWidth="0.5" />
-        {/* Thickness */}
-        <path d="M25 125 L100 152 L100 157 L25 130Z" stroke={sLight} strokeWidth="0.3" />
-        <path d="M100 152 L175 125 L175 130 L100 157Z" stroke={sLight} strokeWidth="0.3" />
-      </motion.g>
-
-      {/* === MIDDLE PLATE — arrives from right === */}
-      <motion.g initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }}
-        transition={{ delay: 2.5, duration: 3.5, ease: [0.22, 1, 0.36, 1] }}>
-        <path d="M30 95 L100 120 L170 95 L100 70Z" stroke={s} strokeWidth="0.5" />
-        <path d="M30 95 L100 120 L100 124 L30 99Z" stroke={sLight} strokeWidth="0.3" />
-        <path d="M100 120 L170 95 L170 99 L100 124Z" stroke={sLight} strokeWidth="0.3" />
-      </motion.g>
-
-      {/* === TOP PLATE — drops from above, arrives last === */}
-      <motion.g initial={{ y: -60, opacity: 0, scale: 0.85 }} animate={{ y: 0, opacity: 1, scale: 1 }}
-        transition={{ delay: 3.2, duration: 4, ease: [0.22, 1, 0.36, 1] }}>
-        <path d="M35 65 L100 88 L165 65 L100 42Z" stroke={s} strokeWidth="0.6" />
-        <path d="M35 65 L100 88 L100 92 L35 69Z" stroke={sLight} strokeWidth="0.3" />
-        <path d="M100 88 L165 65 L165 69 L100 92Z" stroke={sLight} strokeWidth="0.3" />
-        {/* Specular hint on top plate */}
-        <motion.path d="M60 60 L100 73 L140 60 L100 48Z" stroke="rgba(255,255,255,0.04)" strokeWidth="0.3"
-          initial={{ opacity: 0 }} animate={{ opacity: [0, 1, 0] }}
-          transition={{ delay: 6, duration: 8, repeat: Infinity, ease: "easeInOut" }} />
-      </motion.g>
-
-      {/* Spacing lines */}
-      <motion.g initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 5.5, duration: 2 }}>
-        <line x1="180" y1="65" x2="180" y2="125" stroke={sLight} strokeWidth="0.3" strokeDasharray="1.5 4" />
-        <line x1="178" y1="65" x2="182" y2="65" stroke={sLight} strokeWidth="0.3" />
-        <line x1="178" y1="95" x2="182" y2="95" stroke={sLight} strokeWidth="0.3" />
-        <line x1="178" y1="125" x2="182" y2="125" stroke={sLight} strokeWidth="0.3" />
-      </motion.g>
-
-      {/* Breathing */}
-      <motion.rect x="0" y="0" width="200" height="180" fill="none"
-        animate={{ y: [0, -3, 0], x: [0, -2, 0], rotate: [0, -0.2, 0] }}
-        transition={{ delay: 7, duration: 18, repeat: Infinity, ease: "easeInOut" }} />
-    </svg>
-  );
-}
-
-function AssemblyMonolith() {
-  const s = "rgba(200,200,210,0.08)";
-  const sLight = "rgba(200,200,210,0.05)";
-
-  return (
-    <svg viewBox="0 0 150 200" fill="none" className="w-[110px] sm:w-[140px] lg:w-[175px]">
-      {/* Front face — rises from ground */}
-      <motion.path d="M25 35 L25 170 L85 170 L85 35Z" stroke={s} strokeWidth="0.6"
-        initial={{ y: 80, scaleY: 0.3, opacity: 0 }} animate={{ y: 0, scaleY: 1, opacity: 1 }}
-        transition={{ delay: 2, duration: 4, ease: [0.22, 1, 0.36, 1] }} />
-      {/* Top face — slides in from above */}
-      <motion.path d="M25 35 L55 15 L115 15 L85 35Z" stroke={s} strokeWidth="0.6"
-        initial={{ y: -50, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 3, duration: 3.5, ease: [0.22, 1, 0.36, 1] }} />
-      {/* Right face — slides from right */}
-      <motion.path d="M85 35 L115 15 L115 150 L85 170Z" stroke={sLight} strokeWidth="0.5"
-        initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }}
-        transition={{ delay: 3.5, duration: 3.5, ease: [0.22, 1, 0.36, 1] }} />
-
-      {/* Internal structure lines — like X-ray */}
-      <motion.line x1="55" y1="35" x2="55" y2="170" stroke={sLight} strokeWidth="0.25" strokeDasharray="2 6"
-        initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 1 }}
-        transition={{ delay: 4.5, duration: 3 }} />
-      <motion.line x1="25" y1="100" x2="85" y2="100" stroke={sLight} strokeWidth="0.25" strokeDasharray="2 6"
-        initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 1 }}
-        transition={{ delay: 4.8, duration: 3 }} />
-
-      {/* Height dimension */}
-      <motion.g initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 5.5, duration: 2 }}>
-        <line x1="18" y1="33" x2="18" y2="173" stroke={sLight} strokeWidth="0.3" strokeDasharray="1.5 4" />
-        <line x1="16" y1="35" x2="20" y2="35" stroke={sLight} strokeWidth="0.3" />
-        <line x1="16" y1="170" x2="20" y2="170" stroke={sLight} strokeWidth="0.3" />
-      </motion.g>
-
-      {/* Edge glow pulse */}
-      <motion.line x1="25" y1="35" x2="85" y2="35" stroke="rgba(200,200,220,0.06)" strokeWidth="0.8"
-        animate={{ opacity: [0.02, 0.08, 0.02] }}
-        transition={{ delay: 6, duration: 10, repeat: Infinity, ease: "easeInOut" }} />
-
-      {/* Breathing */}
-      <motion.rect x="0" y="0" width="150" height="200" fill="none"
-        animate={{ y: [0, -2, 0], x: [0, 1.5, 0], rotate: [0, 0.15, 0] }}
-        transition={{ delay: 7, duration: 20, repeat: Infinity, ease: "easeInOut" }} />
-    </svg>
-  );
-}
-
-/* ═══════════════════════════════════════════════ */
+const VERBS = [
+  {
+    word: "Fabriquer.",
+    italic: "Métallerie",
+    detail: "sur mesure",
+    href: "/garde-corps",
+    index: "01",
+  },
+  {
+    word: "Protéger.",
+    italic: "Thermolaquage",
+    detail: "& certifications",
+    href: "/portes",
+    index: "02",
+  },
+  {
+    word: "Durer.",
+    italic: "Patrimoine",
+    detail: "architectural",
+    href: "/grilles",
+    index: "03",
+  },
+];
 
 export function HeroTriptych() {
   const ref = useRef<HTMLDivElement>(null);
   const mx = useMotionValue(50);
   const my = useMotionValue(50);
-  const glow = useMotionTemplate`radial-gradient(500px circle at ${mx}% ${my}%, rgba(255,255,255,0.035) 0%, transparent 70%)`;
+  const halo = useMotionTemplate`radial-gradient(480px circle at ${mx}% ${my}%, rgba(241,237,228,0.05) 0%, transparent 70%)`;
+
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+  const meshY = useTransform(scrollYProgress, [0, 1], [0, 120]);
+  const headlineY = useTransform(scrollYProgress, [0, 1], [0, -60]);
+  const imageY = useTransform(scrollYProgress, [0, 1], [0, -30]);
 
   const onMove = useCallback((e: React.MouseEvent) => {
     if (!ref.current) return;
@@ -178,61 +61,251 @@ export function HeroTriptych() {
   }, [mx, my]);
 
   return (
-    <section ref={ref} onMouseMove={onMove}
-      className="relative h-screen min-h-[600px] max-h-[1200px] overflow-hidden">
-
-      <div className="absolute inset-0 z-0">
-        <MeshGradient colors={["#d8d0c4", "#9898ae", "#3a64c0", "#1e2e60", "#181820"]} speed={0.6} />
-      </div>
-
-      <motion.div className="absolute inset-0 z-[2] pointer-events-none" style={{ background: glow }} />
-
-      <div className="absolute inset-0 z-[3] pointer-events-none opacity-[0.025] mix-blend-overlay"
-        style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`, backgroundSize: "200px 200px" }} />
-
-      {/* ASSEMBLY WIREFRAMES */}
-      <div className="absolute inset-0 z-[4] flex items-end pointer-events-none">
-        <div className="w-full flex justify-between items-end px-[6vw] sm:px-[8vw] pb-[10vh] sm:pb-[13vh]">
-          <AssemblyIngots />
-          <AssemblyLayers />
-          <AssemblyMonolith />
+    <section
+      ref={ref}
+      onMouseMove={onMove}
+      className="relative min-h-screen overflow-hidden isolate"
+    >
+      {/* Mesh field — deep ink → steel → champagne */}
+      <motion.div
+        style={{ y: meshY }}
+        className="absolute inset-0 z-0"
+      >
+        <div className="absolute inset-0">
+          <MeshGradient
+            colors={["#08080b", "#12131a", "#1f2b40", "#5c6d85", "#c9a35c"]}
+            speed={0.55}
+          />
         </div>
-      </div>
-
-      {/* Typography */}
-      <div className="absolute inset-0 z-[5] flex items-center pointer-events-none">
-        <div className="w-full flex justify-between px-[6vw] sm:px-[8vw]">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}>
-            <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3.2rem] xl:text-[3.8rem] font-bold tracking-[-0.02em] text-[#2a2a30]">FABRIQUER.</h2>
-            <p className="mt-2 text-[12px] sm:text-[13px] tracking-[0.04em] text-[#5a5a64]">Metallerie sur mesure</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}>
-            <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3.2rem] xl:text-[3.8rem] font-bold tracking-[-0.02em] text-white">PROT&Eacute;GER.</h2>
-            <p className="mt-2 text-[12px] sm:text-[13px] tracking-[0.04em] text-white/40">Thermolaquage &amp; protection</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.9, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}>
-            <h2 className="text-[1.8rem] sm:text-[2.4rem] lg:text-[3.2rem] xl:text-[3.8rem] font-bold tracking-[-0.02em] text-[#c0c0c8]">DURER.</h2>
-            <p className="mt-2 text-[12px] sm:text-[13px] tracking-[0.04em] text-white/25">Durabilite &amp; patrimoine</p>
-          </motion.div>
-        </div>
-      </div>
-
-      <div className="absolute inset-0 z-[6] grid grid-cols-3">
-        <Link href="/garde-corps" aria-label="Fabriquer" />
-        <Link href="/portes" aria-label="Protéger" />
-        <Link href="/grilles" aria-label="Durer" />
-      </div>
-
-      <div className="absolute bottom-0 left-0 right-0 h-24 z-[7] pointer-events-none"
-        style={{ background: "linear-gradient(180deg, transparent 0%, var(--surface) 100%)" }} />
-
-      <motion.div className="absolute bottom-7 left-1/2 -translate-x-1/2 z-[8] pointer-events-none"
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2, duration: 1.5 }}>
-        <p className="text-[10px] tracking-[0.3em] uppercase text-white/15">10 gammes &middot; 200+ RAL &middot; 3 000+ projets</p>
+        {/* Darken + warm wash */}
+        <div className="absolute inset-0 bg-gradient-to-br from-ink/70 via-ink/50 to-ink/75" />
+        <div className="absolute inset-0 opacity-70"
+          style={{ background: "radial-gradient(120% 80% at 50% 110%, rgba(10,10,13,0.95), transparent 60%)" }}
+        />
       </motion.div>
+
+      {/* Mouse halo */}
+      <motion.div
+        className="pointer-events-none absolute inset-0 z-[1]"
+        style={{ background: halo }}
+      />
+
+      {/* Film grain */}
+      <div
+        className="absolute inset-0 z-[2] opacity-[0.04] mix-blend-overlay pointer-events-none"
+        style={{
+          backgroundImage:
+            'url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 240 240\'><filter id=\'n\'><feTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'3\' stitchTiles=\'stitch\'/></filter><rect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\'/></svg>")',
+          backgroundSize: "240px 240px",
+        }}
+      />
+
+      {/* Top rail — date, locale, index */}
+      <div className="relative z-20 pt-[calc(68px+2rem)] px-[var(--container-padding)] max-w-[var(--container-max)] mx-auto">
+        <div className="flex items-center justify-between">
+          <span className="eyebrow text-ivory/55">AZ / Concept — Atelier Nº 01</span>
+          <span className="eyebrow text-ivory/45 hidden sm:inline">
+            Bruyères-sur-Oise · Île-de-France
+          </span>
+          <span className="eyebrow text-ivory/55 font-mono tabular-nums">
+            MMXXVI
+          </span>
+        </div>
+        <div className="mt-5 h-px bg-gradient-to-r from-transparent via-ivory/15 to-transparent" />
+      </div>
+
+      {/* MAIN SPLIT */}
+      <div className="relative z-20 max-w-[var(--container-max)] mx-auto px-[var(--container-padding)] pt-[6vh] sm:pt-[8vh] pb-[22vh] sm:pb-[18vh]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+          {/* LEFT — headline */}
+          <motion.div style={{ y: headlineY }} className="lg:col-span-7 relative">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <p className="eyebrow text-champagne/80">Édition 2026 · Collection</p>
+            </motion.div>
+
+            <h1 className="mt-6 display text-ivory text-[clamp(3.2rem,9.5vw,8.5rem)] leading-[0.92] tracking-[-0.032em]">
+              <span className="block overflow-hidden">
+                <motion.span
+                  initial={{ y: "110%" }} animate={{ y: "0%" }}
+                  transition={{ duration: 1.1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                  className="inline-block"
+                >
+                  Métallerie
+                </motion.span>
+              </span>
+              <span className="block overflow-hidden -mt-[0.08em]">
+                <motion.span
+                  initial={{ y: "110%" }} animate={{ y: "0%" }}
+                  transition={{ duration: 1.1, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                  className="inline-block display-italic font-light text-champagne"
+                >
+                  d’architecture.
+                </motion.span>
+              </span>
+            </h1>
+
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
+              className="mt-10 max-w-[36rem]"
+            >
+              <p className="text-[17px] sm:text-[18px] leading-[1.55] text-pearl/85">
+                Dix gammes dessinées pour les architectes. Acier, verre, bois, thermolaquage
+                200+ RAL. Un atelier de <span className="text-ivory">1 800&nbsp;m²</span> en
+                Île-de-France — partenaire <span className="text-champagne">Jansen</span>,
+                collections exclusives <span className="italic">Patina · Polaris · Dichroic</span>.
+              </p>
+            </motion.div>
+
+            {/* CTAs */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 1.05, ease: [0.22, 1, 0.36, 1] }}
+              className="mt-10 flex flex-wrap items-center gap-4"
+            >
+              <Link
+                href="/devis"
+                className="btn-editorial inline-flex items-center gap-3 h-14 px-7 rounded-full bg-ivory text-ink text-[13.5px] font-medium hover:bg-champagne-soft transition-colors"
+              >
+                Ouvrir un projet
+                <ArrowRight size={15} />
+              </Link>
+              <Link
+                href="/realisations"
+                className="link-underline text-[13px] tracking-[0.02em] text-ivory/80 hover:text-ivory flex items-center gap-2"
+              >
+                Voir les réalisations
+                <span className="font-mono text-[10px] tabular-nums text-champagne">150+</span>
+              </Link>
+            </motion.div>
+
+            {/* Key-value strip */}
+            <motion.dl
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1.2, delay: 1.3 }}
+              className="mt-14 grid grid-cols-3 gap-x-6 gap-y-3 max-w-md"
+            >
+              {[
+                { k: "Gammes", v: "10" },
+                { k: "Teintes RAL", v: "200+" },
+                { k: "Projets livrés", v: "3 000+" },
+              ].map((s) => (
+                <div key={s.k}>
+                  <dt className="eyebrow text-ash">{s.k}</dt>
+                  <dd className="mt-1 display font-light text-ivory text-[clamp(1.4rem,2.2vw,2rem)] tabular-nums tracking-[-0.02em]">
+                    {s.v}
+                  </dd>
+                </div>
+              ))}
+            </motion.dl>
+          </motion.div>
+
+          {/* RIGHT — image frame */}
+          <motion.aside
+            style={{ y: imageY }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:col-span-5 lg:mt-6 relative"
+          >
+            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2px] border border-ivory/8">
+              <Image
+                src="/images/realisations/escalier-metallique-noir.jpg"
+                alt="Escalier métallique contemporain — réalisation AZ Concept"
+                fill
+                priority
+                quality={90}
+                sizes="(max-width: 1024px) 100vw, 40vw"
+                className="object-cover [filter:saturate(0.92)_contrast(1.04)]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-ink/10 via-ink/5 to-ink/70" />
+              {/* Image caption */}
+              <div className="absolute bottom-0 left-0 right-0 p-5 flex items-end justify-between">
+                <div>
+                  <p className="eyebrow text-ivory/55">Sélection · 01</p>
+                  <p className="mt-1.5 display-italic text-ivory text-[18px] leading-tight">
+                    Escalier monolithique
+                  </p>
+                  <p className="font-mono text-[10.5px] text-ivory/50 mt-1">
+                    FORGE Noir · Paris XI · 2025
+                  </p>
+                </div>
+                <Link
+                  href="/realisations"
+                  className="inline-flex items-center justify-center h-9 w-9 rounded-full border border-ivory/25 text-ivory/90 hover:border-champagne hover:text-champagne transition-colors"
+                  aria-label="Voir la réalisation"
+                >
+                  <ArrowRight size={14} />
+                </Link>
+              </div>
+            </div>
+
+            {/* Technical corner — dimension marks */}
+            <div className="mt-4 flex items-center justify-between font-mono text-[10.5px] text-ivory/45 tabular-nums">
+              <span>H. 3 820 mm</span>
+              <span className="h-px flex-1 mx-4 bg-ivory/12" />
+              <span>L. 1 240 mm</span>
+            </div>
+          </motion.aside>
+        </div>
+      </div>
+
+      {/* Bottom triptych — Fabriquer / Protéger / Durer */}
+      <div className="relative z-20 border-t border-ivory/8">
+        <div className="max-w-[var(--container-max)] mx-auto">
+          <div className="grid grid-cols-3">
+            {VERBS.map((v, i) => (
+              <motion.div
+                key={v.word}
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, delay: 1.2 + i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+                className={`relative ${i !== 0 ? "border-l border-ivory/8" : ""}`}
+              >
+                <Link
+                  href={v.href}
+                  className="group block px-5 sm:px-8 py-8 sm:py-10 transition-colors hover:bg-ivory/[0.02]"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-[10px] tabular-nums text-ash">{v.index} / 03</span>
+                    <ArrowRight size={14} className="text-ivory/35 group-hover:text-champagne group-hover:translate-x-0.5 -translate-x-0.5 transition-all" />
+                  </div>
+                  <h3 className="mt-6 display text-[clamp(1.8rem,4vw,3rem)] tracking-[-0.02em] leading-[0.95]">
+                    <span className="text-ivory">{v.word}</span>
+                  </h3>
+                  <p className="mt-3 font-serif italic text-[14px] text-pearl/70">
+                    <span className="text-champagne">{v.italic}</span> {v.detail}
+                  </p>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Scroll cue */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.8, duration: 1 }}
+        className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 pointer-events-none"
+      >
+        <span className="eyebrow text-[9.5px] text-ivory/40">Scroll</span>
+        <ArrowDown size={12} className="text-ivory/50 animate-bounce" />
+      </motion.div>
+
+      {/* Bottom fade → surface */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-48 z-[15] pointer-events-none"
+        style={{ background: "linear-gradient(180deg, transparent 0%, var(--ink) 100%)" }}
+      />
     </section>
   );
 }

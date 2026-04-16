@@ -1,76 +1,135 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { Eyebrow } from "@/components/shared/Eyebrow";
 
 const pillars = [
   {
-    word: "FABRIQUER.",
-    color: "#B8B8C8",
-    description: "Chaque ouvrage nait dans notre atelier de 1 800m\u00B2. Decoupe laser, soudure, pliage CNC — du metal brut a la piece finie.",
-    details: ["Decoupe laser haute precision", "Soudure TIG / MIG certifiee", "Pliage CNC sur mesure", "Atelier 1 800m\u00B2 en IDF"],
+    index: "01",
+    word: "Fabriquer.",
+    italic: "Le geste.",
+    description:
+      "Chaque ouvrage naît dans notre atelier de 1 800 m². Découpe laser, soudure TIG/MIG certifiée, pliage CNC — du métal brut à la pièce finie, sans sous-traitance.",
+    details: [
+      { k: "Atelier", v: "1 800 m² · Île-de-France" },
+      { k: "Découpe", v: "Laser haute précision" },
+      { k: "Soudure", v: "TIG / MIG certifiée" },
+      { k: "Pliage", v: "CNC sur mesure" },
+    ],
   },
   {
-    word: "PROT\u00c9GER.",
-    color: "#4169E1",
-    description: "Cabine thermolaquage 7m, four XXL. 200+ teintes RAL, collections Adaptacolor exclusives.",
-    details: ["Cabine thermolaquage 7m", "Four XXL haute capacite", "200+ teintes RAL", "Collections Patina, Polaris, Dichroic"],
+    index: "02",
+    word: "Protéger.",
+    italic: "La matière.",
+    description:
+      "Cabine thermolaquage 7 m, four XXL. 200+ teintes RAL et collections exclusives Adaptacolor — Patina, Polaris, Dichroïque. La finition comme promesse de longévité.",
+    details: [
+      { k: "Cabine", v: "Thermolaquage 7 m" },
+      { k: "Four", v: "XXL haute capacité" },
+      { k: "Palette", v: "200+ teintes RAL" },
+      { k: "Collections", v: "Patina · Polaris · Dichroïque" },
+    ],
   },
   {
-    word: "DURER.",
-    color: "#8888A0",
-    description: "Certifications coupe-feu, traitements anticorrosion, materiaux nobles — la durabilite dans notre ADN.",
-    details: ["Certifications EI30 a EI120", "Traitements anticorrosion", "Garantie longue duree", "Partenariat Jansen acier premium"],
+    index: "03",
+    word: "Durer.",
+    italic: "Le temps.",
+    description:
+      "Certifications coupe-feu EI 30 à EI 120, traitements anti-corrosion, matériaux nobles. Le partenariat Jansen nous donne accès à l’acier premium architectural.",
+    details: [
+      { k: "Coupe-feu", v: "EI 30 → EI 120" },
+      { k: "Anticorrosion", v: "Traitements complets" },
+      { k: "Partenaire", v: "Jansen · Acier premium" },
+      { k: "Garantie", v: "Longue durée" },
+    ],
   },
 ];
 
 export function PhilosophySection() {
   return (
-    <section className="py-[var(--section-padding)] bg-surface-elevated/30">
+    <section className="relative py-[var(--section-padding)]">
       <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-16"
-        >
-          <p className="text-[11px] uppercase tracking-[0.2em] text-text-muted mb-3">Notre philosophie</p>
-          <h2 className="text-[2rem] sm:text-[2.6rem] lg:text-[3.2rem] font-bold tracking-[-0.02em] text-text-primary leading-[1.1]">
-            Trois piliers.<br />
-            <span className="text-text-secondary">Une obsession.</span>
-          </h2>
-        </motion.div>
+        {/* Chapter header */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 mb-20">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:col-span-5"
+          >
+            <Eyebrow index="Chapitre I" label="Philosophie" className="mb-6" />
+            <h2 className="display text-ivory text-[clamp(2.4rem,5vw,4rem)] leading-[0.98] tracking-[-0.028em]">
+              Trois verbes.<br />
+              <span className="display-italic font-light text-platinum">Une discipline.</span>
+            </h2>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:col-span-6 lg:col-start-7 lg:mt-6"
+          >
+            <p className="text-[17px] leading-[1.65] text-pearl/85">
+              Nous ne livrons pas un produit. Nous livrons un ouvrage —
+              dessiné avec les architectes, fabriqué à la main, protégé
+              pour un siècle. Cette trilogie guide chaque décision,
+              chaque soudure, chaque laque.
+            </p>
+          </motion.div>
+        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-px glass rounded-2xl overflow-hidden">
-          {pillars.map((pillar, i) => (
-            <motion.div
-              key={pillar.word}
-              initial={{ opacity: 0, y: 20 }}
+        {/* Pillars */}
+        <div className="space-y-px">
+          {pillars.map((p, i) => (
+            <motion.article
+              key={p.word}
+              initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.12, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="bg-white/[0.02] p-8 sm:p-10"
+              viewport={{ once: true, amount: 0.25 }}
+              transition={{ duration: 0.9, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+              className="group relative border-t border-ivory/8 last:border-b"
             >
-              <h3 className="text-[1.6rem] sm:text-[2rem] font-bold tracking-[-0.02em] mb-5"
-                style={{ color: pillar.color }}>
-                {pillar.word}
-              </h3>
-
-              <div className="w-10 h-px mb-5" style={{ backgroundColor: pillar.color, opacity: 0.3 }} />
-
-              <p className="text-[14px] text-text-secondary leading-[1.7] mb-6">
-                {pillar.description}
-              </p>
-
-              <ul className="space-y-2.5">
-                {pillar.details.map((detail) => (
-                  <li key={detail} className="flex items-center gap-3 text-[13px] text-text-muted">
-                    <div className="w-1 h-1 rounded-full shrink-0" style={{ backgroundColor: pillar.color, opacity: 0.5 }} />
-                    {detail}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 py-10 sm:py-14">
+                {/* Index */}
+                <div className="lg:col-span-1">
+                  <span className="font-mono text-[11px] tabular-nums text-champagne">
+                    {p.index} / 03
+                  </span>
+                </div>
+                {/* Title */}
+                <div className="lg:col-span-4">
+                  <h3 className="display text-ivory text-[clamp(2rem,4.5vw,3.2rem)] leading-[1] tracking-[-0.02em]">
+                    {p.word}
+                  </h3>
+                  <p className="mt-2 display-italic font-light text-champagne text-[clamp(1.3rem,2.2vw,1.8rem)] tracking-[-0.01em]">
+                    {p.italic}
+                  </p>
+                </div>
+                {/* Body */}
+                <div className="lg:col-span-4">
+                  <p className="text-[15px] leading-[1.65] text-pearl/80">
+                    {p.description}
+                  </p>
+                </div>
+                {/* Specs */}
+                <div className="lg:col-span-3">
+                  <dl className="space-y-3">
+                    {p.details.map((d) => (
+                      <div key={d.k} className="flex items-baseline justify-between gap-4 border-b border-ivory/6 pb-2">
+                        <dt className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-ash">
+                          {d.k}
+                        </dt>
+                        <dd className="text-[12.5px] text-pearl text-right leading-tight">
+                          {d.v}
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+              </div>
+            </motion.article>
           ))}
         </div>
       </div>

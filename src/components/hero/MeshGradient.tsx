@@ -10,19 +10,16 @@ interface MeshGradientProps {
 
 const VERTEX_SHADER = `
 attribute vec2 position;
-void main() {
-  gl_Position = vec4(position, 0.0, 1.0);
-}`;
+void main() { gl_Position = vec4(position, 0.0, 1.0); }`;
 
+/* Organic editorial mesh — slow breathing warped FBM. */
 const FRAGMENT_SHADER = `
 precision highp float;
 uniform float u_time;
 uniform vec2 u_resolution;
 uniform vec3 u_colors[5];
 
-// Simplex 2D noise
 vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
-
 float snoise(vec2 v) {
   const vec4 C = vec4(0.211324865405187, 0.366025403784439,
                      -0.577350269189626, 0.024390243902439);
@@ -45,35 +42,27 @@ float snoise(vec2 v) {
   g.yz = a0.yz * x12.xz + h.yz * x12.yw;
   return 130.0 * dot(m, g);
 }
-
-// Fractal Brownian Motion — layered noise for organic feel
 float fbm(vec2 p) {
-  float value = 0.0;
-  float amplitude = 0.5;
-  float frequency = 1.0;
-  for (int i = 0; i < 5; i++) {
-    value += amplitude * snoise(p * frequency);
-    frequency *= 2.0;
-    amplitude *= 0.5;
-  }
-  return value;
+  float v = 0.0; float a = 0.5;
+  for (int i = 0; i < 5; i++) { v += a * snoise(p); p *= 2.02; a *= 0.5; }
+  return v;
 }
-
 void main() {
   vec2 uv = gl_FragCoord.xy / u_resolution;
-  float t = u_time * 0.08;
+  vec2 aspect = vec2(u_resolution.x / u_resolution.y, 1.0);
+  float t = u_time * 0.05;
 
-  // Warped UV — organic membrane distortion
+  // warped uv (dual layer) for organic membrane
   vec2 warp = vec2(
-    fbm(uv * 2.0 + vec2(t * 0.7, t * 0.3)),
-    fbm(uv * 2.0 + vec2(t * 0.4, t * 0.6) + 5.0)
+    fbm(uv * 1.6 + vec2(t * 0.6, t * 0.3)),
+    fbm(uv * 1.6 + vec2(t * 0.4, t * 0.55) + 5.0)
   );
-  vec2 warped = uv + warp * 0.15;
+  vec2 w = uv + warp * 0.18;
 
-  // Color zones — smooth blend across x axis with noise distortion
-  float zone = warped.x + fbm(warped * 1.5 + t * 0.3) * 0.2;
+  // zone modulator — diagonal progression
+  float diag = (w.x * 0.7 + w.y * 0.3);
+  float zone = diag + fbm(w * 1.3 + t * 0.25) * 0.22;
 
-  // 5-color smooth interpolation
   vec3 col;
   if (zone < 0.25) {
     col = mix(u_colors[0], u_colors[1], smoothstep(0.0, 0.25, zone));
@@ -85,13 +74,18 @@ void main() {
     col = mix(u_colors[3], u_colors[4], smoothstep(0.75, 1.0, zone));
   }
 
-  // Second layer — subtler, different frequency
-  float n2 = fbm(warped * 3.0 - t * 0.5) * 0.08;
+  // subtle second noise layer — keeps it alive
+  float n2 = fbm(w * 3.0 - t * 0.4) * 0.05;
   col += n2;
 
-  // Vignette
-  float vig = 1.0 - 0.15 * length((uv - 0.5) * vec2(1.0, 0.6));
+  // editorial vignette
+  float d = length((uv - vec2(0.5, 0.5)) * aspect);
+  float vig = 1.0 - smoothstep(0.2, 1.15, d) * 0.55;
   col *= vig;
+
+  // micro grain
+  float g = fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453);
+  col += (g - 0.5) * 0.012;
 
   gl_FragColor = vec4(col, 1.0);
 }`;
@@ -104,7 +98,7 @@ function hexToVec3(hex: string): [number, number, number] {
 }
 
 export function MeshGradient({
-  colors = ["#d8d0c4", "#a0a0b0", "#3a64c0", "#242840", "#181820"],
+  colors = ["#0a0a0d", "#15151a", "#2a2a34", "#5a6b82", "#c9a35c"],
   speed = 1,
   className,
 }: MeshGradientProps) {
@@ -115,10 +109,11 @@ export function MeshGradient({
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const gl = canvas.getContext("webgl", { alpha: false, antialias: false, preserveDrawingBuffer: false });
+    const gl = canvas.getContext("webgl", {
+      alpha: false, antialias: false, preserveDrawingBuffer: false,
+    });
     if (!gl) return;
 
-    // Compile shaders
     const vs = gl.createShader(gl.VERTEX_SHADER)!;
     gl.shaderSource(vs, VERTEX_SHADER);
     gl.compileShader(vs);
@@ -126,9 +121,8 @@ export function MeshGradient({
     const fs = gl.createShader(gl.FRAGMENT_SHADER)!;
     gl.shaderSource(fs, FRAGMENT_SHADER);
     gl.compileShader(fs);
-
     if (!gl.getShaderParameter(fs, gl.COMPILE_STATUS)) {
-      console.error("Fragment shader error:", gl.getShaderInfoLog(fs));
+      console.error("frag:", gl.getShaderInfoLog(fs));
       return;
     }
 
@@ -138,28 +132,23 @@ export function MeshGradient({
     gl.linkProgram(program);
     gl.useProgram(program);
 
-    // Full-screen quad
     const buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
-
     const posLoc = gl.getAttribLocation(program, "position");
     gl.enableVertexAttribArray(posLoc);
     gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
 
-    // Uniforms
     const timeLoc = gl.getUniformLocation(program, "u_time");
     const resLoc = gl.getUniformLocation(program, "u_resolution");
     const colorsLoc = gl.getUniformLocation(program, "u_colors");
 
-    // Set colors
     const colorData: number[] = [];
     colors.forEach((c) => colorData.push(...hexToVec3(c)));
     gl.uniform3fv(colorsLoc, new Float32Array(colorData));
 
-    // Resize
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio, 2);
+      const dpr = Math.min(window.devicePixelRatio, 1.75);
       canvas.width = canvas.clientWidth * dpr;
       canvas.height = canvas.clientHeight * dpr;
       gl.viewport(0, 0, canvas.width, canvas.height);
@@ -168,7 +157,6 @@ export function MeshGradient({
     resize();
     window.addEventListener("resize", resize);
 
-    // Render loop
     const start = performance.now();
     const render = () => {
       const elapsed = (performance.now() - start) / 1000;
@@ -188,7 +176,7 @@ export function MeshGradient({
     <canvas
       ref={canvasRef}
       className={className}
-      style={{ width: "100%", height: "100%" }}
+      style={{ width: "100%", height: "100%", display: "block" }}
     />
   );
 }

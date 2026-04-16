@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Menu } from "lucide-react";
+import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
+import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { navigation } from "@/data/navigation";
 import { MobileMenu } from "./MobileMenu";
@@ -12,101 +12,166 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const closeTimer = useRef<number | null>(null);
+
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 220, damping: 40, mass: 0.4 });
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onScroll = () => setScrolled(window.scrollY > 18);
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const openDropdown = (name: string) => {
+    if (closeTimer.current) window.clearTimeout(closeTimer.current);
+    setActiveDropdown(name);
+  };
+  const scheduleClose = () => {
+    if (closeTimer.current) window.clearTimeout(closeTimer.current);
+    closeTimer.current = window.setTimeout(() => setActiveDropdown(null), 140);
+  };
+
   return (
     <>
-      <header className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
-        scrolled
-          ? "glass-strong border-b-0 shadow-[0_1px_20px_rgba(0,0,0,0.15)]"
-          : "bg-transparent"
-      )}>
-        {/* Ondulation wave — bottom edge */}
-        {scrolled && (
-          <svg className="absolute -bottom-[2px] left-0 right-0 h-[3px] w-full" preserveAspectRatio="none">
-            <motion.path
-              d="M0,1.5 Q250,0 500,1.5 Q750,3 1000,1.5 Q1250,0 1500,1.5"
-              stroke="url(#hw)" strokeWidth="1" fill="none" vectorEffect="non-scaling-stroke"
-              animate={{ d: [
-                "M0,1.5 Q250,0 500,1.5 Q750,3 1000,1.5 Q1250,0 1500,1.5",
-                "M0,1.5 Q250,3 500,1.5 Q750,0 1000,1.5 Q1250,3 1500,1.5",
-                "M0,1.5 Q250,0 500,1.5 Q750,3 1000,1.5 Q1250,0 1500,1.5",
-              ] }}
-              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-            />
-            <defs>
-              <linearGradient id="hw" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stopColor="#d8d0c4" stopOpacity="0.12" />
-                <stop offset="40%" stopColor="#3a64c0" stopOpacity="0.2" />
-                <stop offset="100%" stopColor="#181820" stopOpacity="0.08" />
-              </linearGradient>
-            </defs>
-          </svg>
+      <header
+        className={cn(
+          "fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
+          scrolled ? "glass-strong" : "bg-transparent"
         )}
+      >
+        {/* Scroll progress (champagne hairline) */}
+        <motion.div
+          aria-hidden
+          style={{ scaleX: progress, transformOrigin: "0% 50%" }}
+          className="absolute top-0 left-0 right-0 h-px origin-left bg-gradient-to-r from-transparent via-champagne to-transparent opacity-70"
+        />
 
         <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
-          <div className="flex items-center justify-between h-14">
-            <Link href="/" className="flex items-center gap-1">
-              <span className="text-lg font-bold tracking-tight">
-                <span className="text-accent">AZ</span>
-                <span className={cn("transition-colors duration-300", scrolled ? "text-text-primary" : "text-white/80")}> Concept</span>
+          <div className="flex items-center justify-between h-[68px]">
+            {/* Wordmark */}
+            <Link href="/" className="group flex items-center gap-3">
+              <span className="inline-flex items-center gap-[2px] leading-none">
+                <span className="display text-[22px] sm:text-[24px] font-light tracking-[-0.04em] text-ivory">
+                  AZ
+                </span>
+                <span className="display-italic text-[22px] sm:text-[24px] font-light tracking-[-0.04em] text-champagne">
+                  concept
+                </span>
+              </span>
+              <span
+                aria-hidden
+                className="hidden sm:block h-4 w-px bg-ivory/15 group-hover:bg-champagne/60 transition-colors"
+              />
+              <span className="hidden sm:inline eyebrow text-[9.5px] text-platinum">
+                Metallerie d&apos;architecture
               </span>
             </Link>
 
-            <nav className="hidden lg:flex items-center gap-0.5">
-              {navigation.map((item) => (
-                <div key={item.name} className="relative"
-                  onMouseEnter={() => item.children && setActiveDropdown(item.name)}
-                  onMouseLeave={() => setActiveDropdown(null)}>
-                  <Link href={item.href}
-                    className={cn(
-                      "flex items-center gap-1 px-3 py-1.5 text-[13px] font-medium rounded-lg transition-colors duration-200",
-                      scrolled
-                        ? "text-text-secondary hover:text-text-primary hover:bg-white/[0.04]"
-                        : "text-white/50 hover:text-white/80 hover:bg-white/[0.06]"
-                    )}>
-                    {item.name}
-                    {item.children && <ChevronDown size={12} className={cn("transition-transform duration-200", activeDropdown === item.name && "rotate-180")} />}
-                  </Link>
-                  <AnimatePresence>
-                    {item.children && activeDropdown === item.name && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 6 }}
-                        transition={{ duration: 0.15 }}
-                        className="absolute top-full left-0 mt-1 w-52 py-1.5 bg-surface-elevated/95 backdrop-blur-xl border border-border/30 rounded-xl shadow-[0_8px_40px_rgba(0,0,0,0.3)]">
-                        {item.children.map((child) => (
-                          <Link key={child.name} href={child.href}
-                            className="block px-3.5 py-2 text-[13px] text-text-secondary hover:text-text-primary hover:bg-white/[0.04] transition-colors">
-                            {child.name}
-                          </Link>
-                        ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              ))}
+            {/* Desktop nav */}
+            <nav
+              className="hidden lg:flex items-center gap-1"
+              onMouseLeave={scheduleClose}
+            >
+              {navigation.map((item) => {
+                const hasChildren = !!item.children?.length;
+                return (
+                  <div
+                    key={item.name}
+                    className="relative"
+                    onMouseEnter={() => hasChildren && openDropdown(item.name)}
+                    onFocus={() => hasChildren && openDropdown(item.name)}
+                  >
+                    <Link
+                      href={item.href}
+                      className={cn(
+                        "link-underline relative inline-flex items-center gap-1 px-3.5 py-2",
+                        "font-mono text-[11px] uppercase tracking-[0.16em]",
+                        "transition-colors duration-300",
+                        activeDropdown === item.name
+                          ? "text-ivory"
+                          : "text-ivory/60 hover:text-ivory"
+                      )}
+                    >
+                      {item.name}
+                    </Link>
+
+                    <AnimatePresence>
+                      {hasChildren && activeDropdown === item.name && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 8 }}
+                          transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                          className="absolute top-full left-0 mt-2 w-64 overflow-hidden rounded-2xl glass-strong"
+                        >
+                          <div className="p-2">
+                            <div className="flex items-center justify-between px-3 py-2">
+                              <span className="eyebrow text-[9.5px] text-platinum">
+                                Gamme · {item.name}
+                              </span>
+                              <span className="font-mono text-[10px] tabular-nums text-ash">
+                                0{item.children?.length}
+                              </span>
+                            </div>
+                            <div className="rule-strong my-1" />
+                            {item.children?.map((child, i) => (
+                              <Link
+                                key={child.name}
+                                href={child.href}
+                                onClick={() => setActiveDropdown(null)}
+                                className="group flex items-center justify-between gap-3 px-3 py-2.5 rounded-xl hover:bg-ivory/[0.035] transition-colors"
+                              >
+                                <span className="display text-[18px] text-ivory/85 group-hover:text-ivory transition-colors">
+                                  {child.name}
+                                </span>
+                                <span className="font-mono text-[10px] tabular-nums text-ash group-hover:text-champagne transition-colors">
+                                  0{i + 1}
+                                </span>
+                              </Link>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              })}
             </nav>
 
+            {/* Actions */}
             <div className="flex items-center gap-3">
-              <Link href="/devis"
-                className="hidden sm:inline-flex items-center px-4 py-1.5 text-[13px] font-medium rounded-lg bg-accent/90 text-white hover:bg-accent transition-colors">
-                Devis gratuit
+              <Link
+                href="/contact"
+                className="hidden md:inline-flex eyebrow text-[10.5px] text-ivory/60 hover:text-ivory transition-colors link-underline"
+              >
+                +33 9 71 35 74 96
               </Link>
-              <button onClick={() => setIsMobileOpen(true)}
-                className={cn("lg:hidden p-2 rounded-lg transition-colors", scrolled ? "text-text-primary" : "text-white/70")} aria-label="Menu">
-                <Menu size={20} />
+              <Link
+                href="/devis"
+                className={cn(
+                  "hidden sm:inline-flex btn-editorial items-center gap-2 h-10 px-5 rounded-full",
+                  "text-[12px] font-medium tracking-[0.01em]",
+                  "bg-ivory text-ink hover:bg-champagne-soft transition-colors"
+                )}
+              >
+                Demander un devis
+                <span aria-hidden className="w-1 h-1 rounded-full bg-champagne" />
+              </Link>
+              <button
+                onClick={() => setIsMobileOpen(true)}
+                className="lg:hidden inline-flex items-center gap-2 h-10 px-3 rounded-full border border-ivory/15 text-ivory/80 hover:text-ivory hover:border-ivory/30 transition-colors"
+                aria-label="Menu"
+              >
+                <Menu size={15} />
+                <span className="eyebrow text-[10px] text-ivory/60">Menu</span>
               </button>
             </div>
           </div>
         </div>
       </header>
+
       <MobileMenu isOpen={isMobileOpen} onClose={() => setIsMobileOpen(false)} />
     </>
   );
