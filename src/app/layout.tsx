@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Fraunces, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { AmbientBackground } from "@/components/layout/AmbientBackground";
+import { InitLoader } from "@/components/shared/InitLoader";
+import { ChapterIndicator } from "@/components/shared/ChapterIndicator";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -93,6 +95,8 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col bg-ink text-ivory font-sans selection:bg-champagne selection:text-ink">
         <AmbientBackground />
+        <InitLoader />
+        <ChapterIndicator />
         {children}
       </body>
     </html>

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -9,10 +10,16 @@ import { navigation } from "@/data/navigation";
 import { MobileMenu } from "./MobileMenu";
 
 export function Header() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const closeTimer = useRef<number | null>(null);
+
+  const isActive = (href: string) => {
+    if (href === "/") return pathname === "/";
+    return pathname === href || pathname.startsWith(href + "/");
+  };
 
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 220, damping: 40, mass: 0.4 });
@@ -86,15 +93,24 @@ export function Header() {
                     <Link
                       href={item.href}
                       className={cn(
-                        "link-underline relative inline-flex items-center gap-1 px-3.5 py-2",
+                        "relative inline-flex items-center gap-1 px-3.5 py-2",
                         "font-mono text-[11px] uppercase tracking-[0.16em]",
                         "transition-colors duration-300",
-                        activeDropdown === item.name
+                        activeDropdown === item.name || isActive(item.href)
                           ? "text-ivory"
                           : "text-ivory/60 hover:text-ivory"
                       )}
                     >
                       {item.name}
+                      {isActive(item.href) && (
+                        <motion.span
+                          layoutId="header-active-dot"
+                          aria-hidden
+                          className="absolute left-1/2 -translate-x-1/2 -bottom-0.5 h-[5px] w-[5px] rounded-full bg-champagne"
+                          style={{ boxShadow: "0 0 10px rgba(201,163,92,0.8)" }}
+                          transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                        />
+                      )}
                     </Link>
 
                     <AnimatePresence>

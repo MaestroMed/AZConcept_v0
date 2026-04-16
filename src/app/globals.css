@@ -328,7 +328,17 @@ body {
   100% { transform: translateY(20px); opacity: 0; }
 }
 
+/* Grain drift — subtle film motion */
+@keyframes grain-drift {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(-2%, 1.5%); }
+  50%  { transform: translate(1.5%, -1.5%); }
+  75%  { transform: translate(-1%, 2%); }
+  100% { transform: translate(0, 0); }
+}
+
 .animate-breath { animation: breath 7s ease-in-out infinite; }
+.animate-grain  { animation: grain-drift 18s ease-in-out infinite; }
 
 /* ═══════════════════════════════════════════════
    Link underline (editorial, from-left reveal)
