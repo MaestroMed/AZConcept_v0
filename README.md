@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AZ Concept — site
 
-## Getting Started
+Next.js 16 · React 19 · Tailwind v4 · Fraunces / Inter / JetBrains Mono.
 
-First, run the development server:
+## Démarrer en local
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # http://localhost:3000
+npm run build      # build production
+npm run lint       # eslint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Variables d'environnement (production)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Définir dans Vercel → Settings → Environment Variables :
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Clé               | Valeur d'exemple                         | Rôle                                    |
+|-------------------|------------------------------------------|------------------------------------------|
+| `RESEND_API_KEY`  | `re_xxx…`                                | API Resend pour l'envoi des emails       |
+| `CONTACT_INBOX`   | `contact@azconcept.fr`                   | Destinataire des formulaires             |
+| `CONTACT_FROM`    | `AZ Concept <noreply@azconcept.fr>`      | Expéditeur (domaine vérifié Resend)      |
 
-## Learn More
+Sans ces variables, les formulaires `/api/contact` et `/api/devis` fonctionnent en mode **log console** (dev / preview). Les soumissions passent mais ne partent pas par email.
 
-To learn more about Next.js, take a look at the following resources:
+## Anti-spam
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Honeypot** : champ `hp_website` invisible dans chaque formulaire. Les bots remplissent tous les champs → si rempli, le serveur retourne 200 sans envoyer d'email.
+- **Rate-limit** : 5 requêtes par IP par fenêtre glissante de 10 min (`src/lib/rateLimit.ts`). En mémoire — sufficient pour un site peu trafiqué sur une seule région Vercel. Pour multi-région / haute charge, passer sur Upstash KV.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## TODO Mentions légales (avant mise en prod)
 
-## Deploy on Vercel
+Compléter dans `src/data/company.ts` :
+- `siret`
+- `rcs`
+- `capitalSocial`
+- `directeurPublication`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Ces champs alimentent la page `/mentions-legales`. Sans eux, le site affiche « À compléter » — obligatoire selon l'art. 6 III LCEN et l'art. R.123-237 du Code de commerce.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Architecture
+
+```
+src/
+├── app/                     # App Router
+│   ├── (home)              → /
+│   ├── garde-corps/        → /garde-corps, [gamme], [modele]
+│   ├── portes/             → miroirs via re-export
+│   ├── grilles/            → miroirs via re-export
+│   ├── a-propos/ contact/ devis/ thermolaquage/ realisations/
+│   ├── cgv/ mentions-legales/ confidentialite/
+│   └── api/contact/ api/devis/
+├── components/
+│   ├── layout/             # Header, Footer, MobileMenu, AmbientBackground
+│   ├── sections/           # Home sections (Hero, Philosophy, Gammes, …)
+│   ├── hero/               # MeshGradient WebGL
+│   └── shared/             # Button, Eyebrow, PageHero, SectionHeader,
+│                             Reveal, SpecTable, SplitEditorial, ImageStrip,
+│                             RelatedRealisations, LegalContent,
+│                             InitLoader, ChapterIndicator
+├── data/                   # company, navigation, categories, gammes,
+│                             realisations, stats, partners, testimonials,
+│                             assets (image+copy manifest)
+└── lib/
+    ├── hooks/              # useMediaQuery, useMagnetic, useBodyLock, useCountUp,
+    │                        useMousePosition
+    ├── animations.ts       # Framer variants
+    ├── rateLimit.ts        # In-memory rate limiter
+    ├── mail.ts             # Resend wrapper
+    └── utils.ts
+```
+
+## Déploiement
+
+Vercel auto-détecte Next.js. `main` = production, autres branches = previews.
+
+---
+
+© AZ Concept — Atelier de métallerie architecturale, Île-de-France.
