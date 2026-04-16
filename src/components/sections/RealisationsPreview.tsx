@@ -22,7 +22,7 @@ export function RealisationsPreview() {
     <section className="relative py-[var(--section-padding)]">
       <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-8 mb-16">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-10 mb-20 sm:mb-28">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}

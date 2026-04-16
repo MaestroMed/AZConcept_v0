@@ -49,7 +49,7 @@ export function Header() {
         />
 
         <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
-          <div className="flex items-center justify-between h-[68px]">
+          <div className="flex items-center justify-between h-[76px]">
             {/* Wordmark */}
             <Link href="/" className="group flex items-center gap-3">
               <span className="inline-flex items-center gap-[2px] leading-none">
@@ -71,7 +71,7 @@ export function Header() {
 
             {/* Desktop nav */}
             <nav
-              className="hidden lg:flex items-center gap-1"
+              className="hidden lg:flex items-center gap-2"
               onMouseLeave={scheduleClose}
             >
               {navigation.map((item) => {

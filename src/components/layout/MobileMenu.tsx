@@ -47,7 +47,7 @@ function MenuContent({ onClose }: { onClose: () => void }) {
         transition={{ type: "spring", damping: 32, stiffness: 280 }}
         className="fixed top-0 right-0 bottom-0 z-[70] w-full max-w-md flex flex-col bg-obsidian border-l border-ivory/8"
       >
-        <div className="flex items-center justify-between px-6 h-[68px] border-b border-ivory/8">
+        <div className="flex items-center justify-between px-6 h-[76px] border-b border-ivory/8">
           <span className="inline-flex items-center gap-[2px] leading-none">
             <span className="display text-[22px] font-light tracking-[-0.04em] text-ivory">AZ</span>
             <span className="display-italic text-[22px] font-light tracking-[-0.04em] text-champagne">concept</span>

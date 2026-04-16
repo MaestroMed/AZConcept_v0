@@ -23,7 +23,7 @@ export function GammesShowcase() {
     <section className="relative py-[var(--section-padding)]">
       <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-8 mb-16">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-10 mb-20 sm:mb-28">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -50,7 +50,7 @@ export function GammesShowcase() {
         </div>
 
         {/* Editorial grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 border-t border-l border-ivory/8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 border-t border-l border-ivory/8">
           {gammes.map((gamme, i) => {
             const index = String(i + 1).padStart(2, "0");
             const href = `/${getCategorySlug(gamme.categoryId)}/${gamme.slug}`;
@@ -65,7 +65,7 @@ export function GammesShowcase() {
               >
                 <Link
                   href={href}
-                  className="group relative block h-full p-6 sm:p-8 overflow-hidden transition-colors duration-500 hover:bg-ivory/[0.02]"
+                  className="group relative block h-full p-8 sm:p-10 lg:p-12 overflow-hidden transition-colors duration-500 hover:bg-ivory/[0.02]"
                 >
                   {/* Accent line (top) */}
                   <div

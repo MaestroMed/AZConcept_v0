@@ -10,7 +10,9 @@
       "mcp__Claude_in_Chrome__javascript_tool",
       "WebSearch",
       "WebFetch(domain:adaptacolor.com)",
-      "Bash(npm uninstall:*)"
+      "Bash(npm uninstall:*)",
+      "Bash(mkdir -p /root/.claude/plans)",
+      "Read(//root/.claude/plans/**)"
     ]
   }
 }

@@ -50,7 +50,7 @@ export function PhilosophySection() {
     <section className="relative py-[var(--section-padding)]">
       <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
         {/* Chapter header */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-20 mb-24 sm:mb-32">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -91,7 +91,7 @@ export function PhilosophySection() {
               transition={{ duration: 0.9, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
               className="group relative border-t border-ivory/8 last:border-b"
             >
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 py-10 sm:py-14">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 py-14 sm:py-20">
                 {/* Index */}
                 <div className="lg:col-span-1">
                   <span className="font-mono text-[11px] tabular-nums text-champagne">
