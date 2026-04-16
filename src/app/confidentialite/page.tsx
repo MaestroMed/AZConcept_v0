@@ -1,75 +1,70 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageHero } from "@/components/shared/PageHero";
+import { LegalContent } from "@/components/shared/LegalContent";
 import { companyInfo } from "@/data/company";
 
 const sections = [
   {
-    title: "1. Responsable du traitement",
+    title: "Responsable du traitement",
     content: [
-      `Le responsable du traitement des donnees personnelles est ${companyInfo.legalName}, situe au ${companyInfo.address}, ${companyInfo.city}.`,
+      `Le responsable du traitement des données personnelles est ${companyInfo.legalName}, situé au ${companyInfo.address}, ${companyInfo.city}.`,
       `Contact : ${companyInfo.email}`,
     ],
   },
   {
-    title: "2. Donnees collectees",
+    title: "Données collectées",
     content: [
-      "Nous collectons les donnees personnelles que vous nous fournissez volontairement via nos formulaires de contact et de demande de devis :",
-      "— Nom et prenom\n— Adresse email\n— Numero de telephone\n— Nom de societe (le cas echeant)\n— Description de votre projet",
-      "Ces donnees sont necessaires au traitement de votre demande et a la relation commerciale.",
+      "Nous collectons les données personnelles que vous nous fournissez volontairement via nos formulaires de contact et de demande de devis : nom et prénom, adresse email, numéro de téléphone, nom de société (le cas échéant), description de votre projet.",
+      "Ces données sont nécessaires au traitement de votre demande et à la relation commerciale.",
     ],
   },
   {
-    title: "3. Finalites du traitement",
+    title: "Finalités du traitement",
     content: [
-      "Vos donnees personnelles sont collectees pour les finalites suivantes :",
-      "— Repondre a vos demandes de contact et de devis\n— Assurer le suivi commercial de votre projet\n— Vous adresser des informations relatives a nos prestations\n— Respecter nos obligations legales et reglementaires",
+      "Vos données personnelles sont collectées pour répondre à vos demandes de contact et de devis, assurer le suivi commercial de votre projet, vous adresser des informations relatives à nos prestations et respecter nos obligations légales et réglementaires.",
     ],
   },
   {
-    title: "4. Base legale",
+    title: "Base légale",
     content: [
-      "Le traitement de vos donnees repose sur :",
-      "— Votre consentement lors de l'envoi d'un formulaire\n— L'execution d'un contrat ou de mesures precontractuelles\n— Notre interet legitime a gerer notre activite commerciale",
+      "Le traitement de vos données repose sur votre consentement lors de l'envoi d'un formulaire, l'exécution d'un contrat ou de mesures précontractuelles, et notre intérêt légitime à gérer notre activité commerciale.",
     ],
   },
   {
-    title: "5. Duree de conservation",
+    title: "Durée de conservation",
     content: [
-      "Vos donnees sont conservees pendant la duree necessaire aux finalites pour lesquelles elles ont ete collectees :",
-      "— Demandes de contact : 3 ans a compter du dernier contact\n— Donnees clients : duree de la relation contractuelle + 5 ans (obligations legales)\n— Cookies : 13 mois maximum",
+      "Demandes de contact : 3 ans à compter du dernier contact.",
+      "Données clients : durée de la relation contractuelle + 5 ans (obligations légales).",
+      "Cookies : 13 mois maximum.",
     ],
   },
   {
-    title: "6. Destinataires des donnees",
+    title: "Destinataires des données",
     content: [
-      "Vos donnees personnelles ne sont communiquees a aucun tiers, sauf obligation legale.",
-      "Elles sont accessibles uniquement aux equipes internes habilitees d'AZ Concept.",
+      "Vos données personnelles ne sont communiquées à aucun tiers, sauf obligation légale.",
+      "Elles sont accessibles uniquement aux équipes internes habilitées d'AZ Concept.",
     ],
   },
   {
-    title: "7. Vos droits",
+    title: "Vos droits",
     content: [
-      "Conformement au RGPD, vous disposez des droits suivants :",
-      "— Droit d'acces a vos donnees\n— Droit de rectification\n— Droit a l'effacement\n— Droit a la limitation du traitement\n— Droit a la portabilite\n— Droit d'opposition",
-      `Pour exercer vos droits, contactez-nous a : ${companyInfo.email}`,
-      "Vous pouvez egalement adresser une reclamation a la CNIL (www.cnil.fr).",
+      "Conformément au RGPD, vous disposez d'un droit d'accès à vos données, de rectification, à l'effacement, à la limitation du traitement, à la portabilité et d'opposition.",
+      `Pour exercer vos droits, contactez-nous à : ${companyInfo.email}`,
+      "Vous pouvez également adresser une réclamation à la CNIL (www.cnil.fr).",
     ],
   },
   {
-    title: "8. Cookies",
+    title: "Cookies",
     content: [
-      "Ce site utilise des cookies strictement necessaires a son fonctionnement.",
-      "Des cookies analytiques peuvent etre utilises pour mesurer l'audience du site. Vous pouvez les refuser via le bandeau de consentement.",
+      "Ce site utilise des cookies strictement nécessaires à son fonctionnement.",
+      "Des cookies analytiques peuvent être utilisés pour mesurer l'audience du site. Vous pouvez les refuser via le bandeau de consentement.",
     ],
   },
   {
-    title: "9. Securite",
+    title: "Sécurité",
     content: [
-      "Nous mettons en oeuvre des mesures techniques et organisationnelles appropriees pour proteger vos donnees personnelles contre tout acces, modification, divulgation ou destruction non autorise.",
+      "Nous mettons en œuvre des mesures techniques et organisationnelles appropriées pour protéger vos données personnelles contre tout accès, modification, divulgation ou destruction non autorisé.",
     ],
   },
 ];
@@ -80,57 +75,17 @@ export default function ConfidentialitePage() {
       <Header />
       <main className="flex-1">
         <PageHero
-          title="Politique de confidentialite"
-          subtitle="Protection de vos donnees personnelles"
+          eyebrow="Légal"
+          index="—"
+          title="Politique"
+          italicTail="de confidentialité."
+          subtitle="Protection de vos données personnelles — RGPD."
           breadcrumbs={[
             { label: "Accueil", href: "/" },
-            { label: "Confidentialite" },
+            { label: "Confidentialité" },
           ]}
         />
-
-        <section className="py-[var(--section-padding)]">
-          <div className="max-w-3xl mx-auto px-[var(--container-padding)]">
-            <div className="space-y-10">
-              {sections.map((section, i) => (
-                <motion.div
-                  key={section.title}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{
-                    delay: i * 0.08,
-                    duration: 0.8,
-                    ease: [0.22, 1, 0.36, 1],
-                  }}
-                >
-                  <h2 className="text-[15px] font-medium text-text-primary mb-4">
-                    {section.title}
-                  </h2>
-                  <div className="space-y-3">
-                    {section.content.map((paragraph, j) => (
-                      <p
-                        key={j}
-                        className="text-[14px] text-text-secondary leading-[1.7] whitespace-pre-line"
-                      >
-                        {paragraph}
-                      </p>
-                    ))}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.16, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-16 pt-8 border-t border-border/30 text-[13px] text-text-muted"
-            >
-              Derniere mise a jour : Avril 2026
-            </motion.p>
-          </div>
-        </section>
+        <LegalContent sections={sections} />
       </main>
       <Footer />
     </>

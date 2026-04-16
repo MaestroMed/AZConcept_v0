@@ -7,6 +7,7 @@ import { ArrowLeft, ArrowRight, Check, ChevronRight } from "lucide-react";
 import { Button } from "@/components/shared/Button";
 import { SpecTable } from "@/components/shared/SpecTable";
 import { Eyebrow } from "@/components/shared/Eyebrow";
+import { ImageStrip } from "@/components/shared/ImageStrip";
 import { getGammeAssets, getModeleImage } from "@/data/assets";
 import type { Category, Gamme, Modele } from "@/types";
 
@@ -182,6 +183,15 @@ export function ModeleContent({ category, gamme, modele, categorySlug }: ModeleC
           </div>
         </div>
       </section>
+
+      {/* Ambiance — extra context images of the gamme */}
+      {assets && assets.ambianceImages.length > 0 && (
+        <ImageStrip
+          eyebrow={`Ambiance · ${gamme.name}`}
+          title={`— mises en situation.`}
+          images={[...assets.ambianceImages, assets.heroImage].slice(0, 4)}
+        />
+      )}
 
       {/* Prev / Next navigator */}
       {(prev || next) && (

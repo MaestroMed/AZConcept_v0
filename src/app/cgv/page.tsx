@@ -1,79 +1,77 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageHero } from "@/components/shared/PageHero";
+import { LegalContent } from "@/components/shared/LegalContent";
 import { companyInfo } from "@/data/company";
 
 const articles = [
   {
-    title: "Article 1 — Objet",
+    title: "Objet",
     content: [
-      `Les presentes Conditions Generales de Vente (CGV) regissent l'ensemble des relations commerciales entre ${companyInfo.legalName}, ci-apres "le Prestataire", et ses clients, ci-apres "le Client".`,
-      "Toute commande implique l'acceptation sans reserve par le Client des presentes CGV.",
+      `Les présentes Conditions Générales de Vente (CGV) régissent l'ensemble des relations commerciales entre ${companyInfo.legalName}, ci-après « le Prestataire », et ses clients, ci-après « le Client ».`,
+      "Toute commande implique l'acceptation sans réserve par le Client des présentes CGV.",
     ],
   },
   {
-    title: "Article 2 — Devis et commandes",
+    title: "Devis et commandes",
     content: [
-      "Les devis etablis par le Prestataire sont valables 30 jours a compter de leur date d'emission, sauf indication contraire.",
-      "Toute commande ne devient definitive qu'apres acceptation ecrite du devis par le Client et versement de l'acompte prevu.",
+      "Les devis établis par le Prestataire sont valables 30 jours à compter de leur date d'émission, sauf indication contraire.",
+      "Toute commande ne devient définitive qu'après acceptation écrite du devis par le Client et versement de l'acompte prévu.",
     ],
   },
   {
-    title: "Article 3 — Prix",
+    title: "Prix",
     content: [
-      "Les prix sont exprimes en euros hors taxes (HT). La TVA applicable est celle en vigueur au jour de la facturation.",
-      "Les prix peuvent etre revises en cas de variation significative du cout des matieres premieres, sous reserve d'en informer le Client dans un delai raisonnable.",
+      "Les prix sont exprimés en euros hors taxes (HT). La TVA applicable est celle en vigueur au jour de la facturation.",
+      "Les prix peuvent être révisés en cas de variation significative du coût des matières premières, sous réserve d'en informer le Client dans un délai raisonnable.",
     ],
   },
   {
-    title: "Article 4 — Conditions de paiement",
+    title: "Conditions de paiement",
     content: [
-      "Sauf conditions particulieres, un acompte de 40% est exige a la commande. Le solde est payable a la livraison ou selon l'echeancier convenu.",
-      "Tout retard de paiement entrainera des penalites de retard calculees au taux legal en vigueur, ainsi qu'une indemnite forfaitaire de 40 euros pour frais de recouvrement.",
+      "Sauf conditions particulières, un acompte de 40 % est exigé à la commande. Le solde est payable à la livraison ou selon l'échéancier convenu.",
+      "Tout retard de paiement entraînera des pénalités de retard calculées au taux légal en vigueur, ainsi qu'une indemnité forfaitaire de 40 € pour frais de recouvrement.",
     ],
   },
   {
-    title: "Article 5 — Delais de livraison",
+    title: "Délais de livraison",
     content: [
-      "Les delais de livraison sont donnes a titre indicatif. Un retard de livraison ne pourra donner lieu a aucune penalite, indemnite, annulation de commande ou refus de reception.",
-      "Le service express sous 48h est disponible sous conditions et moyennant un supplement tarifaire.",
+      "Les délais de livraison sont donnés à titre indicatif. Un retard de livraison ne pourra donner lieu à aucune pénalité, indemnité, annulation de commande ou refus de réception.",
+      "Le service express sous 48 h est disponible sous conditions et moyennant un supplément tarifaire.",
     ],
   },
   {
-    title: "Article 6 — Reception et reclamations",
+    title: "Réception et réclamations",
     content: [
-      "Le Client doit verifier l'etat des marchandises a la livraison. Toute reclamation doit etre formulee par ecrit dans un delai de 7 jours suivant la reception.",
-      "Passe ce delai, aucune reclamation ne sera recevable.",
+      "Le Client doit vérifier l'état des marchandises à la livraison. Toute réclamation doit être formulée par écrit dans un délai de 7 jours suivant la réception.",
+      "Passé ce délai, aucune réclamation ne sera recevable.",
     ],
   },
   {
-    title: "Article 7 — Garantie",
+    title: "Garantie",
     content: [
-      "Les ouvrages metalliques beneficient d'une garantie conforme aux dispositions legales en vigueur.",
-      "La garantie couvre les defauts de fabrication et de thermolaquage dans des conditions normales d'utilisation. Elle ne couvre pas l'usure normale, les dommages causes par un usage inapproprie ou un defaut d'entretien.",
+      "Les ouvrages métalliques bénéficient d'une garantie conforme aux dispositions légales en vigueur.",
+      "La garantie couvre les défauts de fabrication et de thermolaquage dans des conditions normales d'utilisation. Elle ne couvre pas l'usure normale, les dommages causés par un usage inapproprié ou un défaut d'entretien.",
     ],
   },
   {
-    title: "Article 8 — Responsabilite",
+    title: "Responsabilité",
     content: [
-      "La responsabilite du Prestataire est limitee au montant de la commande concernee.",
-      "Le Prestataire ne saurait etre tenu responsable des dommages indirects, tels que perte de chiffre d'affaires, prejudice commercial ou perte de chance.",
+      "La responsabilité du Prestataire est limitée au montant de la commande concernée.",
+      "Le Prestataire ne saurait être tenu responsable des dommages indirects, tels que perte de chiffre d'affaires, préjudice commercial ou perte de chance.",
     ],
   },
   {
-    title: "Article 9 — Propriete intellectuelle",
+    title: "Propriété intellectuelle",
     content: [
-      "Les plans, dessins et documents techniques remis au Client restent la propriete du Prestataire et ne peuvent etre communiques a des tiers sans autorisation ecrite.",
+      "Les plans, dessins et documents techniques remis au Client restent la propriété du Prestataire et ne peuvent être communiqués à des tiers sans autorisation écrite.",
     ],
   },
   {
-    title: "Article 10 — Droit applicable et litiges",
+    title: "Droit applicable et litiges",
     content: [
-      "Les presentes CGV sont soumises au droit francais.",
-      "En cas de litige, les parties s'efforceront de trouver une solution amiable. A defaut, le tribunal competent sera celui du siege social du Prestataire.",
+      "Les présentes CGV sont soumises au droit français.",
+      "En cas de litige, les parties s'efforceront de trouver une solution amiable. À défaut, le tribunal compétent sera celui du siège social du Prestataire.",
     ],
   },
 ];
@@ -84,57 +82,17 @@ export default function CGVPage() {
       <Header />
       <main className="flex-1">
         <PageHero
-          title="Conditions Generales de Vente"
-          subtitle="CGV applicables aux prestations d'AZ Concept"
+          eyebrow="Légal"
+          index="—"
+          title="Conditions Générales"
+          italicTail="de Vente."
+          subtitle={`CGV applicables aux prestations d'${companyInfo.name}.`}
           breadcrumbs={[
             { label: "Accueil", href: "/" },
             { label: "CGV" },
           ]}
         />
-
-        <section className="py-[var(--section-padding)]">
-          <div className="max-w-3xl mx-auto px-[var(--container-padding)]">
-            <div className="space-y-10">
-              {articles.map((article, i) => (
-                <motion.div
-                  key={article.title}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{
-                    delay: i * 0.08,
-                    duration: 0.8,
-                    ease: [0.22, 1, 0.36, 1],
-                  }}
-                >
-                  <h2 className="text-[15px] font-medium text-text-primary mb-4">
-                    {article.title}
-                  </h2>
-                  <div className="space-y-3">
-                    {article.content.map((paragraph, j) => (
-                      <p
-                        key={j}
-                        className="text-[14px] text-text-secondary leading-[1.7]"
-                      >
-                        {paragraph}
-                      </p>
-                    ))}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.16, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-16 pt-8 border-t border-border/30 text-[13px] text-text-muted"
-            >
-              Derniere mise a jour : Avril 2026
-            </motion.p>
-          </div>
-        </section>
+        <LegalContent sections={articles} />
       </main>
       <Footer />
     </>
