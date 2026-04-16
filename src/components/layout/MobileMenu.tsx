@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronDown, Phone, ArrowUpRight } from "lucide-react";
@@ -28,6 +28,43 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
 function MenuContent({ onClose }: { onClose: () => void }) {
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
+  const asideRef = useRef<HTMLElement>(null);
+
+  // Keyboard: Escape closes, Tab traps focus within the aside.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+      if (e.key !== "Tab" || !asideRef.current) return;
+      const focusable = asideRef.current.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+      if (e.shiftKey && active === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    // Focus the first interactive element on mount
+    const t = window.setTimeout(() => {
+      asideRef.current
+        ?.querySelector<HTMLElement>('a[href], button:not([disabled])')
+        ?.focus();
+    }, 30);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.clearTimeout(t);
+    };
+  }, [onClose]);
 
   return (
     <>
@@ -41,6 +78,10 @@ function MenuContent({ onClose }: { onClose: () => void }) {
       />
 
       <motion.aside
+        ref={asideRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Menu de navigation"
         initial={{ x: "100%" }}
         animate={{ x: 0 }}
         exit={{ x: "100%" }}

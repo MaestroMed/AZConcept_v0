@@ -44,7 +44,7 @@ export function HeroTriptych() {
     <section
       ref={ref}
       onMouseMove={onMove}
-      className="relative min-h-[100svh] [overflow-x:clip]"
+      className="relative min-h-screen min-h-[100svh] [overflow-x:clip]"
     >
       {/* Mesh field */}
       <motion.div style={{ y: meshY }} className="absolute inset-0 z-0">

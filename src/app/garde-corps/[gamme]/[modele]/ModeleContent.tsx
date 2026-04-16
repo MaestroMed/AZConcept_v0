@@ -197,9 +197,15 @@ export function ModeleContent({ category, gamme, modele, categorySlug }: ModeleC
       {(prev || next) && (
         <section className="relative border-t border-ivory/8">
           <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
-            <div className="grid grid-cols-2 divide-x divide-ivory/8">
-              {prev ? (
-                <Link href={`/${categorySlug}/${gamme.slug}/${prev.slug}`} className="group py-12 pr-6 sm:pr-10 flex items-center gap-4">
+            <div
+              className={`grid ${prev && next ? "grid-cols-2 divide-x divide-ivory/8" : "grid-cols-1"}`}
+            >
+              {prev && (
+                <Link
+                  href={`/${categorySlug}/${gamme.slug}/${prev.slug}`}
+                  aria-label={`Modèle précédent : ${prev.name}`}
+                  className="group py-12 pr-6 sm:pr-10 flex items-center gap-4"
+                >
                   <ArrowLeft size={18} className="text-ivory/40 group-hover:text-champagne group-hover:-translate-x-0.5 transition-all shrink-0" />
                   <div>
                     <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-ash block mb-1.5">Précédent</span>
@@ -207,9 +213,16 @@ export function ModeleContent({ category, gamme, modele, categorySlug }: ModeleC
                     <span className="block font-mono text-[10.5px] text-platinum mt-1.5 line-clamp-1">{prev.tagline}</span>
                   </div>
                 </Link>
-              ) : <div />}
-              {next ? (
-                <Link href={`/${categorySlug}/${gamme.slug}/${next.slug}`} className="group py-12 pl-6 sm:pl-10 flex items-center justify-end gap-4 text-right">
+              )}
+              {next && (
+                <Link
+                  href={`/${categorySlug}/${gamme.slug}/${next.slug}`}
+                  aria-label={`Modèle suivant : ${next.name}`}
+                  className={`group py-12 flex items-center gap-4 ${
+                    prev ? "pl-6 sm:pl-10 justify-end text-right" : "justify-center text-center"
+                  }`}
+                >
+                  {!prev && <ArrowLeft size={18} className="opacity-0 shrink-0" aria-hidden />}
                   <div>
                     <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-ash block mb-1.5">Suivant</span>
                     <span className="display text-ivory text-[20px] sm:text-[24px] leading-tight">{next.name}</span>
@@ -217,7 +230,7 @@ export function ModeleContent({ category, gamme, modele, categorySlug }: ModeleC
                   </div>
                   <ArrowRight size={18} className="text-ivory/40 group-hover:text-champagne group-hover:translate-x-0.5 transition-all shrink-0" />
                 </Link>
-              ) : <div />}
+              )}
             </div>
           </div>
         </section>

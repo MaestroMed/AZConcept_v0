@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -9,6 +9,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/shared/Button";
 import { Eyebrow } from "@/components/shared/Eyebrow";
+import { useBodyLock } from "@/lib/hooks/useBodyLock";
 
 const collections = [
   {
@@ -93,6 +94,17 @@ const ralColors = [
 
 export default function ThermolaquagePage() {
   const [zoomImg, setZoomImg] = useState<{ src: string; name: string } | null>(null);
+
+  useBodyLock(!!zoomImg);
+
+  useEffect(() => {
+    if (!zoomImg) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setZoomImg(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [zoomImg]);
 
   return (
     <>
