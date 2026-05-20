@@ -61,7 +61,7 @@ export function GammesShowcase() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.15 }}
                 transition={{ delay: i * 0.04, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                className="border-r border-b border-ivory/8"
+                className="card-cq border-r border-b border-ivory/8"
               >
                 <Link
                   href={href}

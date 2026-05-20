@@ -392,3 +392,82 @@ body {
   }
   html { scroll-behavior: auto; }
 }
+
+/* ═══════════════════════════════════════════════
+   Cutting-edge — View Transitions API (cross-fade + serif crossglide).
+   Chromium ≥ 111 / Safari TP / Firefox 132+. Falls back to instant nav.
+   ═══════════════════════════════════════════════ */
+
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.45s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+::view-transition-old(root) {
+  animation-name: vt-fade-out;
+}
+::view-transition-new(root) {
+  animation-name: vt-fade-in;
+}
+@keyframes vt-fade-out {
+  to { opacity: 0; transform: translateY(-8px); filter: blur(4px); }
+}
+@keyframes vt-fade-in {
+  from { opacity: 0; transform: translateY(8px); filter: blur(4px); }
+}
+
+/* Header chrome stays still during nav. */
+header { view-transition-name: site-header; }
+footer { view-transition-name: site-footer; }
+::view-transition-old(site-header),
+::view-transition-new(site-header),
+::view-transition-old(site-footer),
+::view-transition-new(site-footer) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   Cutting-edge — Container queries (cards adapt to their own width).
+   ═══════════════════════════════════════════════ */
+
+.card-cq {
+  container-type: inline-size;
+  container-name: card;
+}
+@container card (max-width: 360px) {
+  .card-cq-title { font-size: 1.2rem; }
+  .card-cq-features { display: none; }
+}
+
+/* ═══════════════════════════════════════════════
+   Cutting-edge — Native CSS scroll-driven animations.
+   Chromium ≥ 115. Falls back gracefully (no animation).
+   ═══════════════════════════════════════════════ */
+
+@supports (animation-timeline: scroll()) {
+  .scroll-rise {
+    animation: scroll-rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 30%;
+  }
+  @keyframes scroll-rise {
+    from { opacity: 0; transform: translateY(28px); filter: blur(6px); }
+    to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-rise { animation: none !important; }
+}
