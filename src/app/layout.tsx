@@ -1,9 +1,11 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Fraunces, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { AmbientBackground } from "@/components/layout/AmbientBackground";
 import { InitLoader } from "@/components/shared/InitLoader";
 import { ChapterIndicator } from "@/components/shared/ChapterIndicator";
+import { JsonLd } from "@/components/shared/JsonLd";
+import { organization, website, localBusiness, SITE_URL } from "@/lib/seo";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -27,56 +29,88 @@ const mono = JetBrains_Mono({
   weight: ["400", "500"],
 });
 
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a0d" },
+    { media: "(prefers-color-scheme: light)", color: "#0a0a0d" },
+  ],
+  colorScheme: "dark",
+  width: "device-width",
+  initialScale: 1,
+};
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://azconcept.fr"),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "AZ Concept — Metallerie d'architecture. Fabriquer. Proteger. Durer.",
+    default: "AZ Concept — Métallerie d’architecture. Fabriquer. Protéger. Durer.",
     template: "%s · AZ Concept",
   },
   description:
-    "Atelier de metallerie architecturale en Ile-de-France. Garde-corps, portes monumentales, grilles et facades. Thermolaquage 200+ RAL, partenaire Jansen, 10 gammes dessinees pour les architectes.",
+    "Atelier de métallerie architecturale en Île-de-France. Garde-corps, portes monumentales, grilles & façades. Thermolaquage 200+ RAL, partenaire Jansen — dix gammes dessinées pour les architectes.",
+  applicationName: "AZ Concept",
+  generator: "Next.js",
+  referrer: "origin-when-cross-origin",
   keywords: [
-    "metallerie architecturale", "garde-corps sur mesure", "porte Jansen",
-    "thermolaquage RAL", "grille ventilation decor", "facade metallique",
-    "architecte Ile-de-France", "acier corten", "verriere atelier", "AZ Concept",
+    "métallerie architecturale",
+    "garde-corps sur mesure",
+    "porte Jansen",
+    "porte coupe-feu",
+    "thermolaquage RAL",
+    "thermolaquage Île-de-France",
+    "grille ventilation décor",
+    "façade métallique",
+    "architecte Île-de-France",
+    "acier corten",
+    "verrière atelier",
+    "Adaptacolor Patina Polaris Dichroïque",
+    "AZ Concept",
   ],
   authors: [{ name: "AZ Concept" }],
   creator: "AZ Concept",
+  publisher: "AZ Concept",
+  alternates: {
+    canonical: "/",
+    languages: { "fr-FR": "/" },
+  },
   openGraph: {
     type: "website",
     locale: "fr_FR",
+    url: SITE_URL,
     siteName: "AZ Concept",
-    title: "AZ Concept — Metallerie d'architecture",
+    title: "AZ Concept — Métallerie d’architecture",
     description:
-      "Fabriquer. Proteger. Durer. Dix gammes d'ouvrages metalliques pour les architectes, thermolaquage haute performance, atelier 1 800 m² en Ile-de-France.",
+      "Fabriquer. Protéger. Durer. Dix gammes d’ouvrages métalliques pour les architectes, thermolaquage haute performance, atelier 1 800 m² en Île-de-France.",
+    images: [
+      {
+        url: "/api/og",
+        width: 1200,
+        height: 630,
+        alt: "AZ Concept — Métallerie d’architecture",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "AZ Concept — Metallerie d'architecture",
-    description:
-      "Dix gammes d'ouvrages metalliques, thermolaquage 200+ RAL, partenaire Jansen. Atelier en Ile-de-France.",
+    title: "AZ Concept — Métallerie d’architecture",
+    description: "Dix gammes d’ouvrages métalliques, thermolaquage 200+ RAL, partenaire Jansen. Île-de-France.",
+    images: ["/api/og"],
   },
   formatDetection: { email: false, address: false, telephone: false },
-};
-
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "AZ Concept",
-  url: "https://azconcept.fr",
-  logo: "https://azconcept.fr/images/branding/logo.png",
-  description:
-    "Metallerie d'architecture — garde-corps, portes, grilles et facades. Dix gammes, 200+ RAL, partenaire Jansen.",
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "23 Chemin du Bac des Aubins",
-    addressLocality: "Bruyeres-sur-Oise",
-    postalCode: "95820",
-    addressCountry: "FR",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
-  telephone: "+33971357496",
-  email: "contact@azconcept.fr",
-  sameAs: ["https://azconstruction.fr", "https://azepoxy.fr"],
+  category: "Architecture",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
@@ -88,10 +122,7 @@ export default function RootLayout({
       className={`${inter.variable} ${fraunces.variable} ${mono.variable} h-full antialiased`}
     >
       <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+        <JsonLd data={[organization, website, localBusiness]} />
       </head>
       <body className="min-h-full flex flex-col bg-ink text-ivory font-sans selection:bg-champagne selection:text-ink">
         <AmbientBackground />
