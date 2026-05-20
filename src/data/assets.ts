@@ -1,7 +1,13 @@
 /**
  * Asset & editorial copy manifest — keyed by category/gamme/modele slug.
  * Kept separate from gammes.ts to avoid touching 1000+ line product file.
+ *
+ * Higgsfield-generated assets, when present in /public/images/generated/,
+ * are preferred via the `prefer()` helper from `generated-registry.ts`.
+ * Flip the `ready: true` flag in that registry once each file is uploaded.
  */
+
+import { GENERATED, prefer } from "./generated-registry";
 
 export const categoryAssets: Record<
   string,
@@ -61,7 +67,7 @@ export const gammeAssets: Record<
   }
 > = {
   aura: {
-    heroImage: "/images/realisations/garde-corps-vitre-terrasse.jpg",
+    heroImage: prefer(GENERATED.gammeHero['aura'], "/images/realisations/garde-corps-vitre-terrasse.jpg"),
     ambianceImages: [
       "/images/gammes/garde-corps-verre.jpg",
       "/images/ambiance/architecture-moderne.jpg",
@@ -74,7 +80,7 @@ export const gammeAssets: Record<
     materials: ["Verre feuilleté 44.2 / 55.2", "Inox 316L poli miroir", "Sabots encastrés", "Câbles inox tendus"],
   },
   forge: {
-    heroImage: "/images/realisations/escalier-metallique-noir.jpg",
+    heroImage: prefer(GENERATED.gammeHero['forge'], "/images/realisations/escalier-metallique-noir.jpg"),
     ambianceImages: [
       "/images/realisations/garde-corps-barreaux.jpg",
       "/images/ambiance/metal-texture.jpg",
@@ -87,7 +93,7 @@ export const gammeAssets: Record<
     materials: ["Acier corten 3-5 mm", "Tôle laser 3-6 mm", "Thermolaquage RAL ou Patina", "Bois massif (chêne, ipé)"],
   },
   "secu-plus": {
-    heroImage: "/images/realisations/garde-corps-perfore-moderne.jpg",
+    heroImage: prefer(GENERATED.gammeHero["secu-plus"], "/images/realisations/garde-corps-perfore-moderne.jpg"),
     ambianceImages: [
       "/images/realisations/cloture-coloree-securite.jpg",
       "/images/realisations/projet-construction-5.jpg",
@@ -100,7 +106,7 @@ export const gammeAssets: Record<
     materials: ["Tôle perforée acier", "Double main courante 900+700", "Finitions anti-bactériennes", "RAL sur mesure"],
   },
   atelier: {
-    heroImage: "/images/realisations/garde-corps-classique-immeuble.jpg",
+    heroImage: prefer(GENERATED.gammeHero['atelier'], "/images/realisations/garde-corps-classique-immeuble.jpg"),
     ambianceImages: [
       "/images/ambiance/architecture-moderne.jpg",
       "/images/realisations/garde-corps-barreaux.jpg",
@@ -113,7 +119,7 @@ export const gammeAssets: Record<
     materials: ["Profils acier noir", "Verre clair / fumé / miroir", "Tôle pliée opaque", "Laque RAL 9005 mat"],
   },
   "jansen-design": {
-    heroImage: "/images/ambiance/building-facade.jpg",
+    heroImage: prefer(GENERATED.gammeHero["jansen-design"], "/images/ambiance/building-facade.jpg"),
     ambianceImages: [
       "/images/gammes/porte-design.jpg",
       "/images/ambiance/steel-structure.jpg",
@@ -126,7 +132,7 @@ export const gammeAssets: Record<
     materials: ["Profilés Jansen Economy / Janisol", "Vitrage feuilleté clair", "Pivots invisibles", "Thermolaquage intégral"],
   },
   firewall: {
-    heroImage: "/images/ambiance/industrial-workshop.jpg",
+    heroImage: prefer(GENERATED.gammeHero['firewall'], "/images/ambiance/industrial-workshop.jpg"),
     ambianceImages: [
       "/images/ambiance/steel-structure.jpg",
       "/images/ambiance/welding-sparks.jpg",
@@ -139,7 +145,7 @@ export const gammeAssets: Record<
     materials: ["Acier EI 30 / 60 / 90 / 120", "Vitrage anti-feu", "Ferme-porte hydraulique", "Contrôle d'accès intégré"],
   },
   technique: {
-    heroImage: "/images/ambiance/atelier-metal.jpg",
+    heroImage: prefer(GENERATED.gammeHero['technique'], "/images/ambiance/atelier-metal.jpg"),
     ambianceImages: [
       "/images/ambiance/welding-sparks.jpg",
       "/images/ambiance/steel-structure.jpg",
@@ -152,7 +158,7 @@ export const gammeAssets: Record<
     materials: ["Acier thermolaqué", "Charnières invisibles", "Serrures multi-points", "Joints acoustiques"],
   },
   airflow: {
-    heroImage: "/images/gammes/grille-architecture.jpg",
+    heroImage: prefer(GENERATED.gammeHero['airflow'], "/images/gammes/grille-architecture.jpg"),
     ambianceImages: [
       "/images/realisations/projet-construction-10.jpg",
       "/images/ambiance/architecture-moderne.jpg",
@@ -165,7 +171,7 @@ export const gammeAssets: Record<
     materials: ["Lames aluminium", "Traitement acoustique", "Grillage anti-volatile", "Thermolaquage RAL"],
   },
   decor: {
-    heroImage: "/images/realisations/grilles-decoratives-facade.jpg",
+    heroImage: prefer(GENERATED.gammeHero['decor'], "/images/realisations/grilles-decoratives-facade.jpg"),
     ambianceImages: [
       "/images/realisations/projet-construction-6.jpg",
       "/images/ambiance/architecture-moderne.jpg",
@@ -178,7 +184,7 @@ export const gammeAssets: Record<
     materials: ["Tôle acier 3-6 mm", "Découpe laser sur mesure", "Thermolaquage Adaptacolor", "Collections Patina"],
   },
   facade: {
-    heroImage: "/images/realisations/facade-bois-metal-immeuble.jpg",
+    heroImage: prefer(GENERATED.gammeHero['facade'], "/images/realisations/facade-bois-metal-immeuble.jpg"),
     ambianceImages: [
       "/images/realisations/facade-bardage-bois.jpg",
       "/images/realisations/projet-construction-8.jpg",
