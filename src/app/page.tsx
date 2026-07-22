@@ -1,15 +1,36 @@
+import dynamic from "next/dynamic";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { HeroTriptych } from "@/components/sections/HeroTriptych";
-import { GammesShowcase } from "@/components/sections/GammesShowcase";
-import { StatsCounter } from "@/components/sections/StatsCounter";
-import { PhilosophySection } from "@/components/sections/PhilosophySection";
-import { LogoMarquee } from "@/components/sections/LogoMarquee";
-import { RealisationsPreview } from "@/components/sections/RealisationsPreview";
-import { Testimonials } from "@/components/sections/Testimonials";
-import { CTASection } from "@/components/sections/CTASection";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { SITE_URL } from "@/lib/seo";
+
+/*
+ * Below-fold sections are code-split: their JS chunks load (and hydrate)
+ * separately from the hero, cutting the critical bundle of the homepage.
+ * SSR stays on for every one of them — SEO unaffected.
+ */
+const LogoMarquee = dynamic(() =>
+  import("@/components/sections/LogoMarquee").then((m) => m.LogoMarquee)
+);
+const PhilosophySection = dynamic(() =>
+  import("@/components/sections/PhilosophySection").then((m) => m.PhilosophySection)
+);
+const StatsCounter = dynamic(() =>
+  import("@/components/sections/StatsCounter").then((m) => m.StatsCounter)
+);
+const GammesShowcase = dynamic(() =>
+  import("@/components/sections/GammesShowcase").then((m) => m.GammesShowcase)
+);
+const RealisationsPreview = dynamic(() =>
+  import("@/components/sections/RealisationsPreview").then((m) => m.RealisationsPreview)
+);
+const Testimonials = dynamic(() =>
+  import("@/components/sections/Testimonials").then((m) => m.Testimonials)
+);
+const CTASection = dynamic(() =>
+  import("@/components/sections/CTASection").then((m) => m.CTASection)
+);
 
 const homepageWebpage = {
   "@context": "https://schema.org",
@@ -34,7 +55,7 @@ export default function Home() {
     <>
       <JsonLd data={homepageWebpage} />
       <Header />
-      <main className="flex-1 relative z-10">
+      <main id="contenu" className="flex-1 relative z-10">
         <HeroTriptych />
         <LogoMarquee />
         <PhilosophySection />

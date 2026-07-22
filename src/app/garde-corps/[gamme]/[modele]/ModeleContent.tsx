@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, Check, ChevronRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, ChevronRight, Printer } from "lucide-react";
 import { Button } from "@/components/shared/Button";
 import { SpecTable } from "@/components/shared/SpecTable";
 import { Eyebrow } from "@/components/shared/Eyebrow";
@@ -29,8 +29,19 @@ export function ModeleContent({ category, gamme, modele, categorySlug }: ModeleC
 
   return (
     <>
+      {/* Print-only spec sheet header */}
+      <div className="print-only px-8 pt-8 pb-6" aria-hidden>
+        <p style={{ fontFamily: "var(--font-fraunces), serif", fontSize: 28, letterSpacing: "-0.02em" }}>
+          AZ<em>concept</em>. — Fiche technique
+        </p>
+        <p style={{ fontFamily: "var(--font-mono), monospace", fontSize: 11, marginTop: 6 }}>
+          {category.name} / {gamme.name} / {modele.name} · azconcept.fr · 09 71 35 74 96 · contact@azconcept.fr
+        </p>
+        <hr style={{ marginTop: 16 }} />
+      </div>
+
       {/* Cinematic hero */}
-      <section className="relative h-[82vh] min-h-[600px] max-h-[900px] overflow-hidden">
+      <section className="print-hide relative h-[82vh] min-h-[600px] max-h-[900px] overflow-hidden">
         {heroImage && (
           <Image
             src={heroImage}
@@ -164,6 +175,14 @@ export function ModeleContent({ category, gamme, modele, categorySlug }: ModeleC
                 />
               )}
 
+              <button
+                onClick={() => window.print()}
+                className="print-hide mt-4 w-full inline-flex items-center justify-center gap-2.5 h-11 rounded-full border border-ivory/15 text-ivory/80 text-[12.5px] font-mono uppercase tracking-[0.14em] hover:border-champagne/60 hover:text-champagne transition-colors"
+              >
+                <Printer size={13} aria-hidden />
+                Imprimer la fiche technique
+              </button>
+
               {assets?.materials && (
                 <div className="mt-6 rounded-[2px] border border-ivory/10 p-6 bg-ivory/[0.015]">
                   <p className="eyebrow text-champagne/85 mb-4">Matériaux</p>
@@ -187,6 +206,7 @@ export function ModeleContent({ category, gamme, modele, categorySlug }: ModeleC
       {/* Ambiance — extra context images of the gamme */}
       {assets && assets.ambianceImages.length > 0 && (
         <ImageStrip
+          className="print-hide"
           eyebrow={`Ambiance · ${gamme.name}`}
           title={`— mises en situation.`}
           images={[...assets.ambianceImages, assets.heroImage].slice(0, 4)}
@@ -195,7 +215,7 @@ export function ModeleContent({ category, gamme, modele, categorySlug }: ModeleC
 
       {/* Prev / Next navigator */}
       {(prev || next) && (
-        <section className="relative border-t border-ivory/8">
+        <section className="print-hide relative border-t border-ivory/8">
           <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
             <div
               className={`grid ${prev && next ? "grid-cols-2 divide-x divide-ivory/8" : "grid-cols-1"}`}
@@ -237,7 +257,7 @@ export function ModeleContent({ category, gamme, modele, categorySlug }: ModeleC
       )}
 
       {/* CTA */}
-      <section className="relative py-[var(--section-padding)] overflow-hidden">
+      <section className="print-hide relative py-[var(--section-padding)] overflow-hidden">
         <div
           className="absolute inset-0 pointer-events-none"
           style={{ background: `radial-gradient(50% 50% at 50% 50%, ${gamme.accentColor}14 0%, transparent 70%)` }}

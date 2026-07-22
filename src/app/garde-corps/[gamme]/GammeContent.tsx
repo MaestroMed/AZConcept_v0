@@ -9,6 +9,7 @@ import { Eyebrow } from "@/components/shared/Eyebrow";
 import { SplitEditorial } from "@/components/shared/SplitEditorial";
 import { ImageStrip } from "@/components/shared/ImageStrip";
 import { RelatedRealisations } from "@/components/shared/RelatedRealisations";
+import { SpecComparison } from "@/components/shared/SpecComparison";
 import { getGammeAssets, getModeleImage } from "@/data/assets";
 import type { Category, Gamme } from "@/types";
 
@@ -209,6 +210,15 @@ export function GammeContent({ category, gamme, categorySlug }: GammeContentProp
           </div>
         </div>
       </section>
+
+      {/* Spec comparison — every modèle side by side */}
+      <SpecComparison
+        modeles={gamme.modeles}
+        gammeName={gamme.name}
+        accentColor={gamme.accentColor}
+        categorySlug={categorySlug}
+        gammeSlug={gamme.slug}
+      />
 
       {/* Related realisations */}
       <RelatedRealisations gammeName={gamme.name} />

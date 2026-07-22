@@ -77,7 +77,7 @@ export default async function ModelePage({ params }: ModelePageProps) {
     <>
       <JsonLd data={jsonLd} />
       <Header />
-      <main className="flex-1">
+      <main id="contenu" className="flex-1">
         <ModeleContent category={category} gamme={gamme} modele={modele} categorySlug={CATEGORY_SLUG} />
       </main>
       <Footer />

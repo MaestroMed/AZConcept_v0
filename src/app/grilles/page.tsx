@@ -38,7 +38,7 @@ export default function GrillesPage() {
         ]}
       />
       <Header />
-      <main className="flex-1">
+      <main id="contenu" className="flex-1">
         <CategoryContent category={category} gammes={gammes} />
       </main>
       <Footer />

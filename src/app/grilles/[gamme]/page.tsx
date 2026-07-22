@@ -60,7 +60,7 @@ export default async function GammePage({ params }: GammePageProps) {
     <>
       <JsonLd data={jsonLd} />
       <Header />
-      <main className="flex-1">
+      <main id="contenu" className="flex-1">
         <GammeContent category={category} gamme={gamme} categorySlug={CATEGORY_SLUG} />
       </main>
       <Footer />

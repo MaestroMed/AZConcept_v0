@@ -10,7 +10,7 @@ export default function NotFound() {
   return (
     <>
       <Header />
-      <main className="flex-1 flex items-center justify-center min-h-[80vh] relative overflow-hidden pt-24">
+      <main id="contenu" className="flex-1 flex items-center justify-center min-h-[80vh] relative overflow-hidden pt-24">
         <div
           aria-hidden
           className="absolute inset-0 pointer-events-none opacity-90"

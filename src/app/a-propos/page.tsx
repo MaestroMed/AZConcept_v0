@@ -39,7 +39,7 @@ export default function AProposPage() {
   return (
     <>
       <Header />
-      <main className="flex-1">
+      <main id="contenu" className="flex-1">
         <PageHero
           eyebrow="Maison"
           index="—"

@@ -162,7 +162,7 @@ export default function DevisPage() {
   return (
     <>
       <Header />
-      <main className="flex-1">
+      <main id="contenu" className="flex-1">
         <PageHero
           eyebrow="Demande"
           index="—"

@@ -109,7 +109,7 @@ export default function ThermolaquagePage() {
   return (
     <>
       <Header />
-      <main className="flex-1">
+      <main id="contenu" className="flex-1">
         {/* Cinematic hero */}
         <section className="relative h-[75vh] min-h-[560px] max-h-[880px] overflow-hidden">
           <Image

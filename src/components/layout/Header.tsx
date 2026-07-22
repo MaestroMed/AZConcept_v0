@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
-import { Menu } from "lucide-react";
+import { Menu, Search as SearchIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { navigation } from "@/data/navigation";
 import { MobileMenu } from "./MobileMenu";
@@ -158,6 +158,14 @@ export function Header() {
 
             {/* Actions */}
             <div className="flex items-center gap-3">
+              <button
+                onClick={() => window.dispatchEvent(new Event("az:palette"))}
+                aria-label="Rechercher (Cmd+K)"
+                className="hidden md:inline-flex items-center gap-2 h-9 px-3 rounded-full border border-ivory/12 text-ivory/60 hover:text-ivory hover:border-ivory/30 transition-colors"
+              >
+                <SearchIcon size={13} aria-hidden />
+                <kbd className="font-mono text-[9.5px] tracking-[0.08em]">⌘K</kbd>
+              </button>
               <Link
                 href="/contact"
                 className="hidden md:inline-flex eyebrow text-[10.5px] text-ivory/60 hover:text-ivory transition-colors link-underline"

@@ -1,11 +1,12 @@
 "use client";
 
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useMotionTemplate, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, ArrowDown } from "lucide-react";
 import { MeshGradient } from "@/components/hero/MeshGradient";
+import { Magnetic } from "@/components/shared/Magnetic";
 import { GENERATED } from "@/data/generated-registry";
 
 /*
@@ -24,6 +25,19 @@ const VERBS = [
 export function HeroTriptych() {
   const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
+
+  // Video only on desktop-width viewports without Save-Data; SSR and mobile
+  // render the still (better LCP, no wasted MP4 download on phones).
+  const [allowVideo, setAllowVideo] = useState(false);
+  useEffect(() => {
+    const conn = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+    if (conn?.saveData) return;
+    const mql = window.matchMedia("(min-width: 768px)");
+    const update = () => setAllowVideo(mql.matches);
+    update();
+    mql.addEventListener("change", update);
+    return () => mql.removeEventListener("change", update);
+  }, []);
 
   const mx = useMotionValue(50);
   const my = useMotionValue(50);
@@ -50,7 +64,7 @@ export function HeroTriptych() {
       {/* Background field — generated film when ready, WebGL mesh otherwise */}
       <motion.div style={{ y: meshY }} className="absolute inset-0 z-0">
         <div className="absolute inset-0">
-          {GENERATED.hero.video.ready && !reduced ? (
+          {GENERATED.hero.video.ready && allowVideo && !reduced ? (
             <video
               className="absolute inset-0 h-full w-full object-cover"
               src={GENERATED.hero.video.path}
@@ -164,13 +178,15 @@ export function HeroTriptych() {
               transition={{ duration: 0.9, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
               className="mt-12 flex flex-wrap items-center gap-5"
             >
-              <Link
-                href="/devis"
-                className="btn-editorial inline-flex items-center gap-3 h-14 px-8 rounded-full bg-ivory text-ink text-[13.5px] font-medium hover:bg-champagne-soft transition-colors"
-              >
-                Ouvrir un projet
-                <ArrowRight size={15} />
-              </Link>
+              <Magnetic>
+                <Link
+                  href="/devis"
+                  className="btn-editorial inline-flex items-center gap-3 h-14 px-8 rounded-full bg-ivory text-ink text-[13.5px] font-medium hover:bg-champagne-soft transition-colors"
+                >
+                  Ouvrir un projet
+                  <ArrowRight size={15} />
+                </Link>
+              </Magnetic>
               <Link
                 href="/realisations"
                 className="link-underline text-[13px] tracking-[0.02em] text-ivory/85 hover:text-ivory flex items-center gap-2"

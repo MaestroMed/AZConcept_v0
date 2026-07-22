@@ -120,7 +120,7 @@ export default function ContactPage() {
   return (
     <>
       <Header />
-      <main className="flex-1">
+      <main id="contenu" className="flex-1">
         <PageHero
           eyebrow="Parler"
           index="—"

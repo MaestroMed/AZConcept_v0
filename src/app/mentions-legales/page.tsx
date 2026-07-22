@@ -65,7 +65,7 @@ export default function MentionsLegalesPage() {
   return (
     <>
       <Header />
-      <main className="flex-1">
+      <main id="contenu" className="flex-1">
         <PageHero
           eyebrow="Légal"
           index="—"

@@ -4,6 +4,7 @@ import "./globals.css";
 import { AmbientBackground } from "@/components/layout/AmbientBackground";
 import { InitLoader } from "@/components/shared/InitLoader";
 import { ChapterIndicator } from "@/components/shared/ChapterIndicator";
+import { CommandPaletteProvider } from "@/components/shared/CommandPaletteProvider";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { organization, website, localBusiness, SITE_URL } from "@/lib/seo";
 
@@ -125,9 +126,16 @@ export default function RootLayout({
         <JsonLd data={[organization, website, localBusiness]} />
       </head>
       <body className="min-h-full flex flex-col bg-ink text-ivory font-sans selection:bg-champagne selection:text-ink">
+        <a
+          href="#contenu"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-5 focus:py-3 focus:rounded-full focus:bg-ivory focus:text-ink focus:text-[13px] focus:font-medium focus:shadow-[0_0_0_2px_var(--champagne)]"
+        >
+          Aller au contenu
+        </a>
         <AmbientBackground />
         <InitLoader />
         <ChapterIndicator />
+        <CommandPaletteProvider />
         {children}
       </body>
     </html>

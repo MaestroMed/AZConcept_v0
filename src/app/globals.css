@@ -471,3 +471,32 @@ footer { view-transition-name: site-footer; }
 @media (prefers-reduced-motion: reduce) {
   .scroll-rise { animation: none !important; }
 }
+
+/* ═══════════════════════════════════════════════
+   Print — spec-sheet mode (architects print modèle pages).
+   ═══════════════════════════════════════════════ */
+
+.print-only { display: none; }
+
+@media print {
+  body { background: #fff !important; }
+  * {
+    color: #111 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+  header,
+  footer,
+  video,
+  .print-hide {
+    display: none !important;
+  }
+  .print-only { display: block !important; }
+  main { padding: 0 !important; }
+  a { text-decoration: none !important; }
+  section { page-break-inside: avoid; padding-top: 1rem !important; padding-bottom: 1rem !important; }
+  img { filter: none !important; }
+}

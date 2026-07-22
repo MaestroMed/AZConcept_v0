@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, Phone } from "lucide-react";
+import { Magnetic } from "@/components/shared/Magnetic";
 import { companyInfo } from "@/data/company";
 
 export function CTASection() {
@@ -45,13 +46,15 @@ export function CTASection() {
           </p>
 
           <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="/devis"
-              className="btn-editorial inline-flex items-center gap-3 h-14 px-8 rounded-full bg-ivory text-ink text-[14px] font-medium hover:bg-champagne-soft transition-colors"
-            >
-              Demander un devis
-              <ArrowRight size={15} />
-            </Link>
+            <Magnetic>
+              <Link
+                href="/devis"
+                className="btn-editorial inline-flex items-center gap-3 h-14 px-8 rounded-full bg-ivory text-ink text-[14px] font-medium hover:bg-champagne-soft transition-colors"
+              >
+                Demander un devis
+                <ArrowRight size={15} />
+              </Link>
+            </Magnetic>
             <Link
               href="/contact"
               className="inline-flex items-center gap-3 h-14 px-7 rounded-full border border-ivory/20 text-ivory/90 text-[14px] hover:border-champagne/60 hover:text-champagne transition-colors"
