@@ -28,6 +28,20 @@ Sans ces variables, les formulaires `/api/contact` et `/api/devis` fonctionnent 
 - **Honeypot** : champ `hp_website` invisible dans chaque formulaire. Les bots remplissent tous les champs → si rempli, le serveur retourne 200 sans envoyer d'email.
 - **Rate-limit** : 5 requêtes par IP par fenêtre glissante de 10 min (`src/lib/rateLimit.ts`). En mémoire — sufficient pour un site peu trafiqué sur une seule région Vercel. Pour multi-région / haute charge, passer sur Upstash KV.
 
+## Assets générés (Higgsfield)
+
+5 assets éditoriaux générés le 2026-07-22 (gpt Image 2 + Seedance 2.0) et
+référencés en remote depuis le CDN Higgsfield via `src/data/generated-registry.ts` :
+vidéo hero 8 s (fond de la homepage), still hero, et les heroes AURA / FORGE / SECU+.
+
+- **Restants** : 12 images (7 gammes + 6 ambiance − 1) — la limite journalière de
+  génération a été atteinte. Prompts prêts dans `PROMPTS.md` /
+  `src/data/generation-prompts.ts`. Régénérer, coller les URLs CDN dans le
+  registry, flip `ready: true`.
+- **Localisation** : `bash scripts/fetch-generated.sh` (machine avec réseau
+  ouvert) télécharge les assets en local pour s'affranchir de la longévité
+  des URLs CDN ; remplacer ensuite les `path` du registry.
+
 ## TODO Mentions légales (avant mise en prod)
 
 Compléter dans `src/data/company.ts` :

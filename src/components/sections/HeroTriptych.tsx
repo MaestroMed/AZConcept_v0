@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, ArrowDown } from "lucide-react";
 import { MeshGradient } from "@/components/hero/MeshGradient";
+import { GENERATED } from "@/data/generated-registry";
 
 /*
  * Hero — Editorial Atelier (v2)
@@ -46,13 +47,37 @@ export function HeroTriptych() {
       onMouseMove={onMove}
       className="relative min-h-screen min-h-[100svh] [overflow-x:clip]"
     >
-      {/* Mesh field */}
+      {/* Background field — generated film when ready, WebGL mesh otherwise */}
       <motion.div style={{ y: meshY }} className="absolute inset-0 z-0">
         <div className="absolute inset-0">
-          <MeshGradient
-            colors={["#08080b", "#12131a", "#1f2b40", "#5c6d85", "#c9a35c"]}
-            speed={0.5}
-          />
+          {GENERATED.hero.video.ready && !reduced ? (
+            <video
+              className="absolute inset-0 h-full w-full object-cover"
+              src={GENERATED.hero.video.path}
+              poster={GENERATED.hero.still.ready ? GENERATED.hero.still.path : undefined}
+              autoPlay
+              muted
+              loop
+              playsInline
+              aria-hidden
+            />
+          ) : GENERATED.hero.still.ready ? (
+            <Image
+              src={GENERATED.hero.still.path}
+              alt=""
+              fill
+              priority
+              quality={90}
+              sizes="100vw"
+              className="object-cover"
+              aria-hidden
+            />
+          ) : (
+            <MeshGradient
+              colors={["#08080b", "#12131a", "#1f2b40", "#5c6d85", "#c9a35c"]}
+              speed={0.5}
+            />
+          )}
         </div>
         <div className="absolute inset-0 bg-gradient-to-br from-ink/70 via-ink/45 to-ink/75" />
         <div

@@ -1,38 +1,53 @@
 /**
- * Registry that maps gamme / modele slugs to the higgsfield-generated assets
- * the team intends to drop into /public/images/generated/.
+ * Registry that maps gamme / modele slugs to the higgsfield-generated assets.
  *
- * When the corresponding file lands in /public/images/generated/, the
- * `prefer()` helper below routes the site to it. Until then we fall back
- * to the existing /public/images/realisations|ambiance|gammes/* assets.
+ * Two modes per asset:
+ *   - Remote (current): `path` is the Higgsfield CDN URL. Served through
+ *     next/image remote optimization (see images.remotePatterns in
+ *     next.config.ts). Zero repo weight, live immediately.
+ *   - Local (recommended long-term): run `bash scripts/fetch-generated.sh`
+ *     on a machine with open network, commit the files under
+ *     /public/images/generated/, then replace `path` with the local path.
  *
- * Important: Next.js Image needs paths to exist at build time. We cannot
- * detect file presence in the bundle, so we hard-code the *intended* paths
- * here and the team flips the boolean once the file is uploaded.
- *
- * Workflow:
- *   1. Generate the asset on higgsfield (use PROMPTS.md).
- *   2. Save it under /public/images/generated/<path-from-this-registry>.
- *   3. Set the corresponding flag to `true` below — the site swaps in
- *      the new asset on next deploy.
+ * `ready: false` entries are assets not yet generated — the daily Higgsfield
+ * generation limit was reached after the first 5 jobs on 2026-07-22.
+ * Their prompts live in src/data/generation-prompts.ts (see PROMPTS.md).
+ * Re-run the generations, paste the CDN URLs here, flip ready:true.
  */
 
+const CDN = "https://d8j0ntlcm91z4.cloudfront.net/user_3CMRVYJQZdncYM0yA1qLrI0bRyR";
+
 interface GeneratedAsset {
-  /** Path under /public — must match what's stored on disk. */
+  /** Local path under /public OR absolute CDN URL. */
   path: string;
-  /** Whether the asset exists on disk and should be used. */
+  /** Whether the asset exists and should be used. */
   ready: boolean;
 }
 
 export const GENERATED = {
   hero: {
-    still: { path: "/images/generated/hero/master.jpg", ready: false } as GeneratedAsset,
-    video: { path: "/images/generated/hero/master.mp4", ready: false } as GeneratedAsset,
+    still: {
+      path: `${CDN}/hf_20260722_133713_37f2877c-538e-4892-908e-d8db7f78ef32.png`,
+      ready: true,
+    } as GeneratedAsset,
+    video: {
+      path: `${CDN}/hf_20260722_133708_69c6bc53-76b5-41e4-bef6-9498a1b9e4f1.mp4`,
+      ready: true,
+    } as GeneratedAsset,
   },
   gammeHero: {
-    aura: { path: "/images/generated/gammes/aura-hero.jpg", ready: false } as GeneratedAsset,
-    forge: { path: "/images/generated/gammes/forge-hero.jpg", ready: false } as GeneratedAsset,
-    "secu-plus": { path: "/images/generated/gammes/secu-plus-hero.jpg", ready: false } as GeneratedAsset,
+    aura: {
+      path: `${CDN}/hf_20260722_133752_05a1441a-d332-4718-a1b0-48257c7894a9.png`,
+      ready: true,
+    } as GeneratedAsset,
+    forge: {
+      path: `${CDN}/hf_20260722_133758_e7109442-ab53-49f5-bb71-1ff4b6184808.png`,
+      ready: true,
+    } as GeneratedAsset,
+    "secu-plus": {
+      path: `${CDN}/hf_20260722_133805_5cdd9094-e061-4706-905f-76001cfc5395.png`,
+      ready: true,
+    } as GeneratedAsset,
     atelier: { path: "/images/generated/gammes/atelier-hero.jpg", ready: false } as GeneratedAsset,
     "jansen-design": { path: "/images/generated/gammes/jansen-design-hero.jpg", ready: false } as GeneratedAsset,
     firewall: { path: "/images/generated/gammes/firewall-hero.jpg", ready: false } as GeneratedAsset,
