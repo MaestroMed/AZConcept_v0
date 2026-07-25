@@ -10,8 +10,10 @@
  *     /public/images/generated/, then replace `path` with the local path.
  *
  * `ready: false` entries are assets not yet generated — the daily Higgsfield
- * generation limit was reached after the first 5 jobs on 2026-07-22.
- * Their prompts live in src/data/generation-prompts.ts (see PROMPTS.md).
+ * limit is 5 generations (grace period). Batch 1: 2026-07-22 (hero still,
+ * hero video, aura, forge, secu-plus). Batch 2: 2026-07-25 (atelier,
+ * jansen-design, firewall, technique, airflow). Remaining: decor, facade
+ * + 6 ambiance. Prompts in src/data/generation-prompts.ts (see PROMPTS.md).
  * Re-run the generations, paste the CDN URLs here, flip ready:true.
  */
 
@@ -48,11 +50,26 @@ export const GENERATED = {
       path: `${CDN}/hf_20260722_133805_5cdd9094-e061-4706-905f-76001cfc5395.png`,
       ready: true,
     } as GeneratedAsset,
-    atelier: { path: "/images/generated/gammes/atelier-hero.jpg", ready: false } as GeneratedAsset,
-    "jansen-design": { path: "/images/generated/gammes/jansen-design-hero.jpg", ready: false } as GeneratedAsset,
-    firewall: { path: "/images/generated/gammes/firewall-hero.jpg", ready: false } as GeneratedAsset,
-    technique: { path: "/images/generated/gammes/technique-hero.jpg", ready: false } as GeneratedAsset,
-    airflow: { path: "/images/generated/gammes/airflow-hero.jpg", ready: false } as GeneratedAsset,
+    atelier: {
+      path: `${CDN}/hf_20260725_004937_cbac8e0e-4c18-40fa-9509-b3531bb3176a.png`,
+      ready: true,
+    } as GeneratedAsset,
+    "jansen-design": {
+      path: `${CDN}/hf_20260725_005122_5cde2c7f-7785-438f-ba57-b23ee13593b6.png`,
+      ready: true,
+    } as GeneratedAsset,
+    firewall: {
+      path: `${CDN}/hf_20260725_005235_22ad397d-185c-4773-9c27-8c2941938b97.png`,
+      ready: true,
+    } as GeneratedAsset,
+    technique: {
+      path: `${CDN}/hf_20260725_011215_a9313e7f-e58e-470a-b197-c4ca661994be.png`,
+      ready: true,
+    } as GeneratedAsset,
+    airflow: {
+      path: `${CDN}/hf_20260725_011231_72d4f14c-b0b6-4ded-9ba8-e43c05d9a9da.png`,
+      ready: true,
+    } as GeneratedAsset,
     decor: { path: "/images/generated/gammes/decor-hero.jpg", ready: false } as GeneratedAsset,
     facade: { path: "/images/generated/gammes/facade-hero.jpg", ready: false } as GeneratedAsset,
   },

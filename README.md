@@ -30,14 +30,15 @@ Sans ces variables, les formulaires `/api/contact` et `/api/devis` fonctionnent 
 
 ## Assets générés (Higgsfield)
 
-5 assets éditoriaux générés le 2026-07-22 (gpt Image 2 + Seedance 2.0) et
-référencés en remote depuis le CDN Higgsfield via `src/data/generated-registry.ts` :
-vidéo hero 8 s (fond de la homepage), still hero, et les heroes AURA / FORGE / SECU+.
+10 assets éditoriaux générés (gpt Image 2 + Seedance 2.0) et référencés en
+remote depuis le CDN Higgsfield via `src/data/generated-registry.ts` :
+vidéo hero 8 s (fond de la homepage), still hero, et 8 heroes de gammes
+(AURA, FORGE, SECU+, ATELIER, JANSEN DESIGN, FIREWALL, TECHNIQUE, AIRFLOW).
 
-- **Restants** : 12 images (7 gammes + 6 ambiance − 1) — la limite journalière de
-  génération a été atteinte. Prompts prêts dans `PROMPTS.md` /
-  `src/data/generation-prompts.ts`. Régénérer, coller les URLs CDN dans le
-  registry, flip `ready: true`.
+- **Restants** : 8 images (DÉCOR, FACADE + 6 ambiance atelier) — limite
+  Higgsfield de 5 générations/jour (grace period). Prompts prêts dans
+  `PROMPTS.md` / `src/data/generation-prompts.ts`. Régénérer, coller les
+  URLs CDN dans le registry, flip `ready: true`.
 - **Localisation** : `bash scripts/fetch-generated.sh` (machine avec réseau
   ouvert) télécharge les assets en local pour s'affranchir de la longévité
   des URLs CDN ; remplacer ensuite les `path` du registry.
