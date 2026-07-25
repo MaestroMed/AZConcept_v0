@@ -9,6 +9,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/shared/Button";
 import { Eyebrow } from "@/components/shared/Eyebrow";
+import { RalSimulator } from "@/components/shared/RalSimulator";
 import { useBodyLock } from "@/lib/hooks/useBodyLock";
 
 const collections = [
@@ -75,21 +76,6 @@ const advantages = [
   { icon: Sparkles,    title: "Adaptacolor",        body: "Finitions exclusives Patina, Polaris et Dichroïque pour des rendus uniques et haut de gamme." },
   { icon: Layers,      title: "60-80 microns",      body: "Épaisseur de couche optimale, contrôlée par appareil de mesure. Protection durable garantie." },
   { icon: ShieldCheck, title: "Qualicoat & AAMA",   body: "Garantie anticorrosion et tenue des teintes. Conformité aux normes Qualicoat et AAMA." },
-];
-
-const ralColors = [
-  { hex: "#9C1A1A", code: "RAL 3003" },
-  { hex: "#252525", code: "RAL 9005" },
-  { hex: "#F5F1E8", code: "RAL 9001" },
-  { hex: "#2B2F35", code: "RAL 7016" },
-  { hex: "#8C6B2E", code: "RAL 1036" },
-  { hex: "#2E4A35", code: "RAL 6009" },
-  { hex: "#1E2B40", code: "RAL 5011" },
-  { hex: "#8A8880", code: "RAL 7035" },
-  { hex: "#B85B3D", code: "RAL 8004" },
-  { hex: "#C9A35C", code: "AZ Signature" },
-  { hex: "#E8E3D6", code: "RAL 9010" },
-  { hex: "#3E3E48", code: "RAL 7043" },
 ];
 
 export default function ThermolaquagePage() {
@@ -302,48 +288,24 @@ export default function ThermolaquagePage() {
           </section>
         ))}
 
-        {/* RAL palette */}
+        {/* RAL simulator */}
         <section className="relative py-[var(--section-padding)] border-t border-ivory/8">
           <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)]">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
-              <div className="lg:col-span-5">
-                <Eyebrow index="Chapitre III" label="Nuancier" className="mb-6" />
-                <h2 className="display text-ivory text-[clamp(2rem,4vw,3rem)] leading-[1] tracking-[-0.025em]">
-                  200+ RAL,<br />
-                  <span className="display-italic font-light text-champagne">sur demande.</span>
+            <div className="mb-14 sm:mb-20 flex items-end justify-between flex-wrap gap-6">
+              <div>
+                <Eyebrow index="Chapitre III" label="Simulateur" className="mb-6" />
+                <h2 className="display text-ivory text-[clamp(2rem,4.5vw,3.4rem)] leading-[1] tracking-[-0.025em]">
+                  Essayez la teinte,<br />
+                  <span className="display-italic font-light text-champagne">en direct.</span>
                 </h2>
-                <p className="mt-8 text-[15.5px] leading-[1.7] text-pearl/80 max-w-sm">
-                  Du blanc pur RAL 9010 au noir profond RAL 9005, en passant par
-                  les gris anthracite, bleus acier, et toute teinte sur mesure.
-                </p>
-                <Button href="/devis" variant="outline" size="lg" className="mt-10">
-                  Demander une teinte
-                  <ArrowRight size={14} />
-                </Button>
               </div>
-              <div className="lg:col-span-7 lg:col-start-6">
-                <div className="grid grid-cols-3 sm:grid-cols-4 gap-px bg-ivory/8 border border-ivory/8">
-                  {ralColors.map((c, i) => (
-                    <motion.div
-                      key={c.code + i}
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true, amount: 0.2 }}
-                      transition={{ delay: i * 0.03, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                      className="bg-ink p-5 group"
-                    >
-                      <div
-                        className="aspect-square rounded-[2px] mb-3 border border-ivory/5"
-                        style={{ backgroundColor: c.hex }}
-                      />
-                      <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-platinum group-hover:text-ivory transition-colors">
-                        {c.code}
-                      </p>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
+              <p className="max-w-sm text-[15px] leading-[1.65] text-pearl/80">
+                Douze teintes du nuancier — et 200+ RAL au total sur demande.
+                Sélectionnez, visualisez sur un garde-corps, demandez le devis
+                avec la référence pré-remplie.
+              </p>
             </div>
+            <RalSimulator />
           </div>
         </section>
 

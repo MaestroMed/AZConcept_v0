@@ -57,6 +57,10 @@ export interface Realisation {
   location: string;
   year: number;
   imageUrl?: string;
+  /** Récit éditorial du projet (2 paragraphes : contexte, réponse). */
+  story?: string[];
+  /** Matériaux & finitions mis en œuvre. */
+  materiaux?: string[];
 }
 
 export interface Testimonial {

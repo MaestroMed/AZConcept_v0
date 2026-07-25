@@ -2,8 +2,9 @@
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin } from "lucide-react";
+import { ArrowUpRight, MapPin } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageHero } from "@/components/shared/PageHero";
@@ -122,45 +123,58 @@ export default function RealisationsPage() {
                         transition={{ delay: Math.min(i * 0.04, 0.4), duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                         className="group relative"
                       >
-                        <div className={`relative ${aspect} overflow-hidden rounded-[2px] border border-ivory/8`}>
-                          {p.imageUrl ? (
-                            <Image
-                              src={p.imageUrl}
-                              alt={p.title}
-                              fill
-                              quality={85}
-                              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                              className="object-cover transition-transform duration-[1200ms] group-hover:scale-[1.05]"
-                            />
-                          ) : (
-                            <div className="absolute inset-0 bg-obsidian flex items-center justify-center">
-                              <span className="display text-ivory/20 text-4xl">{p.gamme}</span>
-                            </div>
-                          )}
-                          <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/15 to-transparent" />
+                        <Link
+                          href={`/realisations/${p.id}`}
+                          aria-label={`Voir le projet : ${p.title}`}
+                          className="block"
+                        >
+                          <div className={`relative ${aspect} overflow-hidden rounded-[2px] border border-ivory/8 group-hover:border-ivory/20 transition-colors`}>
+                            {p.imageUrl ? (
+                              <Image
+                                src={p.imageUrl}
+                                alt={p.title}
+                                fill
+                                quality={85}
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                className="object-cover transition-transform duration-[1200ms] group-hover:scale-[1.05]"
+                              />
+                            ) : (
+                              <div className="absolute inset-0 bg-obsidian flex items-center justify-center">
+                                <span className="display text-ivory/20 text-4xl">{p.gamme}</span>
+                              </div>
+                            )}
+                            <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/15 to-transparent" />
 
-                          <div className="absolute top-0 inset-x-0 p-5 flex items-center justify-between">
-                            <span className="font-mono text-[10px] tabular-nums text-ivory/70 bg-ink/35 backdrop-blur-sm px-2.5 py-1 rounded-full border border-ivory/10">
-                              {String(i + 1).padStart(2, "0")} / {shown}
-                            </span>
-                            <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-ivory/75 bg-ink/35 backdrop-blur-sm px-2.5 py-1 rounded-full border border-ivory/10">
-                              {p.gamme}
-                            </span>
-                          </div>
+                            <div className="absolute top-0 inset-x-0 p-5 flex items-center justify-between">
+                              <span className="font-mono text-[10px] tabular-nums text-ivory/70 bg-ink/35 backdrop-blur-sm px-2.5 py-1 rounded-full border border-ivory/10">
+                                {String(i + 1).padStart(2, "0")} / {shown}
+                              </span>
+                              <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-ivory/75 bg-ink/35 backdrop-blur-sm px-2.5 py-1 rounded-full border border-ivory/10">
+                                {p.gamme}
+                              </span>
+                            </div>
 
-                          <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
-                            <span className="eyebrow text-champagne/85 block mb-2">{p.category}</span>
-                            <h3 className="display text-ivory text-[clamp(1.3rem,2.2vw,1.6rem)] leading-tight tracking-[-0.015em]">
-                              {p.title}
-                            </h3>
-                            <div className="mt-3 flex items-center gap-3 font-mono text-[10.5px] text-ivory/60">
-                              <MapPin size={11} />
-                              <span>{p.location}</span>
-                              <span className="h-px flex-1 bg-ivory/10" />
-                              <span className="tabular-nums">{p.year}</span>
+                            <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
+                              <span className="eyebrow text-champagne/85 block mb-2">{p.category}</span>
+                              <div className="flex items-start justify-between gap-3">
+                                <h3 className="display text-ivory text-[clamp(1.3rem,2.2vw,1.6rem)] leading-tight tracking-[-0.015em] group-hover:text-champagne transition-colors">
+                                  {p.title}
+                                </h3>
+                                <ArrowUpRight
+                                  size={15}
+                                  aria-hidden
+                                  className="mt-1 shrink-0 text-ivory/30 group-hover:text-champagne group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-all"
+                                />
+                              </div>
+                              <div className="mt-3 flex items-center gap-3 font-mono text-[10.5px] text-ivory/60">
+                                <MapPin size={11} aria-hidden />
+                                <span>{p.location}</span>
+                                <span className="h-px flex-1 bg-ivory/10" />
+                                <span className="tabular-nums">{p.year}</span>
+                              </div>
                             </div>
                           </div>
-                        </div>
+                        </Link>
                       </motion.article>
                     );
                   })}

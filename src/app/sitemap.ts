@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getAllGammes } from "@/data/gammes";
 import { categories } from "@/data/categories";
+import { realisations } from "@/data/realisations";
 
 const BASE = "https://azconcept.fr";
 
@@ -43,5 +44,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }))
   );
 
-  return [...staticPages, ...categoryPages, ...gammePages, ...modelePages];
+  const projetPages: MetadataRoute.Sitemap = realisations.map((r) => ({
+    url: `${BASE}/realisations/${r.id}`,
+    lastModified: now,
+    changeFrequency: "yearly",
+    priority: 0.6,
+  }));
+
+  return [...staticPages, ...categoryPages, ...gammePages, ...modelePages, ...projetPages];
 }

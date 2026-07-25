@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { Suspense, useState, type FormEvent } from "react";
+import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { Send, Loader2, CheckCircle2 } from "lucide-react";
 import { Header } from "@/components/layout/Header";
@@ -69,6 +70,7 @@ function Field({
   textarea,
   options,
   autoComplete,
+  defaultValue,
 }: {
   label: string;
   name: string;
@@ -77,6 +79,7 @@ function Field({
   textarea?: boolean;
   options?: string[];
   autoComplete?: string;
+  defaultValue?: string;
 }) {
   const base =
     "w-full bg-transparent px-0 py-3.5 text-[15px] text-ivory placeholder:text-ash border-b border-ivory/15 " +
@@ -94,6 +97,7 @@ function Field({
           required={required}
           rows={5}
           autoComplete={autoComplete}
+          defaultValue={defaultValue}
           className={`${base} resize-none`}
           placeholder="—"
         />
@@ -102,7 +106,7 @@ function Field({
           id={name}
           name={name}
           required={required}
-          defaultValue=""
+          defaultValue={defaultValue && options.includes(defaultValue) ? defaultValue : ""}
           autoComplete={autoComplete}
           className={`${base} appearance-none cursor-pointer`}
         >
@@ -122,6 +126,7 @@ function Field({
           name={name}
           required={required}
           autoComplete={autoComplete}
+          defaultValue={defaultValue}
           placeholder="—"
           className={base}
         />
@@ -130,11 +135,20 @@ function Field({
   );
 }
 
-export default function DevisPage() {
+/**
+ * Form block — reads ?projet= & ?teinte= deep-link params to prefill
+ * the request (links come from modèle pages and the RAL simulator).
+ * Wrapped in <Suspense> by the page (useSearchParams requirement).
+ */
+function DevisFormBlock() {
+  const searchParams = useSearchParams();
+  const projetParam = searchParams.get("projet") ?? undefined;
+  const teinteParam = searchParams.get("teinte");
+  const messageDefault = teinteParam ? `Teinte souhaitée : ${teinteParam}.\n` : undefined;
+
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -158,6 +172,131 @@ export default function DevisPage() {
       setLoading(false);
     }
   }
+
+  if (success) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.97 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="rounded-[2px] border border-champagne/30 bg-champagne/5 p-10 text-center"
+      >
+        <CheckCircle2 size={42} className="text-champagne mx-auto mb-5" />
+        <h3 className="display text-ivory text-[28px] leading-tight mb-3">Demande enregistrée.</h3>
+        <p className="text-[14.5px] text-pearl/80 leading-[1.65] mb-6 max-w-md mx-auto">
+          Notre bureau d&rsquo;études revient vers vous sous 48 h avec une étude
+          technique et une proposition tarifaire.
+        </p>
+        <button
+          onClick={() => setSuccess(false)}
+          className="link-underline text-[13px] text-ivory hover:text-champagne transition-colors"
+        >
+          Nouvelle demande
+        </button>
+      </motion.div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="relative space-y-12" noValidate>
+      {/* Honeypot anti-spam (invisible, tabIndex=-1) */}
+      <input
+        type="text"
+        name="hp_website"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        className="absolute -left-[9999px] h-0 w-0"
+        defaultValue=""
+      />
+
+      <div role="alert" aria-live="polite" aria-atomic="true">
+        {error && (
+          <div className="p-3 rounded-[2px] bg-red-500/10 border border-red-500/30 text-[13px] text-red-300">
+            {error}
+          </div>
+        )}
+      </div>
+
+      {/* Identité */}
+      <fieldset className="space-y-7">
+        <legend className="eyebrow text-champagne/85 mb-3">— Identité</legend>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-7">
+          <Field label="Nom complet" name="nom" required autoComplete="name" />
+          <Field label="Société" name="societe" autoComplete="organization" />
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-7">
+          <Field label="Email" name="email" type="email" required autoComplete="email" />
+          <Field label="Téléphone" name="telephone" type="tel" autoComplete="tel" />
+        </div>
+      </fieldset>
+
+      {/* Projet */}
+      <fieldset className="space-y-7">
+        <legend className="eyebrow text-champagne/85 mb-3">— Projet</legend>
+        <div>
+          <Field
+            label="Type d'ouvrage"
+            name="typeProjet"
+            required
+            options={projectTypes}
+            defaultValue={projetParam}
+          />
+          {projetParam && projectTypes.includes(projetParam) && (
+            <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.14em] text-champagne/70">
+              Pré-rempli depuis la page produit — modifiable.
+            </p>
+          )}
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-7">
+          <Field label="Localisation" name="localisation" />
+          <Field label="Délai souhaité" name="delai" />
+        </div>
+        <Field label="Dimensions / quantités" name="dimensions" />
+      </fieldset>
+
+      {/* Description */}
+      <fieldset className="space-y-7">
+        <legend className="eyebrow text-champagne/85 mb-3">— Description</legend>
+        <Field
+          label="Votre cahier des charges"
+          name="message"
+          textarea
+          required
+          defaultValue={messageDefault}
+        />
+        <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-ash">
+          Les plans & documents peuvent être envoyés par email à{" "}
+          <a href="mailto:contact@azconcept.fr" className="text-champagne hover:underline">
+            contact@azconcept.fr
+          </a>{" "}
+          en référence à votre demande.
+        </p>
+      </fieldset>
+
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 pt-4">
+        <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-ash">
+          Réponse sous 48 h · Étude gratuite.
+        </p>
+        <Button type="submit" disabled={loading} size="lg">
+          {loading ? (
+            <>
+              <Loader2 size={14} className="animate-spin" />
+              Envoi…
+            </>
+          ) : (
+            <>
+              Envoyer la demande
+              <Send size={14} />
+            </>
+          )}
+        </Button>
+      </div>
+    </form>
+  );
+}
+
+export default function DevisPage() {
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   return (
     <>
@@ -245,103 +384,9 @@ export default function DevisPage() {
                 transition={{ delay: 0.1, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
                 className="lg:col-span-7 lg:col-start-6"
               >
-                {success ? (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.97 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="rounded-[2px] border border-champagne/30 bg-champagne/5 p-10 text-center"
-                  >
-                    <CheckCircle2 size={42} className="text-champagne mx-auto mb-5" />
-                    <h3 className="display text-ivory text-[28px] leading-tight mb-3">Demande enregistrée.</h3>
-                    <p className="text-[14.5px] text-pearl/80 leading-[1.65] mb-6 max-w-md mx-auto">
-                      Notre bureau d&rsquo;études revient vers vous sous 48 h avec une étude
-                      technique et une proposition tarifaire.
-                    </p>
-                    <button
-                      onClick={() => setSuccess(false)}
-                      className="link-underline text-[13px] text-ivory hover:text-champagne transition-colors"
-                    >
-                      Nouvelle demande
-                    </button>
-                  </motion.div>
-                ) : (
-                  <form onSubmit={handleSubmit} className="relative space-y-12" noValidate>
-                    {/* Honeypot anti-spam (invisible, tabIndex=-1) */}
-                    <input
-                      type="text"
-                      name="hp_website"
-                      tabIndex={-1}
-                      autoComplete="off"
-                      aria-hidden="true"
-                      className="absolute -left-[9999px] h-0 w-0"
-                      defaultValue=""
-                    />
-
-                    <div role="alert" aria-live="polite" aria-atomic="true">
-                      {error && (
-                        <div className="p-3 rounded-[2px] bg-red-500/10 border border-red-500/30 text-[13px] text-red-300">
-                          {error}
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Identité */}
-                    <fieldset className="space-y-7">
-                      <legend className="eyebrow text-champagne/85 mb-3">— Identité</legend>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-7">
-                        <Field label="Nom complet" name="nom" required autoComplete="name" />
-                        <Field label="Société" name="societe" autoComplete="organization" />
-                      </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-7">
-                        <Field label="Email" name="email" type="email" required autoComplete="email" />
-                        <Field label="Téléphone" name="telephone" type="tel" autoComplete="tel" />
-                      </div>
-                    </fieldset>
-
-                    {/* Projet */}
-                    <fieldset className="space-y-7">
-                      <legend className="eyebrow text-champagne/85 mb-3">— Projet</legend>
-                      <Field label="Type d'ouvrage" name="typeProjet" required options={projectTypes} />
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-7">
-                        <Field label="Localisation" name="localisation" />
-                        <Field label="Délai souhaité" name="delai" />
-                      </div>
-                      <Field label="Dimensions / quantités" name="dimensions" />
-                    </fieldset>
-
-                    {/* Description */}
-                    <fieldset className="space-y-7">
-                      <legend className="eyebrow text-champagne/85 mb-3">— Description</legend>
-                      <Field label="Votre cahier des charges" name="message" textarea required />
-                      <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-ash">
-                        Les plans & documents peuvent être envoyés par email à{" "}
-                        <a href="mailto:contact@azconcept.fr" className="text-champagne hover:underline">
-                          contact@azconcept.fr
-                        </a>{" "}
-                        en référence à votre demande.
-                      </p>
-                    </fieldset>
-
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 pt-4">
-                      <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-ash">
-                        Réponse sous 48 h · Étude gratuite.
-                      </p>
-                      <Button type="submit" disabled={loading} size="lg">
-                        {loading ? (
-                          <>
-                            <Loader2 size={14} className="animate-spin" />
-                            Envoi…
-                          </>
-                        ) : (
-                          <>
-                            Envoyer la demande
-                            <Send size={14} />
-                          </>
-                        )}
-                      </Button>
-                    </div>
-                  </form>
-                )}
+                <Suspense fallback={<div className="min-h-[420px]" aria-hidden />}>
+                  <DevisFormBlock />
+                </Suspense>
               </motion.div>
             </div>
           </div>

@@ -67,7 +67,7 @@ export function RealisationsPreview() {
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
             className="lg:col-span-7 group relative"
           >
-            <Link href="/realisations" className="block">
+            <Link href={`/realisations/${hero.id}`} className="block">
               <div className="relative aspect-[4/5] sm:aspect-[5/6] lg:aspect-[4/5] overflow-hidden rounded-[2px] border border-ivory/8">
                 <Image
                   src={hero.imageUrl!}
@@ -120,7 +120,7 @@ export function RealisationsPreview() {
                   transition={{ delay: 0.08 + i * 0.08, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                   className="group relative"
                 >
-                  <Link href="/realisations" className="flex items-stretch gap-4 p-3 rounded-[4px] border border-ivory/6 hover:border-ivory/14 transition-colors">
+                  <Link href={`/realisations/${r.id}`} className="flex items-stretch gap-4 p-3 rounded-[4px] border border-ivory/6 hover:border-ivory/14 transition-colors">
                     <div className="relative aspect-[4/5] w-[36%] shrink-0 overflow-hidden rounded-[2px]">
                       <Image
                         src={r.imageUrl!}

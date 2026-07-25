@@ -48,7 +48,7 @@ export function RelatedRealisations({ gammeName, limit = 3 }: Props) {
               viewport={{ once: true, amount: 0.2 }}
               transition={{ delay: i * 0.08, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
             >
-              <Link href="/realisations" className="group block">
+              <Link href={`/realisations/${r.id}`} className="group block">
                 <div className="relative aspect-[4/5] overflow-hidden rounded-[2px] border border-ivory/8">
                   {r.imageUrl ? (
                     <Image

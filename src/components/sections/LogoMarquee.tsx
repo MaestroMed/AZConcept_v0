@@ -12,7 +12,7 @@ export function LogoMarquee() {
       whileInView={{ opacity: 1 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.9 }}
-      className="relative py-14 border-y border-ivory/8 overflow-hidden"
+      className="group relative py-14 border-y border-ivory/8 overflow-hidden"
     >
       <div className="max-w-[var(--container-max)] mx-auto px-[var(--container-padding)] mb-8">
         <div className="flex items-baseline justify-between">
@@ -28,7 +28,7 @@ export function LogoMarquee() {
         <div className="absolute right-0 top-0 bottom-0 w-28 bg-gradient-to-l from-ink to-transparent z-10" />
 
         <div
-          className="flex items-center gap-16 sm:gap-24 whitespace-nowrap will-change-transform"
+          className="flex items-center gap-16 sm:gap-24 whitespace-nowrap will-change-transform group-hover:[animation-play-state:paused]"
           style={{ animation: "marquee 55s linear infinite", width: "max-content" }}
         >
           {doubled.map((p, i) => (

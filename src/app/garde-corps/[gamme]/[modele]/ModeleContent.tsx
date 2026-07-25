@@ -9,6 +9,7 @@ import { SpecTable } from "@/components/shared/SpecTable";
 import { Eyebrow } from "@/components/shared/Eyebrow";
 import { ImageStrip } from "@/components/shared/ImageStrip";
 import { getGammeAssets, getModeleImage } from "@/data/assets";
+import { devisHrefForGamme } from "@/lib/devis";
 import type { Category, Gamme, Modele } from "@/types";
 
 interface ModeleContentProps {
@@ -281,7 +282,7 @@ export function ModeleContent({ category, gamme, modele, categorySlug }: ModeleC
               technique et tarifaire adaptée à votre projet.
             </p>
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button href="/devis" size="lg">Demander un devis</Button>
+              <Button href={devisHrefForGamme(gamme.slug)} size="lg">Demander un devis</Button>
               <Button href={`/${categorySlug}/${gamme.slug}`} variant="outline" size="lg">
                 Retour à {gamme.name}
               </Button>
